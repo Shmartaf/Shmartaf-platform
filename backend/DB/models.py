@@ -1,0 +1,154 @@
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Date,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    Time,
+)
+from sqlalchemy.orm import relationship
+
+from .database import Base
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    userid = Column(Integer, primary_key=True)
+    name = Column(String(255))
+    email = Column(String(255))
+    password = Column(String(255))
+    registrationdate = Column(Date)
+    city = Column(String(255))
+    street = Column(String(255))
+    phone = Column(String(15))
+    is_active = Column(Boolean, default=True)
+    is_admin = Column(Boolean, default=False)
+
+
+class Babysitter(Base):
+    __tablename__ = "babysitter"
+
+    babysitterid = Column(Integer, primary_key=True)
+    pictureid = Column(Integer)
+    description = Column(Text)
+    user_id = Column(Integer, ForeignKey("users.userid"))
+    user = relationship("User")
+    is_available = Column(Boolean, default=True)
+
+
+class Parent(Base):
+    __tablename__ = "parent"
+
+    parentid = Column(Integer, primary_key=True)
+    description = Column(Text)
+    user_id = Column(Integer, ForeignKey("users.userid"))
+    user = relationship("User")
+    emergency_contact = Column(String(255))
+
+
+class Children(Base):
+    __tablename__ = "children"
+
+    childid = Column(Integer, primary_key=True)
+    name = Column(String(255))
+    birthdate = Column(Date)
+    gender = Column(String(10))
+
+
+class ParentsChildrens(Base):
+    __tablename__ = "parents_childrens"
+
+    childid = Column(Integer, ForeignKey("children.childid"), primary_key=True)
+    parentid = Column(Integer, ForeignKey("parent.parentid"), primary_key=True)
+    child = relationship("Children")
+    parent = relationship("Parent")
+
+
+class Review(Base):
+    __tablename__ = "reviews"
+
+    reviewid = Column(Integer, primary_key=True)
+    reviewerid = Column(Integer, ForeignKey("users.userid"))
+    reviewedid = Column(Integer, ForeignKey("users.userid"))
+    rating = Column(Float)
+    flexibilityrating = Column(Float)
+    reliabilityrating = Column(Float)
+    interpersonalrating = Column(Float)
+    comment = Column(Text)
+    publicationdate = Column(Date)
+    review_text = Column(Text)
+
+
+class SpecialNeed(Base):
+    __tablename__ = "specialneed"
+
+    needid = Column(Integer, primary_key=True)
+    needname = Column(String(255))
+
+
+class SpecialSkill(Base):
+    __tablename__ = "specialskill"
+
+    skillid = Column(Integer, primary_key=True)
+    skillname = Column(String(255))
+
+
+class ChildrensNeeds(Base):
+    __tablename__ = "childrens_needs"
+
+    childid = Column(Integer, ForeignKey("children.childid"), primary_key=True)
+    needid = Column(Integer, ForeignKey("specialneed.needid"), primary_key=True)
+    needrank = Column(Integer)
+    child = relationship("Children")
+    need = relationship("SpecialNeed")
+
+
+class BabysitterSkill(Base):
+    __tablename__ = "babysitterskill"
+
+    skillid = Column(Integer, ForeignKey("specialskill.skillid"), primary_key=True)
+    babysitterid = Column(Integer, ForeignKey("babysitter.babysitterid"), primary_key=True)
+    skillrank = Column(Integer)
+    skill = relationship("SpecialSkill")
+    babysitter = relationship("Babysitter")
+
+
+class NeedSkill(Base):
+    __tablename__ = "need_skill"
+
+    needid = Column(Integer, ForeignKey("specialneed.needid"), primary_key=True)
+    skillid = Column(Integer, ForeignKey("specialskill.skillid"), primary_key=True)
+    need = relationship("SpecialNeed")
+    skill = relationship("SpecialSkill")
+
+
+class Favorite(Base):
+    __tablename__ = "favorites"
+
+    parentid = Column(Integer, ForeignKey("parent.parentid"), primary_key=True)
+    babysitterid = Column(Integer, ForeignKey("babysitter.babysitterid"), primary_key=True)
+    parent = relationship("Parent")
+    babysitter = relationship("Babysitter")
+
+
+class Contacted(Base):
+    __tablename__ = "contacted"
+
+    contactid = Column(Integer, primary_key=True)
+    parentid = Column(Integer, ForeignKey("parent.parentid"))
+    babysitterid = Column(Integer, ForeignKey("babysitter.babysitterid"))
+    date = Column(Date)
+
+
+class Scheduler(Base):
+    __tablename__ = "scheduler"
+
+    babysitterid = Column(Integer, ForeignKey("babysitter.babysitterid"), primary_key=True)
+    dayinweek = Column(String(10), primary_key=True)
+    starttime = Column(Time, primary_key=True)
+    endtime = Column(Time)
+    babysitter = relationship("Babysitter")
