@@ -1,12 +1,7 @@
-from typing import List
-
-import crud
-import schemas
 import uvicorn
 from database import Base, SessionLocal, engine
-from fastapi import Depends, FastAPI, HTTPException
-from sqlalchemy.orm import Session
-from router import users, parent
+from fastapi import FastAPI
+from router import parent, users
 
 # models.Base.metadata.create_all(bind=engine)
 Base.metadata.create_all(bind=engine)
@@ -16,6 +11,7 @@ app = FastAPI()
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(parent.router, prefix="/parents", tags=["parents"])
 # Dependency
+
 
 @app.on_event("startup")
 def get_db():
