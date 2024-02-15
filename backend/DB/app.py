@@ -3,6 +3,7 @@ from database import Base, SessionLocal, engine
 from fastapi import FastAPI
 from router import babysitter, children, parent, users
 
+
 # models.Base.metadata.create_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 

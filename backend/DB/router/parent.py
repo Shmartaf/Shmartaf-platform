@@ -25,12 +25,14 @@ def create_parent(parent: schemas.Parent, db: Session = Depends(get_db)):
     return crud.create_parent(db=db, parent=parent)
 
 
+
 @router.get("/{parent_id}", response_model=schemas.ParentRead)
 def read_parent(parent_id: int, db: Session = Depends(get_db)):
     db_parent = crud.get_parent(db, parent_id=parent_id)
     if db_parent is None:
         raise HTTPException(status_code=404, detail="Parent not found")
     return db_parent
+
 
 
 @router.get("/", response_model=List[schemas.ParentRead])
