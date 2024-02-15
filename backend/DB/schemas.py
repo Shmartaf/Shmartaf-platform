@@ -1,4 +1,5 @@
 from datetime import date, time
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -6,27 +7,52 @@ from pydantic import BaseModel
 class User(BaseModel):
     userid: int
     name: str
-    password: str
+    # password: str
     email: str
+
+
+class BabysitterSkill(BaseModel):
+    babysitterid: int
+    skillid: int
+    skillrank: int
 
 
 class Babysitter(BaseModel):
     babysitterid: int
     pictureid: int
     description: str
-    user_id: int
-    is_available: bool
+    # skills: list[BabysitterSkill]
+
+
+class BabysitterRead(Babysitter):
+    user: Optional[User] = None
 
 
 class Parent(BaseModel):
     parentid: int
     description: str
+    # # add user derived from user table
+    # name: str
+    # password: str
+    # email: str
+    # registrationdate: date
+    # city: str
+    # street: str
+    # phone: str
+
+
+class ParentRead(Parent):
+    user: Optional[User] = None
 
 
 class Children(BaseModel):
     childid: int
     name: str
     birthdate: date
+
+
+class ChildrenRead(Children):
+    parents: Optional[list[Parent]] = None
 
 
 class ParentsChildrens(BaseModel):
@@ -55,12 +81,6 @@ class SpecialNeed(BaseModel):
 class SpecialSkill(BaseModel):
     specialskillid: int
     name: str
-
-
-class BabysitterSkill(BaseModel):
-    babysitterid: int
-    skillid: int
-    skillrank: int
 
 
 class NeedSkill(BaseModel):
