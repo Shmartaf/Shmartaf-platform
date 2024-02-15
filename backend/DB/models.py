@@ -1,15 +1,5 @@
 from database import Base
-from sqlalchemy import (
-    Boolean,
-    Column,
-    Date,
-    Float,
-    ForeignKey,
-    Integer,
-    String,
-    Text,
-    Time,
-)
+from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String, Text, Time
 from sqlalchemy.orm import relationship
 
 
@@ -24,31 +14,28 @@ class User(Base):
     city = Column(String(255))
     street = Column(String(255))
     phone = Column(String(15))
-    # is_active = Column(Boolean, default=True)
-    # is_admin = Column(Boolean, default=False)
+    parent = relationship("Parent", uselist=False, back_populates="user")
+    babysitter = relationship("Babysitter", uselist=False, back_populates="user")
 
 
 class Babysitter(Base):
     __tablename__ = "babysitter"
 
-    babysitterid = Column(Integer, primary_key=True)
+    babysitterid = Column(Integer, ForeignKey("users.userid"), primary_key=True)
     pictureid = Column(Integer)
     description = Column(Text)
-    user_id = Column(Integer, ForeignKey("users.userid"))
-    user = relationship("User")
-    is_available = Column(Boolean, default=True)
+    user = relationship("User", back_populates="babysitter")
 
 
 class Parent(Base):
     __tablename__ = "parent"
     parentid = Column(Integer, ForeignKey("users.userid"), primary_key=True)
     description = Column(Text)
-    user = relationship("User")
+    user = relationship("User", back_populates="parent")
 
 
 class Children(Base):
     __tablename__ = "children"
-
     childid = Column(Integer, primary_key=True)
     name = Column(String(255))
     birthdate = Column(Date)
@@ -77,6 +64,8 @@ class Review(Base):
     comment = Column(Text)
     publicationdate = Column(Date)
     review_text = Column(Text)
+    reviewer = relationship("User", foreign_keys=[reviewerid])
+    reviewed = relationship("User", foreign_keys=[reviewedid])
 
 
 class SpecialNeed(Base):

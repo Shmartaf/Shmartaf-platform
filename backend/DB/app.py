@@ -1,7 +1,8 @@
 import uvicorn
 from database import Base, SessionLocal, engine
 from fastapi import FastAPI
-from router import parent, users
+from router import babysitter, children, parent, users
+
 
 # models.Base.metadata.create_all(bind=engine)
 Base.metadata.create_all(bind=engine)
@@ -10,6 +11,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(parent.router, prefix="/parents", tags=["parents"])
+app.include_router(babysitter.router, prefix="/babysitters", tags=["babysitters"])
+app.include_router(children.router, prefix="/children", tags=["children"])
 # Dependency
 
 
