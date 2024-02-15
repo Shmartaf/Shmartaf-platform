@@ -1,3 +1,4 @@
+from database import Base
 from sqlalchemy import (
     Boolean,
     Column,
@@ -11,8 +12,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from .database import Base
-
 
 class User(Base):
     __tablename__ = "users"
@@ -25,8 +24,8 @@ class User(Base):
     city = Column(String(255))
     street = Column(String(255))
     phone = Column(String(15))
-    is_active = Column(Boolean, default=True)
-    is_admin = Column(Boolean, default=False)
+    # is_active = Column(Boolean, default=True)
+    # is_admin = Column(Boolean, default=False)
 
 
 class Babysitter(Base):
@@ -42,12 +41,9 @@ class Babysitter(Base):
 
 class Parent(Base):
     __tablename__ = "parent"
-
-    parentid = Column(Integer, primary_key=True)
+    parentid = Column(Integer, ForeignKey("users.userid"), primary_key=True)
     description = Column(Text)
-    user_id = Column(Integer, ForeignKey("users.userid"))
     user = relationship("User")
-    emergency_contact = Column(String(255))
 
 
 class Children(Base):

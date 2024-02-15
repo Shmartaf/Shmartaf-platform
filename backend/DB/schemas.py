@@ -21,8 +21,6 @@ class Babysitter(BaseModel):
 class Parent(BaseModel):
     parentid: int
     description: str
-    user_id: int
-    emergency_contact: str
 
 
 class Children(BaseModel):
