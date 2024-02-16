@@ -8,6 +8,7 @@ class User(Base):
 
     userid = Column(Integer, primary_key=True)
     name = Column(String(255))
+    gender = Column(String(10))
     email = Column(String(255))
     password = Column(String(255))
     registrationdate = Column(Date)
