@@ -25,6 +25,7 @@ class Babysitter(Base):
     pictureid = Column(Integer)
     description = Column(Text)
     user = relationship("User", back_populates="babysitter")
+    skills = relationship("BabysitterSkill", back_populates="babysitter")
 
 
 class Parent(Base):
@@ -99,7 +100,7 @@ class BabysitterSkill(Base):
     babysitterid = Column(Integer, ForeignKey("babysitter.babysitterid"), primary_key=True)
     skillrank = Column(Integer)
     skill = relationship("SpecialSkill")
-    babysitter = relationship("Babysitter")
+    babysitter = relationship("Babysitter", back_populates="skills")
 
 
 class NeedSkill(Base):
