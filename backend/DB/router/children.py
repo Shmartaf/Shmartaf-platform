@@ -25,7 +25,7 @@ def create_children(children: schemas.Children, db: Session = Depends(get_db)):
     return crud.create_children(db=db, children=children)
 
 
-@router.get("/{children_id}", response_model=schemas.ChildrenRead)
+@router.get("/{children_id}", response_model=schemas.Children)
 def read_children(children_id: int, db: Session = Depends(get_db)):
     db_children = crud.get_children(db, child_id=children_id)
     if db_children is None:
@@ -33,7 +33,7 @@ def read_children(children_id: int, db: Session = Depends(get_db)):
     return db_children
 
 
-@router.get("/", response_model=List[schemas.ChildrenRead])
+@router.get("/", response_model=List[schemas.Children])
 def read_childrens(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     childrens = crud.get_childrens(db, skip=skip, limit=limit)
     return childrens
