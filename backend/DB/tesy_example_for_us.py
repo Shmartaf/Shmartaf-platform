@@ -5,9 +5,13 @@ db = SessionLocal()
 
 
 res = crud.get_babysitters(db, skip=0, limit=10)
-for babysitter in res:
-    skills = babysitter.skills
+# for babysitter in res:
+#     skills = babysitter.skills
 # pass
+parents = crud.get_parents(db)
+parent_children = crud.get_all_parents_childrens(db)
+babysitters = crud.get_babysitters(db)
+contacted = crud.get_all_contacted(db)
 
 
 # for user, babysitter in res:
