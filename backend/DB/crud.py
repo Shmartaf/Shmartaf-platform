@@ -100,6 +100,10 @@ def create_children(db: Session, children: schemas.Children):
 # PARENTS_CHILDRENS
 
 
+def get_all_parents_childrens(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.ParentsChildrens).offset(skip).limit(limit).all()
+
+
 def get_parents_childrens(db: Session, parent_id: int, child_id: int):
     # Preform join between parents_childrens and children and parent
     return (
@@ -416,6 +420,10 @@ def delete_favorite_by_babysitter(db: Session, babysitter_id: int):
 
 
 # CONTACTED
+
+
+def get_all_contacted(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Contacted).offset(skip).limit(limit).all()
 
 
 def get_contacted(db: Session, contact_id: int):
