@@ -273,6 +273,12 @@ def create_specialskill(db: Session, specialskill: schemas.SpecialSkill):
 
 
 # BABYSITTERSKILL
+
+
+def get_all_skills(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.BabysitterSkill).offset(skip).limit(limit).all()
+
+
 # all babysitter with skill
 def get_babysitters_with_skill(db: Session, skill_id: int, skip: int = 0, limit: int = 100):
     return (
