@@ -79,6 +79,7 @@ class SpecialNeed(Base):
     needid = Column(Integer, primary_key=True)
     needname = Column(String(255))
     children_needs = relationship("ChildrensNeeds", back_populates="need")
+    need_skills = relationship("NeedSkill", back_populates="need")
 
 
 class SpecialSkill(Base):
@@ -86,6 +87,7 @@ class SpecialSkill(Base):
 
     skillid = Column(Integer, primary_key=True)
     skillname = Column(String(255))
+    skill_needs = relationship("NeedSkill", back_populates="skill")
 
 
 class ChildrensNeeds(Base):
@@ -113,8 +115,8 @@ class NeedSkill(Base):
 
     needid = Column(Integer, ForeignKey("specialneed.needid"), primary_key=True)
     skillid = Column(Integer, ForeignKey("specialskill.skillid"), primary_key=True)
-    need = relationship("SpecialNeed")
-    skill = relationship("SpecialSkill")
+    need = relationship("SpecialNeed", back_populates="need_skills")
+    skill = relationship("SpecialSkill", back_populates="skill_needs")
 
 
 class Favorite(Base):
