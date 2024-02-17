@@ -135,6 +135,8 @@ class Contacted(Base):
     parentid = Column(Integer, ForeignKey("parent.parentid"))
     babysitterid = Column(Integer, ForeignKey("babysitter.babysitterid"))
     date = Column(Date)
+    parent = relationship("Parent", backref="contacted")
+    babysitter = relationship("Babysitter", backref="contacted")
 
 
 class Scheduler(Base):
