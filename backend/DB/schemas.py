@@ -4,6 +4,23 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+class SpecialNeed(BaseModel):
+    needid: int
+    needname: str
+
+
+class SpecialSkillRead(BaseModel):
+    skillid: int
+    skillname: str
+
+
+class NeedSkill(SpecialNeed, SpecialSkillRead):
+    needid: int
+    skillid: int
+    skill_needs: Optional[list[SpecialNeed]] = None
+    # skill: SpecialSkill
+
+
 class User(BaseModel):
     userid: int
     name: str
@@ -11,9 +28,8 @@ class User(BaseModel):
     email: str
 
 
-class BabysitterSkill(BaseModel):
-    babysitterid: int
-    skillid: int
+class BabysitterSkillRead(BaseModel):
+    skill: SpecialSkillRead
     skillrank: int
 
 
@@ -21,38 +37,38 @@ class Babysitter(BaseModel):
     babysitterid: int
     pictureid: int
     description: str
-    # skills: list[BabysitterSkill]
+    skills: list[BabysitterSkillRead]
 
 
 class BabysitterRead(Babysitter):
     user: Optional[User] = None
+    skills: Optional[list[BabysitterSkillRead]] = None
 
 
-class Parent(BaseModel):
-    parentid: int
-    description: str
-    # # add user derived from user table
-    # name: str
-    # password: str
-    # email: str
-    # registrationdate: date
-    # city: str
-    # street: str
-    # phone: str
-
-
-class ParentRead(Parent):
-    user: Optional[User] = None
+class ChildrensNeedsRead(BaseModel):
+    need: SpecialNeed
+    needrank: int
 
 
 class Children(BaseModel):
     childid: int
     name: str
     birthdate: date
+    needs_association: Optional[list[ChildrensNeedsRead]] = None
 
 
 class ChildrenRead(Children):
-    parents: Optional[list[Parent]] = None
+    needs_association: Optional[list[ChildrensNeedsRead]] = None
+
+
+class Parent(BaseModel):
+    parentid: int
+    description: str
+
+
+class ParentRead(Parent):
+    user: Optional[User] = None
+    children: Optional[list[ChildrenRead]] = None
 
 
 class ParentsChildrens(BaseModel):
@@ -71,21 +87,6 @@ class Review(BaseModel):
     comment: str
     publicationdate: date
     review_text: str
-
-
-class SpecialNeed(BaseModel):
-    specialneedid: int
-    name: str
-
-
-class SpecialSkill(BaseModel):
-    specialskillid: int
-    name: str
-
-
-class NeedSkill(BaseModel):
-    needid: int
-    skillid: int
 
 
 class Favorite(BaseModel):

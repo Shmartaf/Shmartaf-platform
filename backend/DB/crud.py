@@ -264,7 +264,7 @@ def get_specialskills(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.SpecialSkill).offset(skip).limit(limit).all()
 
 
-def create_specialskill(db: Session, specialskill: schemas.SpecialSkill):
+def create_specialskill(db: Session, specialskill: schemas.SpecialSkillRead):
     db_specialskill = models.SpecialSkill(**specialskill.dict())
     db.add(db_specialskill)
     db.commit()
@@ -305,7 +305,7 @@ def get_babysitterskills_with_user(db: Session, babysitter_id: int, skip: int = 
     )
 
 
-def create_babysitterskill(db: Session, babysitterskill: schemas.BabysitterSkill):
+def create_babysitterskill(db: Session, babysitterskill: schemas.BabysitterSkillRead):
     db_babysitterskill = models.BabysitterSkill(**babysitterskill.dict())
     db.add(db_babysitterskill)
     db.commit()
