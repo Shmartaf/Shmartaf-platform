@@ -67,23 +67,7 @@ X_scaled = scaler.fit_transform(X)
 
 
 # Splitting the dataset
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
-print(X_train)
-print(X_test)
-# Initializing and training the Gaussian Naive Bayes model
-model = GaussianNB()
-model.fit(X_train, y_train)
-
-# Making predictions
-y_pred = model.predict(X_test)
-
-# Evaluating the model
-accuracy = accuracy_score(y_test, y_pred)
-logger.info(f"Model Accuracy: {accuracy}")
-
-
-# Splitting the dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=16)
 
 # Initializing and training the Gaussian Naive Bayes model
 model = GaussianNB()

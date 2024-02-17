@@ -315,6 +315,17 @@ def create_babysitterskill(db: Session, babysitterskill: schemas.BabysitterSkill
 
 # NEEDSKILL
 
+def get_childrens_needs_by_parent_id(db: Session, parent_id: int):
+    return (
+        db.query(models.ChildrensNeeds)
+        .join(models.ParentsChildrens, models.ChildrensNeeds.childid == models.ParentsChildrens.childid)
+        .filter(models.ParentsChildrens.parentid == parent_id)
+        .all()
+    )
+
+def get_contacted_by_parent_id(db: Session, parent_id: int):
+    return db.query(models.Contacted).filter(models.Contacted.parentid == parent_id).all()
+
 
 def get_needskill(db: Session, need_id: int, skill_id: int):
     return (
@@ -497,3 +508,12 @@ def delete_scheduler(db: Session, scheduler_id: int):
     db.query(models.Scheduler).filter(models.Scheduler.babysitterid == scheduler_id).delete()
     db.commit()
     return {"message": "Scheduler deleted successfully"}
+
+
+
+
+
+
+
+
+
