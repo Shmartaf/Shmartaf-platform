@@ -1,7 +1,6 @@
 # React + Vite
+
 https://vitejs.dev/
-
-
 
 Also used:
 react router (https://reactrouter.com/en/main/start/tutorial)

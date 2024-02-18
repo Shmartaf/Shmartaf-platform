@@ -12,14 +12,16 @@ const Map = () => {
         boxShadow: 2,
         margin: "20px",
         padding: "10px",
-      }}>
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-        }}>
+        }}
+      >
         <Typography variant="h6">Live Available Babysitters</Typography>
       </Box>
       <Box
@@ -30,9 +32,10 @@ const Map = () => {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "10px",
-        }}>
-          <img src={map_placeholder} style={{ width: "100%", height: "100%" }} />
-        </Box>
+        }}
+      >
+        <img src={map_placeholder} style={{ width: "100%", height: "100%" }} />
+      </Box>
     </Box>
   );
 };

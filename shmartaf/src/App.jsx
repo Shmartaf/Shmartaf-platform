@@ -2,15 +2,14 @@ import { Route, Routes } from "react-router-dom";
 
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
-import Find from './pages/Find'
-import Contacted from './pages/Contacted'
+import Find from "./pages/Find";
+import Contacted from "./pages/Contacted";
 import Notifications from "./pages/Notifications";
-import Favorites from './pages/Favorites'
-import Profile from './pages/Profile'
-import Settings from './pages/Settings'
+import Favorites from "./pages/Favorites";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 function App() {
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -22,7 +21,6 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
-        
       </Route>
       {/* <Route path="/find/:id" element={<Details />} /> */}
     </Routes>
