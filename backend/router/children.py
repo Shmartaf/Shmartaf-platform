@@ -1,30 +1,24 @@
 from typing import List
 
-import crud
+
 import schemas
 from fastapi import APIRouter, HTTPException
+from backend.database.dal import DataAccessLayer
 
 router = APIRouter()
-children_crud = crud.Children()
 
-
-@router.post("/", response_model=schemas.Children)
-def create_children(children: schemas.Children):
-    db_children = children_crud.get_children(child_id=children.childid)
-    if db_children:
-        raise HTTPException(status_code=400, detail="Children already registered")
-    return children_crud.create_children(children=children)
-
-
-@router.get("/{child_id}", response_model=schemas.Children)
-def read_children(child_id: int):
-    db_children = children_crud.get_children(child_id=child_id)
-    if db_children is None:
-        raise HTTPException(status_code=404, detail="Children not found")
-    return db_children
+dal = DataAccessLayer()
 
 
 @router.get("/", response_model=List[schemas.ChildrenRead])
-def read_childrens(skip: int = 0, limit: int = 10):
-    childrens = children_crud.get_childrens(skip=skip, limit=limit)
-    return childrens
+def read_parents(skip: int = 0, limit: int = 10):
+    parents = dal.get_all(models.Children, skip=skip, limit=limit)
+    return parents
+
+
+@router.get("/{parent_id}", response_model=schemas.ChildrenRead)
+def read_parent(parent_id: int):
+    parent = dal.get(models.Children, parent_id)
+    if parent is None:
+        raise HTTPException(status_code=404, detail="Parent not found")
+    return parent
