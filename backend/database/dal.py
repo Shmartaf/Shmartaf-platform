@@ -32,3 +32,6 @@ class DataAccessLayer:
         self.db.delete(db_model)
         self.db.commit()
         return db_model
+
+    def aggregate(self, model, id: int, field: str):
+        return self.db.query(model).filter(getattr(model, field) == id).all()

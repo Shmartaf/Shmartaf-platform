@@ -3,7 +3,7 @@ from database.database import Database
 from fastapi import FastAPI
 
 # from router import babysitter, children, parent, users, reviews, scheduler
-from router import babysitter, parent, users, reviews
+from router import babysitter, parent, reviews, users
 
 Database().create_all()
 

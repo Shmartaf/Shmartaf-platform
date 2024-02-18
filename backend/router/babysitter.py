@@ -48,3 +48,20 @@ def delete_user(user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     dal.delete(models.User, user_id)
     return user
+
+
+@router.get("/reviews/{user_id}", response_model=List[schemas.ReviewRead])
+def read_reviews_by_babysitter(user_id: int):
+    reviews = dal.aggregate(models.Review, id=user_id, field="reviewedid")
+    return reviews
+
+
+@router.post("/reviews/{user_id}", response_model=schemas.ReviewRead)
+def create_review_on_babysitter(user_id: int, review: schemas.Review):
+    return dal.create(models.Review, review)
+
+
+@router.get("/schedulers/{user_id}", response_model=List[schemas.Scheduler])
+def read_schedulers_by_babysitter(user_id: int):
+    schedulers = dal.aggregate(models.Scheduler, id=user_id, field="babysitterid")
+    return schedulers
