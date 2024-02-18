@@ -113,13 +113,6 @@ class Review(BaseModel):
     registrationdate: date
 
 
-class ReviewRead(BaseModel):
-    pass
-    id: int
-    reviewerid: int
+class ReviewRead(Review):
     reviewer: User
     reviewed: User
-    rating: float
-    flexibilityrating: float
-    reliabilityrating: float
-    interpersonalrating: float
