@@ -59,7 +59,8 @@ const columns = [
             backgroundColor: "#f2f2f2",
             borderRadius: 2,
             padding: "5px 10px",
-          }}>
+          }}
+        >
           <Typography>{params.row.tag}</Typography>
         </Box>
       );
@@ -115,7 +116,8 @@ const EventsTable = () => {
               variant="contained"
               style={{ textDecoration: "none" }}
               size="small"
-              sx={{ textTransform: "none" }}>
+              sx={{ textTransform: "none" }}
+            >
               Details
             </Button>
           </Box>

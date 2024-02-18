@@ -1,11 +1,10 @@
-from backend.database import models
-from backend.database import schemas
-from sqlalchemy.orm import Session, joinedload
+# from backend.database import models, schemas
 from backend.database.database import Database
+
 
 class DataAccessLayer:
     def __init__(self):
-        self.db =  Database().SessionLocal()
+        self.db = Database().SessionLocal()
 
     def get(self, model, id: int):
         return self.db.query(model).filter(model.id == id).first()
@@ -33,4 +32,3 @@ class DataAccessLayer:
         self.db.delete(db_model)
         self.db.commit()
         return db_model
-

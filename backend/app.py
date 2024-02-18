@@ -1,8 +1,10 @@
 import uvicorn
 from database.database import Database
 from fastapi import FastAPI
+
 # from router import babysitter, children, parent, users, reviews, scheduler
-from router import users, parent, babysitter
+from router import babysitter, parent, users
+
 Database().create_all()
 
 app = FastAPI()

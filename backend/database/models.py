@@ -1,8 +1,11 @@
-from backend.database.database import Database
 from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String, Text, Time
 from sqlalchemy.orm import relationship
+
+from backend.database.database import Database
+
 db = Database()
 Base = db.Base
+
 
 class User(Base):
     __tablename__ = "users"
@@ -29,7 +32,9 @@ class Babysitter(Base):
     user = relationship("User", back_populates="babysitter")
     skills = relationship("BabysitterSkill", back_populates="babysitter")
     contacted_babysitters = relationship("Contacted", back_populates="babysitter")
-    schedules = relationship("Scheduler", back_populates="babysitter", order_by="Scheduler.dayinweek, Scheduler.starttime")
+    schedules = relationship(
+        "Scheduler", back_populates="babysitter", order_by="Scheduler.dayinweek, Scheduler.starttime"
+    )
 
 
 class Parent(Base):
@@ -57,7 +62,6 @@ class ParentsChildrens(Base):
 
     childid = Column(Integer, ForeignKey("children.id"), primary_key=True)
     parentid = Column(Integer, ForeignKey("parent.id"), primary_key=True)
-  
 
 
 class Review(Base):
@@ -149,4 +153,3 @@ class Scheduler(Base):
     starttime = Column(Time, primary_key=True)
     endtime = Column(Time)
     babysitter = relationship("Babysitter", back_populates="schedules")
-

@@ -11,11 +11,12 @@ SQLALCHEMY_DATABASE_URL = (
     f'postgresql://{os.getenv("PGUSER")}:{os.getenv("PGPASSWORD")}@{os.getenv("PGHOST")}:5432/{os.getenv("PGDATABASE")}'
 )
 
+
 class Database:
     def __init__(self):
         self.engine = create_engine(SQLALCHEMY_DATABASE_URL)
         self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
         self.Base = declarative_base()
-    
+
     def create_all(self):
         self.Base.metadata.create_all(bind=self.engine)

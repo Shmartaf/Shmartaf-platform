@@ -1,11 +1,13 @@
 from datetime import date, time
-from typing import Optional, Union
+from typing import Optional
 
 from pydantic import BaseModel
+
 
 class Favorite(BaseModel):
     parentid: int
     babysitterid: int
+
 
 class Contacted(BaseModel):
     parentid: int
@@ -18,6 +20,7 @@ class Scheduler(BaseModel):
     starttime: time
     endtime: time
     dayinweek: str
+
 
 class SpecialNeed(BaseModel):
     id: int
@@ -35,15 +38,17 @@ class NeedSkill(SpecialNeed, SpecialSkillRead):
     skill_needs: Optional[list[SpecialNeed]] = None
     # skill: SpecialSkill
 
+
 class User(BaseModel):
     id: int  # Add the id field
-    name: str 
+    name: str
     password: str
     email: str
     phone: str
     registrationdate: date
     city: str
     street: str
+
 
 class BabysitterSkillRead(BaseModel):
     skill: SpecialSkillRead
@@ -52,8 +57,8 @@ class BabysitterSkillRead(BaseModel):
 
 class Babysitter(BaseModel):
     id: int
-    pictureid: int
-    description: str
+    pictureid: Optional[int] = None
+    description: Optional[str] = None
     # skills: list[BabysitterSkillRead]
 
 
@@ -107,6 +112,7 @@ class Review(BaseModel):
     comment: str
     registrationdate: date
 
+
 class ReviewRead(BaseModel):
     pass
     id: int
@@ -117,9 +123,3 @@ class ReviewRead(BaseModel):
     flexibilityrating: float
     reliabilityrating: float
     interpersonalrating: float
-
-
-
-
-
-
