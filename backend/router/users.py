@@ -4,9 +4,10 @@ from fastapi import APIRouter, HTTPException
 
 from backend.database import models, schemas
 from backend.database.dal import DataAccessLayer
+from backend.logger import ColorLogger
 
 router = APIRouter()
-
+logger = ColorLogger()
 
 dal = DataAccessLayer()
 
@@ -14,6 +15,7 @@ dal = DataAccessLayer()
 @router.get("/", response_model=List[schemas.User])
 def read_users(skip: int = 0, limit: int = 10):
     users = dal.get_all(models.User, skip=skip, limit=limit)
+    logger.log("Users has retrieved succesfuly", "INFO", data=users)
     return users
 
 
@@ -21,6 +23,7 @@ def read_users(skip: int = 0, limit: int = 10):
 def read_user(user_id: int):
     user = dal.get(models.User, user_id)
     if user is None:
+        logger.log(f"User not found {user_id}", "ERROR", data=user)
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
