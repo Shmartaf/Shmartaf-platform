@@ -8,9 +8,7 @@ def log_decorator(func):
         try:
             if ColorLogger.CURRENT_LEVEL == "DEBUG":
                 # Detailed logging for DEBUG level
-                kwargs_str = ", ".join(
-                    [f"{key}={value}" for key, value in kwargs.items()]
-                )
+                kwargs_str = ", ".join([f"{key}={value}" for key, value in kwargs.items()])
                 args_str = ", ".join([repr(a) for a in args])
                 ColorLogger.log(
                     f"Calling {func.__name__} with args: [{args_str}] and kwargs: {{{kwargs_str}}}",
@@ -51,12 +49,8 @@ class ColorLogger:
     @staticmethod
     def log(message, level="INFO", data=None):
         """Log a message with the specified level and optional structured data."""
-        if ColorLogger.COLORS.get(level, "INFO") >= ColorLogger.COLORS.get(
-            ColorLogger.CURRENT_LEVEL, "INFO"
-        ):
-            color = ColorLogger.COLORS.get(
-                level, "\033[92m"
-            )  # Default to green if level not found
+        if ColorLogger.COLORS.get(level, "INFO") >= ColorLogger.COLORS.get(ColorLogger.CURRENT_LEVEL, "INFO"):
+            color = ColorLogger.COLORS.get(level, "\033[92m")  # Default to green if level not found
             reset = "\033[0m"  # Reset color
 
             data_str = ""
