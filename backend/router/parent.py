@@ -44,3 +44,14 @@ def delete_parent(parent_id: int):
     if db_parent is None:
         raise HTTPException(status_code=404, detail="Parent not found")
     return dal.delete(models.Parent, parent_id)
+
+
+@router.get("/reviews/{user_id}", response_model=List[schemas.ReviewRead])
+def read_reviews_by_parent(user_id: int):
+    reviews = dal.aggregate(models.Review, id=user_id, field="reviewerid")
+    return reviews
+
+
+@router.post("/reviews/{user_id}", response_model=schemas.ReviewRead)
+def create_review_on_parent(user_id: int, review: schemas.Review):
+    return dal.create(models.Review, schema=schemas.Review)
