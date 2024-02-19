@@ -30,26 +30,33 @@ features = []
 target = []
 
 # Simplified loop to construct features and target based on your needs
+features = []
+target = []
+
 for parent in parents:
+    # Collect all unique needs from the parent's children
+    unique_needs = set()
+    for child in parent.children:
+        for need in child.needs_association:
+            unique_needs.add(need.need.needname)
+
     for babysitter in babysitters:
-        # Construct feature vector for this babysitter-parent pair
-        child_needs = []
-        for child in parent.children:
-            child_needs.append(child.needs_association)
-        skills_for_needs = []
-        for child in child_needs:
-            for need in child:
-                for skill in need.need.need_skills:
-                    skills_for_needs.append(skill.skill)
-        babysitter_skills = babysitter.skills
-        total_number_of_skills = len(babysitter.skills)
-        features_vector = [1 if skill in babysitter_skills else 0 for skill in babysitter_skills]
+        # Convert babysitter's skills to a set for easier comparison
+        babysitter_skill_set = set([skill.skill.skillname for skill in babysitter.skills])
+
+        # Construct the feature vector: 1 if the babysitter has a skill that matches a child's need, 0 otherwise
+        features_vector = [1 if skill in babysitter_skill_set else 0 for skill in unique_needs]
+
+        # Determine if this babysitter was contacted by this parent
         was_contacted = any(
             contact.parentid == parent.parentid and contact.babysitterid == babysitter.babysitterid
             for contact in contacted_records
         )
+
+        # Append the constructed feature vector and contact status to the lists
         features.append(features_vector)
         target.append(1 if was_contacted else 0)
+
 # Convert lists to DataFrame and Series for use in model
 
 X = pd.DataFrame(features)

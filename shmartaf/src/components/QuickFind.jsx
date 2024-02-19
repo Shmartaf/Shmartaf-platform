@@ -22,9 +22,19 @@ const QuickFind = () => {
         boxShadow: 2,
         margin: "20px",
         padding: "10px",
-      }}>
+      }}
+    >
       <Typography variant="h6">Quick Find</Typography>
-      <Box sx={{ display: "flex", flexDirection: "row", gap: "10px", alignItems: "center", justifyContent: "space-between", padding: "10px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "10px",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "10px",
+        }}
+      >
         <Autocomplete
           disablePortal
           id="location-combo-box"
@@ -60,14 +70,17 @@ const QuickFind = () => {
           displayEmpty
           value={time}
           onChange={handleChange}
-          startAdornment={<AccessTimeIcon />}>
+          startAdornment={<AccessTimeIcon />}
+        >
           <MenuItem value={"10"}>10 AM</MenuItem>
           <MenuItem value={"12"}>12 PM</MenuItem>
           <MenuItem value={"16"}>4 PM</MenuItem>
         </Select>
-<div>
-<Button variant="contained" sx={{ textTransform: "none"}}>Check</Button>
-</div>
+        <div>
+          <Button variant="contained" sx={{ textTransform: "none" }}>
+            Check
+          </Button>
+        </div>
       </Box>
     </Box>
   );

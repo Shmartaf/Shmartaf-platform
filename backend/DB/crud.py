@@ -29,7 +29,11 @@ def create_user(db: Session, user: schemas.User):
 
 
 def get_babysitter(db: Session, babysitter_id: int):
-    return db.query(models.Babysitter).filter(models.Babysitter.babysitterid == babysitter_id).first()
+    return (
+        db.query(models.Babysitter)
+        .filter(models.Babysitter.babysitterid == babysitter_id)
+        .first()
+    )
 
 
 def get_babysitters(db: Session, skip: int = 0, limit: int = 100):
@@ -108,7 +112,9 @@ def get_parents_childrens(db: Session, parent_id: int, child_id: int):
     # Preform join between parents_childrens and children and parent
     return (
         db.query(models.ParentsChildrens)
-        .join(models.Children, models.Children.childid == models.ParentsChildrens.childid)
+        .join(
+            models.Children, models.Children.childid == models.ParentsChildrens.childid
+        )
         .join(models.Parent, models.Parent.parentid == models.ParentsChildrens.parentid)
         .filter(models.ParentsChildrens.parentid == parent_id)
         .filter(models.ParentsChildrens.childid == child_id)
@@ -119,7 +125,9 @@ def get_parents_childrens(db: Session, parent_id: int, child_id: int):
 def get_parents_childrens_by_parent(db: Session, parent_id: int):
     return (
         db.query(models.ParentsChildrens)
-        .join(models.Children, models.Children.childid == models.ParentsChildrens.childid)
+        .join(
+            models.Children, models.Children.childid == models.ParentsChildrens.childid
+        )
         .join(models.Parent, models.Parent.parentid == models.ParentsChildrens.parentid)
         .filter(models.ParentsChildrens.parentid == parent_id)
         .all()
@@ -129,7 +137,9 @@ def get_parents_childrens_by_parent(db: Session, parent_id: int):
 def get_parents_childrens_by_child(db: Session, child_id: int):
     return (
         db.query(models.ParentsChildrens)
-        .join(models.Children, models.Children.childid == models.ParentsChildrens.childid)
+        .join(
+            models.Children, models.Children.childid == models.ParentsChildrens.childid
+        )
         .join(models.Parent, models.Parent.parentid == models.ParentsChildrens.parentid)
         .filter(models.ParentsChildrens.childid == child_id)
         .all()
@@ -145,21 +155,25 @@ def create_parents_childrens(db: Session, parents_childrens: schemas.ParentsChil
 
 
 def delete_parents_childrens(db: Session, parent_id: int, child_id: int):
-    db.query(models.ParentsChildrens).filter(models.ParentsChildrens.parentid == parent_id).filter(
-        models.ParentsChildrens.childid == child_id
-    ).delete()
+    db.query(models.ParentsChildrens).filter(
+        models.ParentsChildrens.parentid == parent_id
+    ).filter(models.ParentsChildrens.childid == child_id).delete()
     db.commit()
     return {"message": "ParentsChildrens deleted successfully"}
 
 
 def delete_parents_childrens_by_parent(db: Session, parent_id: int):
-    db.query(models.ParentsChildrens).filter(models.ParentsChildrens.parentid == parent_id).delete()
+    db.query(models.ParentsChildrens).filter(
+        models.ParentsChildrens.parentid == parent_id
+    ).delete()
     db.commit()
     return {"message": "ParentsChildrens deleted successfully"}
 
 
 def delete_parents_childrens_by_child(db: Session, child_id: int):
-    db.query(models.ParentsChildrens).filter(models.ParentsChildrens.childid == child_id).delete()
+    db.query(models.ParentsChildrens).filter(
+        models.ParentsChildrens.childid == child_id
+    ).delete()
     db.commit()
     return {"message": "ParentsChildrens deleted successfully"}
 
@@ -238,7 +252,11 @@ def delete_review_by_reviewed_with_user_and_babysitter(db: Session, reviewed_id:
 
 
 def get_specialneed(db: Session, need_id: int):
-    return db.query(models.SpecialNeed).filter(models.SpecialNeed.needid == need_id).first()
+    return (
+        db.query(models.SpecialNeed)
+        .filter(models.SpecialNeed.needid == need_id)
+        .first()
+    )
 
 
 def get_specialneeds(db: Session, skip: int = 0, limit: int = 100):
@@ -257,7 +275,11 @@ def create_specialneed(db: Session, specialneed: schemas.SpecialNeed):
 
 
 def get_specialskill(db: Session, skill_id: int):
-    return db.query(models.SpecialSkill).filter(models.SpecialSkill.skillid == skill_id).first()
+    return (
+        db.query(models.SpecialSkill)
+        .filter(models.SpecialSkill.skillid == skill_id)
+        .first()
+    )
 
 
 def get_specialskills(db: Session, skip: int = 0, limit: int = 100):
@@ -280,7 +302,9 @@ def get_all_skills(db: Session, skip: int = 0, limit: int = 100):
 
 
 # all babysitter with skill
-def get_babysitters_with_skill(db: Session, skill_id: int, skip: int = 0, limit: int = 100):
+def get_babysitters_with_skill(
+    db: Session, skill_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.BabysitterSkill)
         .join(models.Babysitter)  # Perform join with the Babysitter table
@@ -293,7 +317,9 @@ def get_babysitters_with_skill(db: Session, skill_id: int, skip: int = 0, limit:
 
 
 # all skills of a babysitter
-def get_babysitterskills_with_user(db: Session, babysitter_id: int, skip: int = 0, limit: int = 100):
+def get_babysitterskills_with_user(
+    db: Session, babysitter_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.BabysitterSkill)
         .join(models.Babysitter)  # Perform join with the Babysitter table
@@ -315,16 +341,23 @@ def create_babysitterskill(db: Session, babysitterskill: schemas.BabysitterSkill
 
 # NEEDSKILL
 
+
 def get_childrens_needs_by_parent_id(db: Session, parent_id: int):
     return (
         db.query(models.ChildrensNeeds)
-        .join(models.ParentsChildrens, models.ChildrensNeeds.childid == models.ParentsChildrens.childid)
+        .join(
+            models.ParentsChildrens,
+            models.ChildrensNeeds.childid == models.ParentsChildrens.childid,
+        )
         .filter(models.ParentsChildrens.parentid == parent_id)
         .all()
     )
 
+
 def get_contacted_by_parent_id(db: Session, parent_id: int):
-    return db.query(models.Contacted).filter(models.Contacted.parentid == parent_id).all()
+    return (
+        db.query(models.Contacted).filter(models.Contacted.parentid == parent_id).all()
+    )
 
 
 def get_needskill(db: Session, need_id: int, skill_id: int):
@@ -338,7 +371,9 @@ def get_needskill(db: Session, need_id: int, skill_id: int):
     )
 
 
-def get_needskills_with_specialneed(db: Session, need_id: int, skip: int = 0, limit: int = 100):
+def get_needskills_with_specialneed(
+    db: Session, need_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.NeedSkill)
         .join(models.SpecialNeed)  # Perform join with the SpecialNeed table
@@ -350,7 +385,9 @@ def get_needskills_with_specialneed(db: Session, need_id: int, skip: int = 0, li
     )
 
 
-def get_needskills_with_specialskill(db: Session, skill_id: int, skip: int = 0, limit: int = 100):
+def get_needskills_with_specialskill(
+    db: Session, skill_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.NeedSkill)
         .join(models.SpecialNeed)  # Perform join with the SpecialNeed table
@@ -384,7 +421,9 @@ def get_favorite(db: Session, parent_id: int, babysitter_id: int):
     )
 
 
-def get_favorites_with_parent(db: Session, parent_id: int, skip: int = 0, limit: int = 100):
+def get_favorites_with_parent(
+    db: Session, parent_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.Favorite)
         .join(models.Parent)  # Perform join with the Parent table
@@ -396,7 +435,9 @@ def get_favorites_with_parent(db: Session, parent_id: int, skip: int = 0, limit:
     )
 
 
-def get_favorites_with_babysitter(db: Session, babysitter_id: int, skip: int = 0, limit: int = 100):
+def get_favorites_with_babysitter(
+    db: Session, babysitter_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.Favorite)
         .join(models.Parent)  # Perform join with the Parent table
@@ -431,7 +472,9 @@ def delete_favorite_by_parent(db: Session, parent_id: int):
 
 
 def delete_favorite_by_babysitter(db: Session, babysitter_id: int):
-    db.query(models.Favorite).filter(models.Favorite.babysitterid == babysitter_id).delete()
+    db.query(models.Favorite).filter(
+        models.Favorite.babysitterid == babysitter_id
+    ).delete()
     db.commit()
     return {"message": "Favorite deleted successfully"}
 
@@ -444,10 +487,16 @@ def get_all_contacted(db: Session, skip: int = 0, limit: int = 100):
 
 
 def get_contacted(db: Session, contact_id: int):
-    return db.query(models.Contacted).filter(models.Contacted.contactid == contact_id).first()
+    return (
+        db.query(models.Contacted)
+        .filter(models.Contacted.contactid == contact_id)
+        .first()
+    )
 
 
-def get_contacteds_with_parent(db: Session, parent_id: int, skip: int = 0, limit: int = 100):
+def get_contacteds_with_parent(
+    db: Session, parent_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.Contacted)
         .join(models.Parent)  # Perform join with the Parent table
@@ -459,7 +508,9 @@ def get_contacteds_with_parent(db: Session, parent_id: int, skip: int = 0, limit
     )
 
 
-def get_contacteds_with_babysitter(db: Session, babysitter_id: int, skip: int = 0, limit: int = 100):
+def get_contacteds_with_babysitter(
+    db: Session, babysitter_id: int, skip: int = 0, limit: int = 100
+):
     return (
         db.query(models.Contacted)
         .join(models.Parent)  # Perform join with the Parent table
@@ -489,7 +540,11 @@ def delete_contacted(db: Session, contact_id: int):
 
 
 def get_scheduler(db: Session, scheduler_id: int):
-    return db.query(models.Scheduler).filter(models.Scheduler.babysitterid == scheduler_id).first()
+    return (
+        db.query(models.Scheduler)
+        .filter(models.Scheduler.babysitterid == scheduler_id)
+        .first()
+    )
 
 
 def get_schedulers(db: Session, skip: int = 0, limit: int = 100):
@@ -505,15 +560,8 @@ def create_scheduler(db: Session, scheduler: schemas.Scheduler):
 
 
 def delete_scheduler(db: Session, scheduler_id: int):
-    db.query(models.Scheduler).filter(models.Scheduler.babysitterid == scheduler_id).delete()
+    db.query(models.Scheduler).filter(
+        models.Scheduler.babysitterid == scheduler_id
+    ).delete()
     db.commit()
     return {"message": "Scheduler deleted successfully"}
-
-
-
-
-
-
-
-
-

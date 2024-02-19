@@ -10,10 +10,11 @@ const Layout = () => {
         flexDirection: "row",
         width: "100%",
         height: "100vh",
-      }}>
+      }}
+    >
       <Sidebar />
       <div style={{ overflow: "auto", width: "100%" }}>
-      <Outlet />
+        <Outlet />
       </div>
     </Box>
   );
