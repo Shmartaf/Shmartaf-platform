@@ -1,17 +1,18 @@
 import crud
 import pandas as pd
 from database import SessionLocal
-from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+
 
 def recommend_babysitters_for_parent(parent_id):
     db = SessionLocal()
 
     # Fetch skills, needs, and babysitters
-    skills = crud.get_specialskills(db)
+    # skills = crud.get_specialskills(db)
     babysitters = crud.get_babysitters(db)
-    #children_needs = crud.get_childrens_needs_by_parent_id(db, parent_id)
+    # children_needs = crud.get_childrens_needs_by_parent_id(db, parent_id)
     contacted_records = crud.get_all_contacted(db)
     parents_childrens = crud.get_parents(db)
     children_needs = crud.get_specialneeds(db)
@@ -27,14 +28,15 @@ def recommend_babysitters_for_parent(parent_id):
                             for children in parent_child.children:
                                 for childneed in children.needs_association:
                                     if childneed.needid == need_skill.needid:
-                                        results.append({
-                                            "babysitter_id": skill.babysitterid,
-                                            "parent_id": parent_child.parentid,
-                                            "skill_name": skill.skill.skillname,
-                                            "need_name": need.needname
-                                        })
+                                        results.append(
+                                            {
+                                                "babysitter_id": skill.babysitterid,
+                                                "parent_id": parent_child.parentid,
+                                                "skill_name": skill.skill.skillname,
+                                                "need_name": need.needname,
+                                            }
+                                        )
         contacted_labels.append(1 if babysitter.babysitterid in [c.babysitterid for c in contacted_records] else 0)
-                        
 
     # Convert results to DataFrame
     df = pd.DataFrame(results)
@@ -42,11 +44,11 @@ def recommend_babysitters_for_parent(parent_id):
         return []
     print(df)
     # Apply one-hot encoding
-    df_skills_needs = pd.get_dummies(df[['skill_name', 'need_name']])
-    df_final = pd.concat([df_skills_needs, df['babysitter_id']], axis=1)
+    df_skills_needs = pd.get_dummies(df[["skill_name", "need_name"]])
+    df_final = pd.concat([df_skills_needs, df["babysitter_id"]], axis=1)
     print(df_final)
     # Prepare features matrix X and labels y
-    X = df_final.drop('babysitter_id', axis=1)
+    X = df_final.drop("babysitter_id", axis=1)
     y = pd.Series(contacted_labels)
 
     # Split the dataset into training and testing sets
@@ -70,7 +72,8 @@ def recommend_babysitters_for_parent(parent_id):
 
     return recommended_babysitters
 
+
 # Example usage
-parent_id = 1 
+parent_id = 1
 recommended_babysitters = recommend_babysitters_for_parent(parent_id)
 print(f"Recommended babysitters for parent {parent_id}: {recommended_babysitters}")
