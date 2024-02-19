@@ -1,26 +1,29 @@
 import logging
 
-import crud
+# import crud
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from database import SessionLocal
+
+# from database import SessionLocal
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
+from backend.database.dal import DataAccessLayer
+from backend.database import models
 
 # Configure logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Start a session
-db = SessionLocal()
-
+# db = SessionLocal()
+dal = DataAccessLayer()
 # Fetch data (simplified examples, replace with actual data fetching and processing)
-babysitters = crud.get_babysitters(db)
-parents = crud.get_parents(db)
-contacted_records = crud.get_all_contacted(db)
+babysitters = dal.get_all(model=models.Babysitter, skip=0, limit=1000)
+parents = dal.get_all(model=models.Parent, skip=0, limit=1000)
+contacted_records = dal.get_all(model=models.Contacted, skip=0, limit=1000)
 
 # Assuming you have functions or logic to extract skills as binary features
 # and have a way to match these features to corresponding parents based on needs
@@ -36,20 +39,24 @@ target = []
 for parent in parents:
     # Collect all unique needs from the parent's children
     unique_needs = set()
-    for child in parent.children:
+    for child in parent.childrens:
         for need in child.needs_association:
             unique_needs.add(need.need.needname)
 
     for babysitter in babysitters:
         # Convert babysitter's skills to a set for easier comparison
-        babysitter_skill_set = set([skill.skill.skillname for skill in babysitter.skills])
+        babysitter_skill_set = set(
+            [skill.skill.skillname for skill in babysitter.skills]
+        )
 
         # Construct the feature vector: 1 if the babysitter has a skill that matches a child's need, 0 otherwise
-        features_vector = [1 if skill in babysitter_skill_set else 0 for skill in unique_needs]
+        features_vector = [
+            1 if skill in babysitter_skill_set else 0 for skill in unique_needs
+        ]
 
         # Determine if this babysitter was contacted by this parent
         was_contacted = any(
-            contact.parentid == parent.parentid and contact.babysitterid == babysitter.babysitterid
+            contact.parentid == parent.id and contact.babysitterid == babysitter.id
             for contact in contacted_records
         )
 
@@ -60,6 +67,7 @@ for parent in parents:
 # Convert lists to DataFrame and Series for use in model
 
 X = pd.DataFrame(features)
+X.fillna(0, inplace=True)
 y = pd.Series(target)
 
 print(X)
@@ -74,7 +82,9 @@ X_scaled = scaler.fit_transform(X)
 
 
 # Splitting the dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=16)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=16
+)
 
 # Initializing and training the Gaussian Naive Bayes model
 model = GaussianNB()
@@ -89,7 +99,12 @@ logger.info(f"Model Accuracy: {accuracy}")
 
 # Assuming the first plot of the distribution of each skill across all babysitters
 fig, ax = plt.subplots(figsize=(10, 6))
-sns.countplot(data=X.melt(var_name="Skills", value_name="Presence"), x="Skills", hue="Presence", ax=ax)
+sns.countplot(
+    data=X.melt(var_name="Skills", value_name="Presence"),
+    x="Skills",
+    hue="Presence",
+    ax=ax,
+)
 plt.xticks(rotation=45, ha="right")
 plt.title("Distribution of Skills Presence across Babysitters")
 plt.tight_layout()

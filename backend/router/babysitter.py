@@ -13,7 +13,7 @@ dal = DataAccessLayer()
 
 @router.get("/", response_model=List[schemas.BabysitterRead])
 def read_users(skip: int = 0, limit: int = 10):
-    users = dal.get_all(models.User, skip=skip, limit=limit)
+    users = dal.get_all(models.Babysitter, skip=skip, limit=limit)
     return users
 
 

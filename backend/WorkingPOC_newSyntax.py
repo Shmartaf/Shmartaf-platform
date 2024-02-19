@@ -1,33 +1,35 @@
-import crud
+from backend.database.dal import DataAccessLayer
 import pandas as pd
-from database import SessionLocal
+from backend.database import models
+
+# from database import SessionLocal
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 
-db = SessionLocal()
+dal = DataAccessLayer()
 
 # Fetch data using CRUD operations
-skills = crud.get_specialskills(db)
-babysitters = crud.get_babysitters(db)
+skills = dal.get_all(model=models.SpecialSkill, skip=0, limit=1000)
+babysitters = dal.get_all(model=models.Babysitter, skip=0, limit=1000)
 
-children_needs = crud.get_specialneeds(db)
-parents_childrens = crud.get_parents(db)
+children_needs = dal.get_all(model=models.SpecialNeed, skip=0, limit=1000)
+parents_childrens = dal.get_all(model=models.Parent, skip=0, limit=1000)
 
 results = []
 for babysitter in babysitters:
     for skill in babysitter.skills:
         for need in children_needs:
             for need_skill in need.need_skills:
-                if need_skill.skillid == skill.skillid:
+                if need_skill.skillid == skill.id:
                     for parent_child in parents_childrens:
-                        for children in parent_child.children:
+                        for children in parent_child.childrens:
                             for childneed in children.needs_association:
                                 if childneed.needid == need_skill.needid:
                                     results.append(
                                         {
                                             "babysitter_id": skill.babysitterid,
-                                            "parent_id": parent_child.parentid,
+                                            "parent_id": parent_child.id,
                                             "skill_name": skill.skill.skillname,
                                             "need_name": need.needname,
                                         }
@@ -45,11 +47,16 @@ df = pd.DataFrame(results)
 # for need in all_needs:
 #  df[f"need_{need}"] = df['need_name'].apply(lambda x: 1 if x == need else 0)
 
-contacted_records = crud.get_all_contacted(db)
+contacted_records = dal.get_all(model=models.Contacted, skip=0, limit=1000)
 # הנחה שלכל רשומה יש מאפיינים parentid ו babysitterid
-contacted_pairs = {(record.parentid, record.babysitterid) for record in contacted_records}
+contacted_pairs = {
+    (record.parentid, record.babysitterid) for record in contacted_records
+}
 # נניח שיש לנו עמודות parentid ו babysitterid ב-DataFrame שלנו
-df["contacted"] = df.apply(lambda row: 1 if (row["parent_id"], row["babysitter_id"]) in contacted_pairs else 0, axis=1)
+df["contacted"] = df.apply(
+    lambda row: 1 if (row["parent_id"], row["babysitter_id"]) in contacted_pairs else 0,
+    axis=1,
+)
 
 # Assuming 'df' is your DataFrame after fetching the results
 # Convert 'skill_name' and 'need_name' to a one-hot encoded format

@@ -33,7 +33,9 @@ class Babysitter(Base):
     skills = relationship("BabysitterSkill", back_populates="babysitter")
     contacted_babysitters = relationship("Contacted", back_populates="babysitter")
     schedules = relationship(
-        "Scheduler", back_populates="babysitter", order_by="Scheduler.dayinweek, Scheduler.starttime"
+        "Scheduler",
+        back_populates="babysitter",
+        order_by="Scheduler.dayinweek, Scheduler.starttime",
     )
 
 
@@ -42,7 +44,9 @@ class Parent(Base):
     id = Column(Integer, ForeignKey("users.id"), primary_key=True)
     description = Column(Text)
     user = relationship("User", back_populates="parent")
-    childrens = relationship("Children", secondary="parents_childrens", back_populates="parents")
+    childrens = relationship(
+        "Children", secondary="parents_childrens", back_populates="parents"
+    )
     favorites = relationship("Favorite", back_populates="parent")
     contacted_parents = relationship("Contacted", back_populates="parent")
 
@@ -53,7 +57,9 @@ class Children(Base):
     name = Column(String(255))
     birthdate = Column(Date)
     gender = Column(String(10))
-    parents = relationship("Parent", secondary="parents_childrens", back_populates="childrens")
+    parents = relationship(
+        "Parent", secondary="parents_childrens", back_populates="childrens"
+    )
     needs_association = relationship("ChildrensNeeds", back_populates="child")
 
 
@@ -100,7 +106,7 @@ class SpecialSkill(Base):
 class ChildrensNeeds(Base):
     __tablename__ = "childrens_needs"
 
-    child_id = Column(Integer, ForeignKey("children.id"), primary_key=True)
+    childid = Column(Integer, ForeignKey("children.id"), primary_key=True)
     needid = Column(Integer, ForeignKey("specialneed.id"), primary_key=True)
     needrank = Column(Integer)
     child = relationship("Children", back_populates="needs_association")

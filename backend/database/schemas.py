@@ -91,7 +91,7 @@ class Parent(BaseModel):
 
 class ParentRead(Parent):
     user: Optional[User] = None
-    children: Optional[list[ChildrenRead]] = None
+    childrens: Optional[list[ChildrenRead]] = None
     favorites: Optional[list[Favorite]] = None
     contacted_parents: Optional[list[Contacted]] = None
 
