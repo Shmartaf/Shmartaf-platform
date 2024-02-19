@@ -1,11 +1,12 @@
-from backend.database.dal import DataAccessLayer
 import pandas as pd
-from backend.database import models
 
 # from database import SessionLocal
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
+
+from backend.database import models
+from backend.database.dal import DataAccessLayer
 
 dal = DataAccessLayer()
 
@@ -49,9 +50,7 @@ df = pd.DataFrame(results)
 
 contacted_records = dal.get_all(model=models.Contacted, skip=0, limit=1000)
 # הנחה שלכל רשומה יש מאפיינים parentid ו babysitterid
-contacted_pairs = {
-    (record.parentid, record.babysitterid) for record in contacted_records
-}
+contacted_pairs = {(record.parentid, record.babysitterid) for record in contacted_records}
 # נניח שיש לנו עמודות parentid ו babysitterid ב-DataFrame שלנו
 df["contacted"] = df.apply(
     lambda row: 1 if (row["parent_id"], row["babysitter_id"]) in contacted_pairs else 0,

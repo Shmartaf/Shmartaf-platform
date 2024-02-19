@@ -44,9 +44,7 @@ class Parent(Base):
     id = Column(Integer, ForeignKey("users.id"), primary_key=True)
     description = Column(Text)
     user = relationship("User", back_populates="parent")
-    childrens = relationship(
-        "Children", secondary="parents_childrens", back_populates="parents"
-    )
+    childrens = relationship("Children", secondary="parents_childrens", back_populates="parents")
     favorites = relationship("Favorite", back_populates="parent")
     contacted_parents = relationship("Contacted", back_populates="parent")
 
@@ -57,9 +55,7 @@ class Children(Base):
     name = Column(String(255))
     birthdate = Column(Date)
     gender = Column(String(10))
-    parents = relationship(
-        "Parent", secondary="parents_childrens", back_populates="childrens"
-    )
+    parents = relationship("Parent", secondary="parents_childrens", back_populates="childrens")
     needs_association = relationship("ChildrensNeeds", back_populates="child")
 
 

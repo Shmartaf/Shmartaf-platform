@@ -10,8 +10,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
-from backend.database.dal import DataAccessLayer
+
 from backend.database import models
+from backend.database.dal import DataAccessLayer
 
 # Configure logger
 logging.basicConfig(level=logging.INFO)
@@ -45,19 +46,14 @@ for parent in parents:
 
     for babysitter in babysitters:
         # Convert babysitter's skills to a set for easier comparison
-        babysitter_skill_set = set(
-            [skill.skill.skillname for skill in babysitter.skills]
-        )
+        babysitter_skill_set = set([skill.skill.skillname for skill in babysitter.skills])
 
         # Construct the feature vector: 1 if the babysitter has a skill that matches a child's need, 0 otherwise
-        features_vector = [
-            1 if skill in babysitter_skill_set else 0 for skill in unique_needs
-        ]
+        features_vector = [1 if skill in babysitter_skill_set else 0 for skill in unique_needs]
 
         # Determine if this babysitter was contacted by this parent
         was_contacted = any(
-            contact.parentid == parent.id and contact.babysitterid == babysitter.id
-            for contact in contacted_records
+            contact.parentid == parent.id and contact.babysitterid == babysitter.id for contact in contacted_records
         )
 
         # Append the constructed feature vector and contact status to the lists
@@ -82,9 +78,7 @@ X_scaled = scaler.fit_transform(X)
 
 
 # Splitting the dataset
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=16
-)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=16)
 
 # Initializing and training the Gaussian Naive Bayes model
 model = GaussianNB()
