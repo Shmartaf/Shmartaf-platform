@@ -1,7 +1,4 @@
-from typing import List
-from pydantic import UUID4
-
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 from backend.database import models, schemas
 from backend.database.dal import DataAccessLayer
@@ -23,7 +20,5 @@ def create_requirements(
 
 
 @router.get("/")
-def get_requirements(
-    skip: int = 0, limit: int = 10
-) -> list[schemas.RequirementsSchema]:
+def get_requirements(skip: int = 0, limit: int = 10) -> list[schemas.RequirementsSchema]:
     return dal.get_all(models.SpecialNeed, skip=skip, limit=limit)

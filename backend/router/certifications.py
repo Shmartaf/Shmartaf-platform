@@ -1,7 +1,4 @@
-from typing import List
-from pydantic import UUID4
-
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 from backend.database import models, schemas
 from backend.database.dal import DataAccessLayer
@@ -16,9 +13,7 @@ dal = DataAccessLayer()
 
 
 @router.get("/")
-def get_certifications(
-    skip: int = 0, limit: int = 10
-) -> list[schemas.CertificationSchema]:
+def get_certifications(skip: int = 0, limit: int = 10) -> list[schemas.CertificationSchema]:
     return dal.get_all(models.SpecialSkill, skip=skip, limit=limit)
 
 
