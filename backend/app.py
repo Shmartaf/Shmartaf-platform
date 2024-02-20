@@ -1,11 +1,10 @@
 import uvicorn
 from database.database import Database
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+from router import babysitter, certifications, parent, requirements, users
 
-# from router import babysitter, children, parent, users, reviews, scheduler
-from router import babysitter, parent, reviews, scheduler, users
-
-Database().create_all()
+from backend.database.models import Base
 
 app = FastAPI(
     debug=True,
@@ -13,13 +12,25 @@ app = FastAPI(
     description="This is a simple babysitter app",
     version="0.1",
 )
-app.include_router(users.router, prefix="/users", tags=["users"])
-app.include_router(parent.router, prefix="/parents", tags=["parents"])
-app.include_router(babysitter.router, prefix="/babysitters", tags=["babysitters"])
-app.include_router(reviews.router, prefix="/reviews", tags=["reviews"])
-app.include_router(scheduler.router, prefix="/schedules", tags=["schedules"])
+
+
+@app.on_event("startup")
+async def startup():
+    Base.metadata.create_all(bind=Database().engine)
+
+
+@app.get("/", include_in_schema=False)
+def main():
+    return RedirectResponse(url="/docs")
+
 
 if __name__ == "__main__":
+    app.include_router(users.router)
+    app.include_router(babysitter.router)
+    app.include_router(parent.router)
+    app.include_router(requirements.router)
+    app.include_router(certifications.router)
+
     uvicorn.run(
         app,
         host="0.0.0.0",

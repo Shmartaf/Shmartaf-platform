@@ -1,67 +1,61 @@
 from typing import List
 
 from fastapi import APIRouter, HTTPException
+from pydantic import UUID4
 
 from backend.database import models, schemas
 from backend.database.dal import DataAccessLayer
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/babysitters",
+    tags=["babysitters"],
+)
 
 
 dal = DataAccessLayer()
 
 
-@router.get("/", response_model=List[schemas.BabysitterRead])
-def read_users(skip: int = 0, limit: int = 10):
-    users = dal.get_all(models.Babysitter, skip=skip, limit=limit)
-    return users
+@router.get("/")
+def get_babysitters(skip: int = 0, limit: int = 10) -> List[schemas.BabysitterSchema]:
+    return dal.get_all(models.Babysitter, skip=skip, limit=limit)
 
 
-@router.get("/{user_id}", response_model=schemas.BabysitterRead)
-def read_user(user_id: int):
-    user = dal.get(models.User, user_id)
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
+@router.get("/{babysitter_id}")
+def get_babysitter(babysitter_id: UUID4) -> schemas.BabysitterSchema:
+    if babysitter := dal.get(models.Babysitter, babysitter_id):
+        return babysitter
+    raise HTTPException(status_code=404, detail="Babysitter not found")
 
 
-@router.post("/", response_model=schemas.BabysitterRead)
-def create_user(user: schemas.User):
-    db_user = dal.get(model=models.User, id=user.id)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return dal.create(models.User, user)
+@router.post("/")
+def create_babysitter(
+    babysitter: schemas.BabysitterRequestSchema,
+) -> schemas.BabysitterSchema:
+    return dal.create(models.Babysitter, babysitter)
 
 
-@router.put("/{user_id}", response_model=schemas.BabysitterRead)
-def update_user(user_id: int, user: schemas.User):
-    db_user = dal.get(model=models.User, id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return dal.update(models.User, user_id, user)
+@router.put("/{babysitter_id}")
+def update_babysitter(
+    babysitter_id: UUID4,
+    babysitter: schemas.BabysitterSchema,
+) -> schemas.BabysitterSchema:
+    return dal.update(models.Babysitter, babysitter_id, babysitter)
 
 
-@router.delete("/{user_id}", response_model=schemas.User)
-def delete_user(user_id: int):
-    user = dal.get(models.User, user_id)
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    dal.delete(models.User, user_id)
-    return user
+@router.delete("/{babysitter_id}")
+def delete_babysitter(babysitter_id: UUID4) -> schemas.BabysitterSchema:
+    return dal.delete(models.Babysitter, babysitter_id)
 
 
-@router.get("/reviews/{user_id}", response_model=List[schemas.ReviewRead])
-def read_reviews_by_babysitter(user_id: int):
-    reviews = dal.aggregate(models.Review, id=user_id, field="reviewedid")
-    return reviews
-
-
-@router.post("/reviews/{user_id}", response_model=schemas.ReviewRead)
-def create_review_on_babysitter(user_id: int, review: schemas.Review):
-    return dal.create(models.Review, review)
-
-
-@router.get("/schedulers/{user_id}", response_model=List[schemas.Scheduler])
-def read_schedulers_by_babysitter(user_id: int):
-    schedulers = dal.aggregate(models.Scheduler, id=user_id, field="babysitterid")
-    return schedulers
+@router.post("/{babysitter_id}/certifications/{certification_id}")
+def create_certification(
+    babysitter_id: UUID4, certification_id: UUID4, skillrank: int
+) -> schemas.BabysitterCertificationSchema:
+    scheme = schemas.BabysitterCertificationSchema(
+        babysitterid=babysitter_id,
+        id=certification_id,
+        skillrank=skillrank,
+    )
+    if dal.get(models.SpecialSkill, certification_id) is None:
+        raise HTTPException(status_code=404, detail="Certification not found")
+    return dal.create(models.BabysitterSkill, scheme)
