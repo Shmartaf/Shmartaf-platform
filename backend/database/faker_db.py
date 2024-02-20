@@ -104,7 +104,7 @@ def create_children(parent_id):
 
 # @retry_on_duplicate
 def create_children_requirements(child_id, need_id):
-    children_requirements_schema = schemas.ChildrenRequirementsSchema(
+    children_requirements_schema = schemas.ChildReqirmentsRequestSchema(
         childid=child_id,
         needid=need_id,
         needrank=random.randint(1, 5),
@@ -137,24 +137,13 @@ def mock_db(n):
             babysitter = create_babysitter(user.id)
             random_skills = random.sample(skills, random.randint(1, min(5, len(skills))))
             for skill in random_skills:
-                babysitter_skill_schema = schemas.BabysitterCertificationSchema(
+                babysitter_skill_schema = schemas.BabysitterCerticationRequestSchema(
                     babysitterid=babysitter.id,
                     id=skill.id,
                     skillrank=random.randint(1, 5),
                 )
                 dal.create(model=BabysitterSkill, schema=babysitter_skill_schema)
-            # for _ in range(
-            #     random.randint(1, min(5, len(skills)))
-            # ):  # Each babysitter can have 1-5 skills
-            #     skill = random.sample(skills, random.randint(1, 6))
-            #     for s in skill:
-            #         babysitter_skill_schema = schemas.BabysitterCertificationSchema(
-            #             babysitterid=babysitter.id,
-            #             id=s.id,
-            #             skillrank=random.randint(1, 5),
-            #         )
-            #         dal.create(model=BabysitterSkill, schema=babysitter_skill_schema)
-    # poulate favorites and reviews only based on existing data
+
     for _ in range(n):
         parent = random.choice(dal.get_all(model=Parent))
         babysitter = random.choice(dal.get_all(model=Babysitter))

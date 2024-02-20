@@ -13,10 +13,13 @@ class RequirementsSchema(RequirementsIdSchema):
     needname: str
 
 
-class ChildrenRequirementsSchema(BaseModel):
+class ChildReqirmentsRequestSchema(BaseModel):
     childid: UUID4
     needrank: int
     needid: UUID4
+
+
+class ChildrenRequirementsSchema(ChildReqirmentsRequestSchema):
     need_skills: Optional[RequirementsSchema] = None
 
 
@@ -26,10 +29,13 @@ class CertificationSchema(BaseModel):
     skill_needs: Optional[list[Optional[RequirementsSchema]]] = []
 
 
-class BabysitterCertificationSchema(BaseModel):
+class BabysitterCerticationRequestSchema(BaseModel):
     babysitterid: UUID4
-    id: UUID4
     skillrank: int
+    id: UUID4
+
+
+class BabysitterCertificationSchema(BabysitterCerticationRequestSchema):
     skill: Optional[CertificationSchema] = None
 
 
