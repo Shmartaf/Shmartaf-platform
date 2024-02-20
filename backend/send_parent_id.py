@@ -49,7 +49,7 @@ def create_input_data_for_parent(parentid):
     # Convert the list of dictionaries to a DataFrame
     df = pd.DataFrame(data_for_prediction)
 
-    # Here, you would typically include any preprocessing steps that were applied to the training data,
+    # Here, we can include any preprocessing steps that were applied to the training data,
     # such as filling missing values, feature scaling, or encoding categorical variables if necessary.
 
     return df
