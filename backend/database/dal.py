@@ -1,5 +1,7 @@
 # from backend.database import models, schemas
 
+from pydantic import UUID4
+
 from backend.database.database import Database
 from backend.logger import ColorLogger
 
@@ -20,7 +22,7 @@ class DataAccessLayer:
         self.logger = ColorLogger()
 
     @ensure_connection
-    def get(self, model, id: int):
+    def get(self, model, id: UUID4):
         result = self.db.query(model).filter(model.id == id).first()
         self.logger.log(message=f"Get {model.__name__} with id {id}", level="INFO", data=result)
         return result
