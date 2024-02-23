@@ -18,6 +18,8 @@ from backend.database.models import (
     SpecialNeed,
     SpecialSkill,
     User,
+    NeedSkill,
+    Contacted,
 )
 
 fake = Faker()
@@ -39,7 +41,9 @@ def retry_on_duplicate(func):
                 else:
                     args = list(args)
                     if args:
-                        args[0] = uuid4()  # Assuming the first argument is the ID for simplicity
+                        args[0] = (
+                            uuid4()
+                        )  # Assuming the first argument is the ID for simplicity
         raise Exception("Failed to create a unique entity after several attempts.")
 
     return wrapper
@@ -98,8 +102,12 @@ def create_children(parent_id):
         gender=random.choice(["M", "F"]),
     )
     dal.create(model=Children, schema=children_schema)
-    parent_children_schema = schemas.ParentChildrenRequestSchema(parentid=parent_id, childid=children_schema.id)
-    return dal.create(model=ParentsChildrens, schema=parent_children_schema)  # Adjust DAL method signature as needed
+    parent_children_schema = schemas.ParentChildrenRequestSchema(
+        parentid=parent_id, childid=children_schema.id
+    )
+    return dal.create(
+        model=ParentsChildrens, schema=parent_children_schema
+    )  # Adjust DAL method signature as needed
 
 
 # @retry_on_duplicate
@@ -125,7 +133,9 @@ def mock_db(n):
     # Create users, parents/babysitters, and children with needs
     for _ in range(n):
         user = create_user()
-        if random.choice([True, False]):  # Randomly decide between parent and babysitter
+        if random.choice(
+            [True, False]
+        ):  # Randomly decide between parent and babysitter
             parent = create_parent(user.id)
             for _ in range(random.randint(1, 3)):  # Each parent can have 1-3 children
                 child = create_children(parent.id)
@@ -135,7 +145,9 @@ def mock_db(n):
                     create_children_requirements(child.childid, need.id)
         else:
             babysitter = create_babysitter(user.id)
-            random_skills = random.sample(skills, random.randint(1, min(5, len(skills))))
+            random_skills = random.sample(
+                skills, random.randint(1, min(5, len(skills)))
+            )
             for skill in random_skills:
                 babysitter_skill_schema = schemas.BabysitterCerticationRequestSchema(
                     babysitterid=babysitter.id,
@@ -147,11 +159,14 @@ def mock_db(n):
     for _ in range(n):
         parent = random.choice(dal.get_all(model=Parent))
         babysitter = random.choice(dal.get_all(model=Babysitter))
-        favorite_schema = schemas.FavoriteRequestSchema(parentid=parent.id, babysitterid=babysitter.id)
+        favorite_schema = schemas.FavoriteRequestSchema(
+            parentid=parent.id, babysitterid=babysitter.id
+        )
         try:
             dal.create(model=Favorite, schema=favorite_schema)
         except IntegrityError:
             print("Duplicate favorite entry detected, skipping...")
+            dal.db.rollback()
             pass
         review_schema = schemas.ReviewSchema(
             id=uuid4(),
@@ -164,10 +179,82 @@ def mock_db(n):
             interpersonalrating=random.randint(1, 5),
             registrationdate=fake.date_of_birth(),
         )
-        dal.create(model=Review, schema=review_schema)
+        try:
+            dal.create(model=Review, schema=review_schema)
+        except IntegrityError:
+            print("Duplicate review entry detected, skipping...")
+            dal.db.rollback()
+            pass
 
     print("Database mock data generation complete.")
 
 
-mock_db(3)
+def mock_needs_skills():
+    skills = dal.get_all(model=SpecialSkill)
+    needs = dal.get_all(model=SpecialNeed)
+    for _ in range(random.randint(1, len(skills) + len(needs))):
+        skill = random.choice(skills)
+        need = random.choice(needs)
+        need_skill_schema = schemas.RequirementsCertificationScheme(
+            needid=need.id, skillid=skill.id
+        )
+        try:
+            dal.create(model=NeedSkill, schema=need_skill_schema)
+        except IntegrityError:
+            print("Duplicate need-skill entry detected, skipping...")
+            dal.db.rollback()
+            pass
+
+
+def get_childrens_needs(parent):
+    childrens = parent.childrens
+    needs = []
+    for child in childrens:
+        for need in child.needs:
+            needs.append(need)
+    return needs
+
+
+def wanted_skills(needs):
+    wanted_skills = []
+    for need in needs:
+        for skill in need.need.need_skills:
+            wanted_skills.append(skill.skill.skillname)
+    return wanted_skills
+
+
+def skill_match(babysitter, skills):
+    for babysitter_skill in babysitter.skills:
+        if babysitter_skill.skill.skillname in skills:
+            return True
+    return False
+
+
+def mock_contacted():
+    parents = dal.get_all(model=Parent)
+    babysitters = dal.get_all(model=Babysitter)
+    for parent in parents:
+        needs = get_childrens_needs(parent)
+        skills = wanted_skills(needs)
+        for babysitter in babysitters:
+            if skill_match(babysitter, skills):
+                contacted_schema = schemas.ContactedRequestSchema(
+                    id=uuid4(),
+                    parentid=parent.id,
+                    babysitterid=babysitter.id,
+                    date=fake.date_this_year(),
+                )
+                try:
+                    dal.create(model=Contacted, schema=contacted_schema)
+                except IntegrityError:
+                    print("Duplicate contacted entry detected, skipping...")
+                    dal.db.rollback()
+                    pass
+    print("Contacted mock data generation complete.")
+
+
+mock_contacted()
+
+mock_db(6)
+mock_needs_skills()
 pass

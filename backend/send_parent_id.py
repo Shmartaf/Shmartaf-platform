@@ -32,22 +32,32 @@ def create_input_data_for_parent(parentid):
 
         # Calculate how many of the babysitter's skills match the children's needs
         Babysitter_Relevant_Skills_num = 0
-        babysitter_needs_answers = [need.needid for skill in babysitter.skills for need in skill.skill.skill_needs]
+        babysitter_needs_answers = [
+            need.needid
+            for skill in babysitter.skills
+            for need in skill.skill.skill_needs
+        ]
         for child in parent.childrens:
             for need in child.needs:
                 if need.needid in babysitter_needs_answers:
                     Babysitter_Relevant_Skills_num += 1
 
-        babysitter_data["Babysitter_Relevant_Skills_num"] = Babysitter_Relevant_Skills_num
+        babysitter_data["Babysitter_Relevant_Skills_num"] = (
+            Babysitter_Relevant_Skills_num
+        )
 
         # Calculate the number of times this babysitter has been favorited
         babysitter_data["Favorites_totalnum"] = sum(
-            1 for favorite in dal.get_all(models.Favorite) if favorite.babysitterid == babysitter.id
+            1
+            for favorite in dal.get_all(models.Favorite)
+            if favorite.babysitterid == babysitter.id
         )
 
         # Calculate the total number of reviews received by the babysitter
         babysitter_data["Babysitter_Total_Reviews_got"] = sum(
-            1 for review in dal.get_all(models.Review) if review.reviewedid == babysitter.id
+            1
+            for review in dal.get_all(models.Review)
+            if review.reviewedid == babysitter.id
         )
 
         # Append the babysitter data to the list
@@ -75,20 +85,24 @@ def get_recommendations_for_parent(parentid):
 
     # Predict the likelihood of contact
     probabilities = nb_model.predict_proba(X)
-    if probabilities.shape[1] == 1:
+    if probabilities.shape[1] == 2:
         predicted_likelihood = probabilities[:, 1]
     else:
         predicted_likelihood = 0
 
     # Create a DataFrame with babysitter IDs and their corresponding likelihoods
-    recommendations = pd.DataFrame({"Babysitterid": babysitter_ids, "Likelihood": predicted_likelihood})
+    recommendations = pd.DataFrame(
+        {"Babysitterid": babysitter_ids, "Likelihood": predicted_likelihood}
+    )
 
     # Sort the babysitters by likelihood of being contacted
-    recommendations_sorted = recommendations.sort_values(by="Likelihood", ascending=False)
+    recommendations_sorted = recommendations.sort_values(
+        by="Likelihood", ascending=False
+    )
 
     return recommendations_sorted
 
 
-parentid = "f17a1957-7510-49c0-9d44-57e2ee4e1bd4"
+parentid = "c135d832-fe32-4754-b6a3-4ea85d112574"
 recommendations = get_recommendations_for_parent(parentid)
 print(recommendations.head())  # This prints the top recommended babysitters
