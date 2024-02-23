@@ -53,9 +53,7 @@ def process_data_for_training(parents, babysitters, favorites, reviews, contacte
                     if need.needid in babysitter_needs_answers:
                         Babysitter_Relevant_Skills_num += 1
 
-            babysitter_data["Babysitter_Relevant_Skills_num"] = (
-                Babysitter_Relevant_Skills_num
-            )
+            babysitter_data["Babysitter_Relevant_Skills_num"] = Babysitter_Relevant_Skills_num
             babysitter_data["Favorites_totalnum"] = sum(
                 1 for favorite in favorites if favorite.babysitterid == babysitter.id
             )
@@ -64,8 +62,7 @@ def process_data_for_training(parents, babysitters, favorites, reviews, contacte
             )
             babysitter_data["Contacted"] = (
                 1
-                if (parent.id, babysitter.id)
-                in [(contact.parentid, contact.babysitterid) for contact in contacted]
+                if (parent.id, babysitter.id) in [(contact.parentid, contact.babysitterid) for contact in contacted]
                 else 0
             )
 
@@ -89,15 +86,11 @@ print(df)
 # df = pd.concat([df, encoded_df], axis=1).drop(['Babysitter_Gender'], axis=1)
 
 # Define features X and labels y
-X = df.drop(
-    ["Contacted", "Babysitterid"], axis=1
-)  # Drop 'Contacted' and 'Babysitterid' columns
+X = df.drop(["Contacted", "Babysitterid"], axis=1)  # Drop 'Contacted' and 'Babysitterid' columns
 y = df["Contacted"]
 
 # Split data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=42
-)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
 # Initialize and train the Naive Bayes model
 nb_model = GaussianNB()
