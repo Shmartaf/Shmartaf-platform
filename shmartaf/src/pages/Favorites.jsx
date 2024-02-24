@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
-import BabysitterCard from "../components/BabysitterCard";
+import FavoriteCard from "../components/FavoriteCard";
 // impport api
 
 // babysitters = api.get("/babysitters)
-const babysitters = [
+const favorite = [
   {
     name: "",
     image: "",
@@ -45,8 +45,8 @@ const favorites = () => {
         alignItems: "center",
       }}
     >
-      {babysitters.map((babysitter) => (
-        <BabysitterCard key={babysitter.name} {...babysitter} />
+      {favorite.map((favorite) => (
+        <FavoriteCard key={favorite.name} {...favorite} />
       ))}
     </Box>
   );
