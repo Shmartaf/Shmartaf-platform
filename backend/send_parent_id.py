@@ -75,7 +75,7 @@ def get_recommendations_for_parent(parentid):
 
     # Predict the likelihood of contact
     probabilities = nb_model.predict_proba(X)
-    if probabilities.shape[1] == 1:
+    if probabilities.shape[1] == 2:
         predicted_likelihood = probabilities[:, 1]
     else:
         predicted_likelihood = 0
@@ -89,6 +89,6 @@ def get_recommendations_for_parent(parentid):
     return recommendations_sorted
 
 
-parentid = "f17a1957-7510-49c0-9d44-57e2ee4e1bd4"
+parentid = "c135d832-fe32-4754-b6a3-4ea85d112574"
 recommendations = get_recommendations_for_parent(parentid)
 print(recommendations.head())  # This prints the top recommended babysitters

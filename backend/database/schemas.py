@@ -141,3 +141,8 @@ class ParentResponseSchema(ParentSchema):
 class ParentChildrenRequestSchema(BaseModel):
     parentid: UUID4
     childid: UUID4
+
+
+class RequirementsCertificationScheme(BaseModel):
+    needid: UUID4
+    skillid: UUID4
