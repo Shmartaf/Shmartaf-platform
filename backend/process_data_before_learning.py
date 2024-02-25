@@ -73,7 +73,7 @@ def process_data_for_training(parents, babysitters, favorites, reviews, contacte
 
 
 df = process_data_for_training(parents, babysitters, favorites, reviews, contacted)
-print(df.head())
+print(df)
 
 
 # Encoding categorical data

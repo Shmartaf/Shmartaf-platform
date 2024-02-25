@@ -8,8 +8,8 @@ from backend.logger import ColorLogger
 
 def ensure_connection(func):
     def wrapper(self, *args, **kwargs):
-
-        self.db = Database().SessionLocal()
+        if not self.db:
+            self.db = Database().SessionLocal()
 
         return func(self, *args, **kwargs)
 

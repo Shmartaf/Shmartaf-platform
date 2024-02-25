@@ -11,7 +11,9 @@ from backend.database.models import (
     BabysitterSkill,
     Children,
     ChildrensNeeds,
+    Contacted,
     Favorite,
+    NeedSkill,
     Parent,
     ParentsChildrens,
     Review,
@@ -152,6 +154,7 @@ def mock_db(n):
             dal.create(model=Favorite, schema=favorite_schema)
         except IntegrityError:
             print("Duplicate favorite entry detected, skipping...")
+            dal.db.rollback()
             pass
         review_schema = schemas.ReviewSchema(
             id=uuid4(),
@@ -164,10 +167,80 @@ def mock_db(n):
             interpersonalrating=random.randint(1, 5),
             registrationdate=fake.date_of_birth(),
         )
-        dal.create(model=Review, schema=review_schema)
+        try:
+            dal.create(model=Review, schema=review_schema)
+        except IntegrityError:
+            print("Duplicate review entry detected, skipping...")
+            dal.db.rollback()
+            pass
 
     print("Database mock data generation complete.")
 
 
-mock_db(3)
+def mock_needs_skills():
+    skills = dal.get_all(model=SpecialSkill)
+    needs = dal.get_all(model=SpecialNeed)
+    for _ in range(random.randint(1, len(skills) + len(needs))):
+        skill = random.choice(skills)
+        need = random.choice(needs)
+        need_skill_schema = schemas.RequirementsCertificationScheme(needid=need.id, skillid=skill.id)
+        try:
+            dal.create(model=NeedSkill, schema=need_skill_schema)
+        except IntegrityError:
+            print("Duplicate need-skill entry detected, skipping...")
+            dal.db.rollback()
+            pass
+
+
+def get_childrens_needs(parent):
+    childrens = parent.childrens
+    needs = []
+    for child in childrens:
+        for need in child.needs:
+            needs.append(need)
+    return needs
+
+
+def wanted_skills(needs):
+    wanted_skills = []
+    for need in needs:
+        for skill in need.need.need_skills:
+            wanted_skills.append(skill.skill.skillname)
+    return wanted_skills
+
+
+def skill_match(babysitter, skills):
+    for babysitter_skill in babysitter.skills:
+        if babysitter_skill.skill.skillname in skills:
+            return True
+    return False
+
+
+def mock_contacted():
+    parents = dal.get_all(model=Parent)
+    babysitters = dal.get_all(model=Babysitter)
+    for parent in parents:
+        needs = get_childrens_needs(parent)
+        skills = wanted_skills(needs)
+        for babysitter in babysitters:
+            if skill_match(babysitter, skills):
+                contacted_schema = schemas.ContactedRequestSchema(
+                    id=uuid4(),
+                    parentid=parent.id,
+                    babysitterid=babysitter.id,
+                    date=fake.date_this_year(),
+                )
+                try:
+                    dal.create(model=Contacted, schema=contacted_schema)
+                except IntegrityError:
+                    print("Duplicate contacted entry detected, skipping...")
+                    dal.db.rollback()
+                    pass
+    print("Contacted mock data generation complete.")
+
+
+mock_contacted()
+
+mock_db(6)
+mock_needs_skills()
 pass
