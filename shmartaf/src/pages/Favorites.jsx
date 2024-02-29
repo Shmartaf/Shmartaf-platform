@@ -1,38 +1,16 @@
+import { Card } from "@mui/material";
 import Box from "@mui/material/Box";
-import FavoriteCard from "../components/FavoriteCard";
+import BabysitterCard from "../components/BabysitterCard/";
+import { useContext } from "react";
+import { BabysitterContext } from "../context/BabysitterContext";
 // impport api
 
 // babysitters = api.get("/babysitters)
-const favorite = [
-  {
-    name: "",
-    image: "",
-    desc: "",
-    location: "",
-    rating: "",
-  },
-  {
-    name: "",
-    image: "",
-    desc: "",
-    location: "",
-    rating: "",
-  },
-  {
-    name: "",
-    image: "",
-    rating: "",
-    desc: "",
-  },
-  {
-    name: "",
-    image: "",
-    rating: "",
-    desc: "",
-  },
-];
 
-const favorites = () => {
+const Favorites = () => {
+  const { state, dispatch } = useContext(BabysitterContext);
+  const { babysitters } = state;
+
   return (
     <Box
       sx={{
@@ -43,12 +21,14 @@ const favorites = () => {
         padding: "20px 10px",
         justifyContent: "center",
         alignItems: "center",
-      }}
-    >
-      {favorite.map((favorite) => (
-        <FavoriteCard key={favorite.name} {...favorite} />
-      ))}
+        backgroundColor: "#F8F7F1",
+      }}>
+      {babysitters.map((babysitter) => {
+        if (babysitter.isFavorite) {
+          return <BabysitterCard key={babysitter.name} {...babysitter} />;
+        }
+      })}
     </Box>
   );
 };
-export default favorites;
+export default Favorites;

@@ -23,7 +23,7 @@ const NotificationCard = (props) => {
         {props.name}
       </Typography>
       <Typography variant="h6" fontWeight={"bold"}>
-        {props.location } { props.date}
+        {props.location} {props.date}
       </Typography>
       <Box
         sx={{
