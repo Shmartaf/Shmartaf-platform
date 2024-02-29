@@ -22,7 +22,8 @@ const Favorites = () => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#F8F7F1",
-      }}>
+      }}
+    >
       {babysitters.map((babysitter) => {
         if (babysitter.isFavorite) {
           return <BabysitterCard key={babysitter.name} {...babysitter} />;

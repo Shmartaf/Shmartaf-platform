@@ -4,8 +4,6 @@
 // });
 const BASE_URL = "http://localhost:8080";
 
-
-
 // const fetchNeeds = () => {
 //   fetch(`${BASE_URL}/requirements?skip=0&limit=10`, {
 //     method: 'GET',

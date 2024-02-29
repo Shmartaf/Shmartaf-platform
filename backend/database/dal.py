@@ -25,9 +25,7 @@ class DataAccessLayer:
     @ensure_connection
     def get(self, model, id: UUID4):
         result = self.db.query(model).filter(model.id == id).first()
-        self.logger.log(
-            message=f"Get {model.__name__} with id {id}", level="INFO", data=result
-        )
+        self.logger.log(message=f"Get {model.__name__} with id {id}", level="INFO", data=result)
         return result
 
     @ensure_connection
@@ -56,9 +54,7 @@ class DataAccessLayer:
             setattr(db_model, var, value)
         self.db.commit()
         self.db.refresh(db_model)
-        self.logger.log(
-            message=f"Update {model.__name__} with id {id}", level="INFO", data=db_model
-        )
+        self.logger.log(message=f"Update {model.__name__} with id {id}", level="INFO", data=db_model)
         return db_model
 
     @ensure_connection
@@ -66,15 +62,11 @@ class DataAccessLayer:
         db_model = self.get(model, id)
         self.db.delete(db_model)
         self.db.commit()
-        self.logger.log(
-            message=f"Delete {model.__name__} with id {id}", level="INFO", data=db_model
-        )
+        self.logger.log(message=f"Delete {model.__name__} with id {id}", level="INFO", data=db_model)
         return db_model
 
     @ensure_connection
     def aggregate(self, model, id: int, field: str):
         result = self.db.query(model).filter(getattr(model, field) == id).all()
-        self.logger.log(
-            message=f"Get {model.__name__} with {field} {id}", level="INFO", data=result
-        )
+        self.logger.log(message=f"Get {model.__name__} with {field} {id}", level="INFO", data=result)
         return result

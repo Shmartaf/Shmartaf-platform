@@ -1,6 +1,6 @@
 import humanImage from "../assets/human.png";
 import { Box, Button, Typography } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
 const profile = {
   firstname: "Nurit",
@@ -26,7 +26,8 @@ const Settings = () => {
         flexGrow: 1,
         padding: "0px 30px",
         gap: "5px",
-      }}>
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -35,7 +36,8 @@ const Settings = () => {
           alignItems: "center",
           width: "100%",
           padding: "10px 20px",
-        }}>
+        }}
+      >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <img src={profile.image} style={{ width: "50px", height: "50px" }} />
           <Typography variant="h5">{profile.firstname}</Typography>
@@ -72,7 +74,9 @@ const Settings = () => {
       <Typography>{profile.description}</Typography>
       <Box mt={2} display={"flex"} gap={"10px"}>
         <Button variant="contained">Add Child</Button>
-        <Button variant="contained" startIcon={<EditIcon />}>Edit Profile</Button>
+        <Button variant="contained" startIcon={<EditIcon />}>
+          Edit Profile
+        </Button>
       </Box>
     </Box>
   );

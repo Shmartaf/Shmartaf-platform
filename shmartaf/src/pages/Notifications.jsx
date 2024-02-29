@@ -10,25 +10,25 @@ const notification = [
     name: "",
     desc: ".",
     location: "",
-    date: ""
+    date: "",
   },
   {
     name: "",
     desc: ".",
     location: "",
-    date: ""
+    date: "",
   },
   {
     name: "",
     desc: ".",
     location: "",
-    date: ""
+    date: "",
   },
   {
     name: "",
     desc: ".",
     location: "",
-    date: ""
+    date: "",
   },
 ];
 

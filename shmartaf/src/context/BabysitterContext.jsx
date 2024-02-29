@@ -65,7 +65,7 @@ const babysitterReducer = (state, action) => {
       return {
         ...state,
         babysitters: state.babysitters.map((item) =>
-          item.id === action.payload.id ? action.payload : item
+          item.id === action.payload.id ? action.payload : item,
         ),
         selected: {},
       };
@@ -74,7 +74,7 @@ const babysitterReducer = (state, action) => {
       return {
         ...state,
         babysitters: state.babysitters.filter(
-          (item) => item._id !== action.payload
+          (item) => item._id !== action.payload,
         ),
         selected: {},
       };

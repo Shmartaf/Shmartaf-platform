@@ -18,7 +18,6 @@ const NotificationCard = (props) => {
         borderRadius: 2,
       }}
     >
-
       <Typography variant="h6" fontWeight={"bold"}>
         {props.name}
       </Typography>

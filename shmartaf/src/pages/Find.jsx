@@ -21,7 +21,8 @@ const Find = () => {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#F8F7F1",
-      }}>
+      }}
+    >
       {babysitters.map((babysitter) => (
         <BabysitterCard key={babysitter.name} {...babysitter} />
       ))}
