@@ -1,61 +1,53 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useContext } from "react";
+import { BabysitterContext } from "../context/BabysitterContext";
 
 const BabysitterCard = (props) => {
+  const { state, dispatch } = useContext(BabysitterContext);
+
+  // const handleProfile = () => {
+  //     console.log(props);
+  //     dispatch({ type: "SET_SELECTED", payload: props });
+  //   };
+
+  const toggleFavorite = () => {
+    dispatch({
+      type: "UPDATE_BABYSITTER",
+      payload: { ...props, isFavorite: !props.isFavorite },
+    });
+  };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 1,
-        width: "45%",
-        height: "400px",
-        justifyContent: "start",
-        alignItems: "center",
-        padding: "10px",
-        boxShadow: 2,
-        borderRadius: 2,
-      }}
-    >
-      <img src={props.image} style={{ width: "80px", borderRadius: "50%" }} />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 1,
-          alignItems: "center",
-          justifyContent: "center",
+    <Box className="babysitter-card">
+      <img src={props.image} />
+      <div
+        style={{
+          cursor: "pointer",
+          position: "absolute",
+          right: "10px",
         }}
-      >
+        onClick={toggleFavorite}>
+        {props.isFavorite ? (
+          <FavoriteIcon color="error" />
+        ) : (
+          <FavoriteBorderIcon />
+        )}
+      </div>
+      <Box className="flex_row_center">
         <StarIcon sx={{ color: "#5B5CFD" }} />
         <Typography variant="h6">{props?.rating || "4.5"}</Typography>
       </Box>
       <Typography variant="h5" fontWeight={"bold"}>
         {props.name}
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      ></Box>
+
       <Typography variant="h6" fontWeight={"bold"}>
         {props.location}
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "5px 5px",
-        }}
-      >
+      <Box className="flex_row_center" p={1}>
         <Typography>{props.desc}</Typography>
       </Box>
     </Box>
