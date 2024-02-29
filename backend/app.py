@@ -1,6 +1,7 @@
 import uvicorn
 from database.database import Database
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from router import babysitter, certifications, parent, requirements, users
 
@@ -11,6 +12,15 @@ app = FastAPI(
     title="Shmartaf App",
     description="This is a simple babysitter app",
     version="0.1",
+)
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
