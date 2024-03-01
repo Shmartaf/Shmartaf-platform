@@ -22,7 +22,8 @@ const BabysitterCard = (props) => {
   };
   return (
     <Box className="babysitter-card">
-      <img src={props.image} />
+      {/* <img src={props.image} /> */}
+      <img src={`https://i.pravatar.cc/300?img=${props?.pictureid}`} />
       <div
         style={{
           cursor: "pointer",
@@ -41,14 +42,14 @@ const BabysitterCard = (props) => {
         <Typography variant="h6">{props?.rating || "4.5"}</Typography>
       </Box>
       <Typography variant="h5" fontWeight={"bold"}>
-        {props.name}
+        {props?.user?.name}
       </Typography>
 
       <Typography variant="h6" fontWeight={"bold"}>
-        {props.location}
+        {props?.user?.street}, {props?.user?.city}
       </Typography>
       <Box className="flex_row_center" p={1}>
-        <Typography>{props.desc}</Typography>
+        <Typography>{props.description}</Typography>
       </Box>
     </Box>
   );
