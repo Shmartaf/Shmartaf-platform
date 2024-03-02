@@ -9,7 +9,7 @@ const NewJobs = () => {
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        ml: 2,
+        
         minWidth: 250,
         borderRadius: 2,
         boxShadow: 2,

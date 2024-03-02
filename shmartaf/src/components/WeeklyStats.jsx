@@ -11,6 +11,7 @@ const WeeklyStats = () => {
         gap: "10px",
         justifyContent: "start",
         alignItems: "start",
+        padding: "10px",
         
       }}>
       <Typography variant="h6" fontWeight={"bold"} mt={2} ml={2} mb={0} gutterBottom={false}>

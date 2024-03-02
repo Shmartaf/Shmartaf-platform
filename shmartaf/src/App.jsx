@@ -18,6 +18,8 @@ import BabysitterDashboard from "./pages/BabysitterDashboard";
 function App() {
   const { state, dispatch } = useContext(BabysitterContext);
 
+  // return <BabysitterDashboard/>
+
   if (!state?.user?.role) {
     return <Login />;
   } else {

@@ -143,7 +143,9 @@ const Sidebar = () => {
     <Box
       sx={{
         bgcolor: "#191919",
-        height: "100%",
+        height: "100vh",
+        position: "sticky",
+        top: 0,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",

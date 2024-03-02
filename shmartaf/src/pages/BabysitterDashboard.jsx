@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import humanImage from "../assets/human.png";
 import WeeklyStats from "../components/WeeklyStats";
 import Tables from "../components/Tables";
 
@@ -12,16 +11,12 @@ const BabysitterDashboard = () => {
         flexGrow: 1,
         width: "100%",
         backgroundColor: "#F8F7F1",
-        gap: "20px",
-        p: 2,
-        height: "100vh",
+        minHeight: "100vh",
       }}>
       <Box
         sx={{
           display: "flex",
           flex: 1,
-          // backgroundColor: "#Fff",
-          border: "1px solid black",
         }}>
         <WeeklyStats />
       </Box>
@@ -29,9 +24,10 @@ const BabysitterDashboard = () => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: "column",
           flex: 3,
+          width: "100%",
           backgroundColor: "#Fff",
-          border: "1px solid black",
         }}>
         <Tables />
       </Box>
