@@ -54,7 +54,8 @@ const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
-      }}>
+      }}
+    >
       <Card
         sx={{
           display: "flex",
@@ -66,7 +67,8 @@ const Login = () => {
           width: 300,
           borderRadius: 2,
           boxShadow: 2,
-        }}>
+        }}
+      >
         <Typography variant="h5">Login</Typography>
         <Typography variant="body1">
           Choose role (Babysitter or Parent)
@@ -77,7 +79,8 @@ const Login = () => {
             value={role}
             onChange={handleChange}
             sx={{ width: 200 }}
-            size="small">
+            size="small"
+          >
             <MenuItem value="babysitter">Babysitter</MenuItem>
             <MenuItem value="parent">Parent</MenuItem>
           </Select>
@@ -88,7 +91,8 @@ const Login = () => {
             value={selectedUser}
             onChange={selectUser}
             sx={{ width: 200 }}
-            size="small">
+            size="small"
+          >
             {users.map((user) => (
               <MenuItem key={user.id} value={user}>
                 {user.name}
@@ -104,7 +108,8 @@ const Login = () => {
             onClick={() => {
               dispatch({ type: "SET_ROLE", payload: role });
               navigate("/");
-            }}>
+            }}
+          >
             Login
           </Button>
         </Box>

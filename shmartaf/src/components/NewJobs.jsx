@@ -9,18 +9,20 @@ const NewJobs = () => {
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        
+
         minWidth: 250,
         borderRadius: 2,
         boxShadow: 2,
-      }}>
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           gap: 1,
           alignItems: "center",
-        }}>
+        }}
+      >
         <Typography variant="h7" color={"#8a8a8a"}>
           New potential jobs
         </Typography>
@@ -32,7 +34,8 @@ const NewJobs = () => {
             backgroundColor: "#f1f1f1",
             p: 1,
             borderRadius: 1,
-          }}>
+          }}
+        >
           Week
         </Typography>
       </Box>
@@ -45,7 +48,8 @@ const NewJobs = () => {
           width: "100%",
           justifyContent: "space-between",
           alignItems: "center",
-        }}>
+        }}
+      >
         <Typography variant="h4">7</Typography>
         <Typography
           variant="body2"
@@ -55,7 +59,8 @@ const NewJobs = () => {
             flexDirection: "row",
             gap: 1,
             alignItems: "center",
-          }}>
+          }}
+        >
           <ArrowDownwardIcon />
           1.5%
         </Typography>
@@ -71,7 +76,8 @@ const NewJobs = () => {
           alignItems: "center",
           justifyContent: "space-between",
           width: "100%",
-        }}>
+        }}
+      >
         <Typography variant="body2" color={"8a8a8a"}>
           Last week pffers
         </Typography>

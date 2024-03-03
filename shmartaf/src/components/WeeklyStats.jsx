@@ -12,9 +12,16 @@ const WeeklyStats = () => {
         justifyContent: "start",
         alignItems: "start",
         padding: "10px",
-        
-      }}>
-      <Typography variant="h6" fontWeight={"bold"} mt={2} ml={2} mb={0} gutterBottom={false}>
+      }}
+    >
+      <Typography
+        variant="h6"
+        fontWeight={"bold"}
+        mt={2}
+        ml={2}
+        mb={0}
+        gutterBottom={false}
+      >
         Weekly Statistics
       </Typography>
       <Typography variant="body" ml={2} mt={0}>

@@ -13,7 +13,8 @@ const ReviewsChart = () => {
         minWidth: 250,
         borderRadius: 2,
         boxShadow: 2,
-      }}>
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -21,7 +22,8 @@ const ReviewsChart = () => {
           gap: 1,
           alignItems: "center",
           justifyContent: "space-between",
-        }}>
+        }}
+      >
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Typography variant="h7" color={"#8a8a8a"}>
             Reviews

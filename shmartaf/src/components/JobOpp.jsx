@@ -59,7 +59,8 @@ const columns = [
             backgroundColor: "#f2f2f2",
             borderRadius: 2,
             padding: "5px 10px",
-          }}>
+          }}
+        >
           <Typography>{params.row.date}</Typography>
         </Box>
       );
@@ -115,7 +116,8 @@ const JobOpp = () => {
               variant="contained"
               style={{ textDecoration: "none" }}
               size="small"
-              sx={{ textTransform: "none" }}>
+              sx={{ textTransform: "none" }}
+            >
               Details
             </Button>
           </Box>
@@ -134,7 +136,8 @@ const JobOpp = () => {
         pt: 2,
         pr: 2,
         backgroundColor: "#F8F7F1",
-      }}>
+      }}
+    >
       <Card
         sx={{
           p: 2,
@@ -145,10 +148,12 @@ const JobOpp = () => {
           width: "100%",
           borderRadius: 2,
           boxShadow: 2,
-        }}>
+        }}
+      >
         <Box
           width={"100%"}
-          sx={{ display: "flex", justifyContent: "flex-start" }}>
+          sx={{ display: "flex", justifyContent: "flex-start" }}
+        >
           <Typography variant="h6">Job Opportunities</Typography>
         </Box>
         <DataGrid
