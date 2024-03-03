@@ -33,7 +33,11 @@ const UserForm = () => {
   const getSkillsData = async () => {
     try {
       const skills = await fetchSkills();
-      setSkillsData(skills);
+      const skillsData = skills.map((skill) => ({
+        id: skill.id,
+        skillname: skill.skillname,
+      }));
+      setSkillsData(skillsData);
     } catch (error) {
       console.error("Error fetching skills:", error);
     }
@@ -73,15 +77,28 @@ const UserForm = () => {
         password,
         phone,
       });
+      if (new_user.error) {
+        console.error("Error:", new_user.error);
+        form.setFields([
+          {
+            name: new_user.error.name,
+            status: new_user.error.status,
+            message: new_user.error.message,
+            stack: new_user.error.stack,
+          },
+        ]);
+        return;
+      }
       console.log("new_user:", new_user);
       values.id = new_user.data.user.id;
       values.needs = needsRating;
       console.log("Received values:", values);
-      const response = SignUp(values);
+      const response = await SignUp(values);
       console.log(response);
     } catch (error) {
       console.log("error:", error);
     }
+    navigate("/login");
 
     // Handle form submission logic here
   };
@@ -248,7 +265,7 @@ const UserForm = () => {
           <Form.Item label="Babysitter Skills" name="babysitterSkills" required>
             <Checkbox.Group>
               {skillsData.map((skill) => (
-                <Checkbox key={skill.id} value={skill.skillname}>
+                <Checkbox key={skill.id} value={[skill.id, skill.skillname]}>
                   {skill.skillname}
                 </Checkbox>
               ))}

@@ -8,19 +8,37 @@ const LoginPage = () => {
   const [showSignUp, setShowSignUp] = useState(false);
   const navigate = useNavigate();
   const login = useAuth().login;
+  const { user, session, isAuthenticated } = useAuth();
   const handleLoginSubmit = async ({ email, password }) => {
     console.log(`Logging in with email: ${email} and password: ${password}`);
     try {
-      await login({ email, password });
-      console.log("Login successful should navigate to home page");
-      navigate("/");
+      const result = await login({ email, password });
+      console.log(
+        "Login successful should navigate to home page, result:",
+        result,
+      );
+      if (result.user) {
+        console.log(result);
+        // user = result.data.user;
+        // session = result.data.session;
+        navigate("/");
+      } else {
+        console.error("Login failed", {
+          message: result.error.message,
+          name: result.error.name,
+          status: result.error.status,
+          stack: result.error.stack,
+        });
+      }
     } catch (error) {
       console.error("Login failed", error);
     }
   };
-
   const handleSignup = () => {
-    setShowSignup(true);
+    setShowSignUp(!showSignUp);
+    if (showSignUp) {
+      navigate("/signup");
+    }
   };
 
   return (
@@ -35,14 +53,12 @@ const LoginPage = () => {
                   ? "Sign up for an account"
                   : "Sign in to your account"}
               </h1>
-              {showSignUp ? (
-                <SignupForm />
-              ) : (
+              {
                 <LoginForm
                   onSubmit={handleLoginSubmit}
                   onSignUp={handleSignup}
                 />
-              )}
+              }
             </div>
           </div>
         </div>

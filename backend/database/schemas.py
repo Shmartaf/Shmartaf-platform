@@ -1,5 +1,5 @@
 from datetime import date, datetime, time
-from typing import Optional
+from typing import Optional, Tuple
 from uuid import uuid4
 
 from pydantic import UUID4, BaseModel, EmailStr
@@ -169,6 +169,6 @@ class SignUpSchema(BaseModel):
     phone: str
     userType: Optional[list[str]] = []
     parentDescription: Optional[str] = None
-    children: Optional[list[ChildSignUpScheme]] = None
-    babysitterSkills: Optional[list[str]] = None
+    children: Optional[list] = None
+    babysitterSkills: Optional[list[Tuple[UUID4, str]]] = None
     babysitterDescription: Optional[str] = None
