@@ -30,15 +30,15 @@ const notification = [
 
 const Notifications = () => {
   return (
-    <Box 
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "20px",
-      padding: "25px",
-      backgroundColor: "#F8F7F1",
-      minHeight: "100vh",
-    }}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        padding: "25px",
+        backgroundColor: "#F8F7F1",
+        minHeight: "100vh",
+      }}
     >
       {notification.map((notification) => (
         <NotificationCard key={notification.id} {...notification} />

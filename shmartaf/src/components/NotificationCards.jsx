@@ -24,9 +24,8 @@ const NotificationCard = (props) => {
         },
       }}
     >
-
       <Typography variant="h6" fontWeight={"bold"}>
-      <StarIcon sx={{ color: "yellow" }} />
+        <StarIcon sx={{ color: "yellow" }} />
         {props.name}
       </Typography>
       <Typography variant="h6" fontWeight={"bold"}>

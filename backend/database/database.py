@@ -13,10 +13,21 @@ SQLALCHEMY_DATABASE_URL = f'postgresql://postgres.dstkujmlmzynreehsvls:{os.geten
 
 class Database:
     def __init__(self):
-        self.engine = create_engine(SQLALCHEMY_DATABASE_URL)
+        self.engine = create_engine(
+            SQLALCHEMY_DATABASE_URL,
+            pool_size=10,
+            max_overflow=20,
+        )
         self.SessionLocal = sessionmaker(
             autocommit=False,
             autoflush=False,
             bind=self.engine,
         )
         self.Base = declarative_base()
+
+    def get_db(self):
+        db = self.SessionLocal()
+        try:
+            yield db
+        finally:
+            db.close()

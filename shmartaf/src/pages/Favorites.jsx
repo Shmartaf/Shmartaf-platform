@@ -8,7 +8,7 @@ const Favorites = () => {
   const { babysitters } = state;
 
   const favoriteBabysitters = babysitters.filter(
-    (babysitter) => babysitter.isFavorite
+    (babysitter) => babysitter.isFavorite,
   );
 
   return (
@@ -23,7 +23,8 @@ const Favorites = () => {
         alignItems: "start",
         backgroundColor: "#F8F7F1",
         minHeight: "100vh",
-      }}>
+      }}
+    >
       {favoriteBabysitters.length > 0 ? (
         favoriteBabysitters.map((babysitter) => (
           <BabysitterCard key={babysitter.name} {...babysitter} />
@@ -36,7 +37,8 @@ const Favorites = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-          }}>
+          }}
+        >
           <p>No favorites</p>
         </div>
       )}

@@ -12,12 +12,14 @@ const BabysitterDashboard = () => {
         width: "100%",
         backgroundColor: "#F8F7F1",
         minHeight: "100vh",
-      }}>
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           flex: 1,
-        }}>
+        }}
+      >
         <WeeklyStats />
       </Box>
 
@@ -28,7 +30,8 @@ const BabysitterDashboard = () => {
           flex: 3,
           width: "100%",
           backgroundColor: "#Fff",
-        }}>
+        }}
+      >
         <Tables />
       </Box>
     </Box>

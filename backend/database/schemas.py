@@ -1,4 +1,4 @@
-from datetime import date, time
+from datetime import date, datetime, time
 from typing import Optional
 from uuid import uuid4
 
@@ -94,7 +94,7 @@ class ChildrenRequestSchema(BaseModel):
     id: Optional[UUID4] = uuid4().hex
     name: str
     birthdate: date
-    gender: str
+    gender: Optional[str] = None
 
 
 class ChildrenSchema(ChildrenRequestSchema):
@@ -150,3 +150,25 @@ class ParentChildrenRequestSchema(BaseModel):
 class RequirementsCertificationScheme(BaseModel):
     needid: UUID4
     skillid: UUID4
+
+
+class ChildSignUpScheme(BaseModel):
+    fullName: str
+    birthdate: datetime
+    needs: list[str]
+
+
+class SignUpSchema(BaseModel):
+    id: Optional[UUID4] = uuid4().hex
+    fullName: str
+    email: EmailStr
+    password: str
+    gender: str
+    city: str
+    street: str
+    phone: str
+    userType: Optional[list[str]] = []
+    parentDescription: Optional[str] = None
+    children: Optional[list[ChildSignUpScheme]] = None
+    babysitterSkills: Optional[list[str]] = None
+    babysitterDescription: Optional[str] = None

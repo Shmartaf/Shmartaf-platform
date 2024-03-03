@@ -60,12 +60,14 @@ const Find = () => {
           display: "flex",
           justifyContent: "center",
           backgroundColor: "#F8F7F1",
-        }}>
+        }}
+      >
         <Button
           variant="text"
           sx={{ textTransform: "none" }}
           size="large"
-          onClick={fetchBabysitters}>
+          onClick={fetchBabysitters}
+        >
           Refresh Babysitters list
         </Button>
       </Box>
@@ -80,7 +82,8 @@ const Find = () => {
           alignItems: "center",
           backgroundColor: "#F8F7F1",
           minHeight: "100vh",
-        }}>
+        }}
+      >
         <Content />
       </Box>
     </>

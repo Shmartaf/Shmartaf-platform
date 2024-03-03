@@ -26,8 +26,7 @@ const FavoriteCard = (props) => {
           alignItems: "center",
           justifyContent: "center",
         }}
-      >        
-      </Box>
+      ></Box>
     </Box>
   );
 };

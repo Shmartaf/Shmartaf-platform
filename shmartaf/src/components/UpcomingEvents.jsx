@@ -49,7 +49,8 @@ const columns = [
             backgroundColor: "#f2f2f2",
             borderRadius: 2,
             padding: "5px 10px",
-          }}>
+          }}
+        >
           <Typography>{params.row.date}</Typography>
         </Box>
       );
@@ -85,7 +86,8 @@ const columns = [
             backgroundColor: "#f2f2f2",
             borderRadius: 2,
             padding: "5px 10px",
-          }}>
+          }}
+        >
           <Typography>{params.row.address}</Typography>
         </Box>
       );
@@ -110,7 +112,8 @@ const UpcomingEvents = () => {
               variant="contained"
               style={{ textDecoration: "none" }}
               size="small"
-              sx={{ textTransform: "none" }}>
+              sx={{ textTransform: "none" }}
+            >
               Details
             </Button>
           </Box>
@@ -121,47 +124,50 @@ const UpcomingEvents = () => {
 
   return (
     <Box
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "10px",
-      width: "100%",
-      pt: 2,
-      pr: 2,
-      backgroundColor: "#F8F7F1",
-    }}>
-    <Card
       sx={{
-        p: 2,
         display: "flex",
         flexDirection: "column",
-        gap: 2,
-        minWidth: 250,
+        gap: "10px",
         width: "100%",
-        borderRadius: 2,
-        boxShadow: 2,
-      }}>
-      <Box
-        width={"100%"}
-        sx={{ display: "flex", justifyContent: "flex-start" }}>
-        <Typography variant="h6">Upcoming Events</Typography>
-      </Box>
-      <DataGrid
-        rows={rows}
-        columns={columns.concat(actionColumn)}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 50 },
-          },
-          sorting: {
-            sortModel: [{ field: "date", sort: "desc" }],
-          },
+        pt: 2,
+        pr: 2,
+        backgroundColor: "#F8F7F1",
+      }}
+    >
+      <Card
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          minWidth: 250,
+          width: "100%",
+          borderRadius: 2,
+          boxShadow: 2,
         }}
-        pageSizeOptions={[10, 20, 50, 100]}
-        // checkboxSelection
-        // onRowClick={(params) => { navigate(`/orders/${params.row.id}`) }}
-      />
-    </Card>
+      >
+        <Box
+          width={"100%"}
+          sx={{ display: "flex", justifyContent: "flex-start" }}
+        >
+          <Typography variant="h6">Upcoming Events</Typography>
+        </Box>
+        <DataGrid
+          rows={rows}
+          columns={columns.concat(actionColumn)}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 50 },
+            },
+            sorting: {
+              sortModel: [{ field: "date", sort: "desc" }],
+            },
+          }}
+          pageSizeOptions={[10, 20, 50, 100]}
+          // checkboxSelection
+          // onRowClick={(params) => { navigate(`/orders/${params.row.id}`) }}
+        />
+      </Card>
     </Box>
   );
 };

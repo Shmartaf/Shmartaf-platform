@@ -30,7 +30,8 @@ const BabysitterCard = (props) => {
           position: "absolute",
           right: "10px",
         }}
-        onClick={toggleFavorite}>
+        onClick={toggleFavorite}
+      >
         {props.isFavorite ? (
           <FavoriteIcon color="error" />
         ) : (

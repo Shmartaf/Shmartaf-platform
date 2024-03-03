@@ -11,7 +11,7 @@ const ParentDashboard = () => {
   const { user } = useContext(BabysitterContext).state;
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
-      <Header name={user.name } image={humanImage} />
+      <Header name={user.name} image={humanImage} />
       <EventsTable />
       <QuickFind />
       <Map />

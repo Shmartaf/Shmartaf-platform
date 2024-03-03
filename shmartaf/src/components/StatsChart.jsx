@@ -16,7 +16,8 @@ const StatsCard = () => {
         minHeight: 350,
         borderRadius: 2,
         boxShadow: 2,
-      }}>
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -24,7 +25,8 @@ const StatsCard = () => {
           gap: 1,
           alignItems: "center",
           justifyContent: "space-between",
-        }}>
+        }}
+      >
         <Typography variant="h7" color={"#8a8a8a"}>
           Reviews
         </Typography>
@@ -35,7 +37,8 @@ const StatsCard = () => {
             backgroundColor: "#f1f1f1",
             p: 1,
             borderRadius: 1,
-          }}>
+          }}
+        >
           Today
         </Typography>
       </Box>
@@ -65,7 +68,8 @@ const StatsCard = () => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-          }}>
+          }}
+        >
           <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
             <FiberManualRecordIcon color="primary" /> Total Hired
           </Box>
@@ -80,7 +84,8 @@ const StatsCard = () => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-          }}>
+          }}
+        >
           <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
             <FiberManualRecordIcon color="success" /> Total Canceled
           </Box>
@@ -95,7 +100,8 @@ const StatsCard = () => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-          }}>
+          }}
+        >
           <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
             <FiberManualRecordIcon color="error" /> Total Pending
           </Box>
@@ -104,7 +110,6 @@ const StatsCard = () => {
             <ArrowDownwardIcon color="error" />
           </Box>
         </Box>
-        
       </Box>
     </Card>
   );

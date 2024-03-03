@@ -12,7 +12,8 @@ const Availability = () => {
         pr: 2,
         justifyContent: "space-between",
         backgroundColor: "#F8F7F1",
-      }}>
+      }}
+    >
       <Card
         sx={{
           p: 2,
@@ -23,7 +24,8 @@ const Availability = () => {
           width: "100%",
           borderRadius: 2,
           boxShadow: 2,
-        }}>
+        }}
+      >
         <Typography>Check my Availability</Typography>
         <Box
           sx={{
@@ -32,7 +34,8 @@ const Availability = () => {
             gap: 1,
             alignItems: "center",
             justifyContent: "space-between",
-          }}>
+          }}
+        >
           <TextField type="date" size={"small"} />
           <TextField type="time" size={"small"} />
           <Button variant="contained">Check</Button>
@@ -46,7 +49,8 @@ const Availability = () => {
           borderRadius: 2,
           boxShadow: 2,
           minWidth: 130,
-        }}>
+        }}
+      >
         <CheckCircleOutlineIcon
           sx={{ color: "green", width: "100px", height: "100px" }}
         />

@@ -118,7 +118,8 @@ const SidebarItem = ({ route, pathname }) => (
           backgroundColor: "#0069FE !important",
         },
       }}
-      selected={pathname === route.path}>
+      selected={pathname === route.path}
+    >
       <ListItemIcon sx={{ color: "white" }}>{route?.icon}</ListItemIcon>
       <ListItemText primary={route.name} />
     </ListItemButton>
@@ -151,7 +152,8 @@ const Sidebar = () => {
         alignItems: "flex-start",
         justifyContent: "space-between",
         boxShadow: 2,
-      }}>
+      }}
+    >
       <nav style={{ width: "230px" }}>
         <Typography
           sx={{
@@ -161,7 +163,8 @@ const Sidebar = () => {
             height: "100px",
             width: "100",
             color: "white",
-          }}>
+          }}
+        >
           <img
             src={logo}
             alt="Logo"
@@ -180,7 +183,8 @@ const Sidebar = () => {
             alignItems: "center",
             flexDirection: "column",
             gap: 8,
-          }}>
+          }}
+        >
           <hr style={{ width: "60%" }}></hr>
           <div style={{ width: "60%" }}>
             <Typography variant="body1" sx={{ color: "white" }}>
@@ -199,12 +203,14 @@ const Sidebar = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-        }}>
+        }}
+      >
         <List>
           <ListItem>
             <ListItemButton
               onClick={logout}
-              sx={{ backgroundColor: "grey", color: "white", borderRadius: 2 }}>
+              sx={{ backgroundColor: "grey", color: "white", borderRadius: 2 }}
+            >
               <ListItemIcon>
                 <LogoutIcon sx={{ color: "white" }} />
               </ListItemIcon>
