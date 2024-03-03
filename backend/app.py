@@ -2,6 +2,7 @@ import uvicorn
 from database.database import Database
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from router import babysitter, certifications, parent, requirements, users
 
 from backend.database.models import Base
@@ -13,6 +14,13 @@ app = FastAPI(
     version="0.1",
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Set this to your frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def startup():

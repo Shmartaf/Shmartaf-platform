@@ -1,50 +1,15 @@
 import React, { createContext, useReducer } from "react";
 
-//temp:
-const babysitters = [
-  {
-    name: "Odel Levi",
-    image: "https://i.pravatar.cc/300?img=1",
-    desc: "Sociable, athletic, loves animals, available frequently, patient.",
-    location: "Tel Aviv",
-    rating: "4.50",
-    isFavorite: true,
-    id: 101,
-  },
-  {
-    name: "Shai Damari",
-    image: "https://i.pravatar.cc/300?img=2",
-    desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    location: "Haifa",
-    rating: "4.75",
-    isFavorite: true,
-    id: 102,
-  },
-  {
-    name: "Nurit Levi",
-    image: "https://i.pravatar.cc/300?img=3",
-    rating: "3.90",
-    desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    isFavorite: true,
-    location: "Rishon Lezion",
-    id: 103,
-  },
-  {
-    name: "Tom Levi",
-    image: "https://i.pravatar.cc/300?img=4",
-    rating: "3.50",
-    desc: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    isFavorite: false,
-    location: "Holon",
-    id: 104,
-  },
-];
 const initialState = {
-  items: [],
+  users: [],
+  user: {
+    role: "",
+  },
   selected: {},
-  babysitters,
+  babysitters: [],
+  parents: [],
+  loading: false,
   error: null,
-  // userRole: null,
 };
 
 const babysitterReducer = (state, action) => {
@@ -78,6 +43,14 @@ const babysitterReducer = (state, action) => {
         ),
         selected: {},
       };
+    case "SET_ROLE":
+      return { ...state, user: { ...state.user, role: action.payload } };
+
+    case "SET_USER":
+      return { ...state, user: action.payload };
+
+    case "SET_USERS":
+      return { ...state, users: action.payload };
 
     default:
       return state;

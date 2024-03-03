@@ -17,11 +17,14 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { useContext } from "react";
+import { BabysitterContext } from "../context/BabysitterContext";
 
-const routes = [
+const parentRoutes = [
   {
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/parentDashboard",
     icon: <GridViewIcon />,
   },
   {
@@ -40,12 +43,54 @@ const routes = [
     icon: <NotificationsNoneOutlinedIcon />,
   },
 ];
-const personalRoutes = [
+
+const babysitterRoutes = [
+  {
+    name: "Dashboard",
+    path: "/babysitterdashboard",
+    icon: <GridViewIcon />,
+  },
+  {
+    name: "Contacted",
+    path: "/contacted",
+    icon: <PortraitIcon />,
+  },
+  {
+    name: "Notifications",
+    path: "/notifications",
+    icon: <NotificationsNoneOutlinedIcon />,
+  },
+  {
+    name: "Reviews",
+    path: "/reviews",
+    icon: <StarOutlineIcon />,
+  },
+  {
+    name: "Schedule",
+    path: "/schedule",
+    icon: <CalendarMonthIcon />,
+  },
+];
+
+const parentPersonalRoutes = [
   {
     name: "Favorites",
     path: "/favorites",
     icon: <StarOutlineIcon />,
   },
+  {
+    name: "Profile",
+    path: "/profile",
+    icon: <PersonOutlineOutlinedIcon />,
+  },
+  {
+    name: "Settings",
+    path: "/settings",
+    icon: <SettingsIcon />,
+  },
+];
+
+const babysitterPersonalRoutes = [
   {
     name: "Profile",
     path: "/profile",
@@ -73,8 +118,7 @@ const SidebarItem = ({ route, pathname }) => (
           backgroundColor: "#0069FE !important",
         },
       }}
-      selected={pathname === route.path}
-    >
+      selected={pathname === route.path}>
       <ListItemIcon sx={{ color: "white" }}>{route?.icon}</ListItemIcon>
       <ListItemText primary={route.name} />
     </ListItemButton>
@@ -82,22 +126,32 @@ const SidebarItem = ({ route, pathname }) => (
 );
 
 const Sidebar = () => {
+  const { state, dispatch } = useContext(BabysitterContext);
+  const { user } = state;
+
+  const routes = user?.role === "babysitter" ? babysitterRoutes : parentRoutes;
+  const personalRoutes =
+    user?.role === "babysitter"
+      ? babysitterPersonalRoutes
+      : parentPersonalRoutes;
+
   const { pathname } = useLocation();
   const logout = () => {
-    alert("log out");
+    dispatch({ type: "SET_ROLE", payload: "" });
   };
   return (
     <Box
       sx={{
         bgcolor: "#191919",
-        height: "100%",
+        height: "100vh",
+        position: "sticky",
+        top: 0,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
         justifyContent: "space-between",
         boxShadow: 2,
-      }}
-    >
+      }}>
       <nav style={{ width: "230px" }}>
         <Typography
           sx={{
@@ -107,8 +161,7 @@ const Sidebar = () => {
             height: "100px",
             width: "100",
             color: "white",
-          }}
-        >
+          }}>
           <img
             src={logo}
             alt="Logo"
@@ -127,8 +180,7 @@ const Sidebar = () => {
             alignItems: "center",
             flexDirection: "column",
             gap: 8,
-          }}
-        >
+          }}>
           <hr style={{ width: "60%" }}></hr>
           <div style={{ width: "60%" }}>
             <Typography variant="body1" sx={{ color: "white" }}>
@@ -147,14 +199,12 @@ const Sidebar = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-        }}
-      >
+        }}>
         <List>
           <ListItem>
             <ListItemButton
               onClick={logout}
-              sx={{ backgroundColor: "grey", color: "white", borderRadius: 2 }}
-            >
+              sx={{ backgroundColor: "grey", color: "white", borderRadius: 2 }}>
               <ListItemIcon>
                 <LogoutIcon sx={{ color: "white" }} />
               </ListItemIcon>

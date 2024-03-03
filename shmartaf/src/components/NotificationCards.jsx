@@ -16,10 +16,17 @@ const NotificationCard = (props) => {
         padding: "10px",
         boxShadow: 2,
         borderRadius: 2,
+        backgroundColor: "#fff",
+        transition: "all 0.3s ease",
+        "&:hover": {
+          boxShadow: 4,
+          cursor: "pointer",
+        },
       }}
     >
 
       <Typography variant="h6" fontWeight={"bold"}>
+      <StarIcon sx={{ color: "yellow" }} />
         {props.name}
       </Typography>
       <Typography variant="h6" fontWeight={"bold"}>
