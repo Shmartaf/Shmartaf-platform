@@ -9,7 +9,7 @@ const Layout = () => {
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        height: "100vh",
+        minHeight: "100vh",
       }}
     >
       <Sidebar />

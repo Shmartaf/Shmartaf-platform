@@ -3,6 +3,7 @@ from database.database import Database
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from router import babysitter, certifications, parent, requirements, users
 
 from backend.database.models import Base
@@ -26,6 +27,14 @@ app.add_middleware(
 app.dependency_overrides = {
     Database: Database().get_db(),
 }
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Set this to your frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")

@@ -1,6 +1,8 @@
 import humanImage from "../assets/human.png";
 import { Box, Button, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { useContext } from "react";
+import { BabysitterContext } from "../context/BabysitterContext";
 
 const profile = {
   firstname: "Nurit",
@@ -18,6 +20,7 @@ const profile = {
 };
 
 const Settings = () => {
+  const { user } = useContext(BabysitterContext).state;
   return (
     <Box
       sx={{
@@ -39,39 +42,41 @@ const Settings = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <img src={profile.image} style={{ width: "50px", height: "50px" }} />
-          <Typography variant="h5">{profile.firstname}</Typography>
+          <img src={humanImage} style={{ width: "50px", height: "50px" }} />
+          <Typography variant="h5">{user.name}</Typography>
         </div>
       </Box>
 
       <Typography variant="h6" mt={2}>
         First Name
       </Typography>
-      <Typography>{profile.firstname}</Typography>
+      <Typography>{user.name.split(" ")[0]}</Typography>
       <Typography variant="h6" mt={2}>
         Last Name
       </Typography>
-      <Typography>{profile.lastname}</Typography>
+      <Typography>
+        {user.name.split(" ")[1]} {user.name.split(" ")[2]}
+      </Typography>
       <Typography variant="h6" mt={2}>
         Phone
       </Typography>
-      <Typography>{profile.phone}</Typography>
+      <Typography>{user.phone}</Typography>
       <Typography variant="h6" mt={2}>
         Email
       </Typography>
-      <Typography>{profile.email}</Typography>
+      <Typography>{user.email}</Typography>
       <Typography variant="h6" mt={2}>
         Location
       </Typography>
-      <Typography>{profile.location}</Typography>
+      <Typography>{user.city}</Typography>
       <Typography variant="h6" mt={2}>
         Address
       </Typography>
-      <Typography>{profile.address}</Typography>
+      <Typography>{user.street}</Typography>
       <Typography variant="h6" mt={2}>
         Description
       </Typography>
-      <Typography>{profile.description}</Typography>
+      <Typography>{user?.description}</Typography>
       <Box mt={2} display={"flex"} gap={"10px"}>
         <Button variant="contained">Add Child</Button>
         <Button variant="contained" startIcon={<EditIcon />}>

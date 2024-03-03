@@ -15,6 +15,7 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.10",
+    "@mui/x-charts": "^6.19.5",
     "@mui/x-data-grid": "^6.19.4",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
