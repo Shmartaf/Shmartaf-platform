@@ -1,3 +1,6 @@
+from datetime import datetime
+from uuid import uuid4
+
 from fastapi import APIRouter, HTTPException
 from pydantic import UUID4
 
@@ -42,3 +45,60 @@ def update_user(
 @router.delete("/{user_id}")
 def delete_user(user_id: UUID4) -> schemas.UserSchema:
     return dal.delete(models.User, user_id)
+
+
+@router.post("/signup")
+def signup(formData: schemas.SignUpSchema):
+    # Create User
+    user_schema = schemas.UserSchema(
+        id=formData.id,
+        name=formData.fullName,
+        gender=formData.gender,
+        email=formData.email,
+        password=formData.password,
+        registrationdate=datetime.now().date(),
+        city=formData.city,
+        street=formData.street,
+        phone=formData.phone,
+    )
+    user = dal.create(models.User, user_schema)
+
+    if "parent" in formData.userType:
+
+        # Create Parent
+        parent_schema = schemas.ParentSchema(id=user.id, description=formData.parentDescription)
+        parent = dal.create(models.Parent, parent_schema)
+
+        for child in formData.children:
+            # Create Child
+            child_schema = schemas.ChildrenRequestSchema(id=uuid4().hex, name=child.fullName, birthdate=child.birthdate)
+            child = dal.create(models.Children, child_schema)
+
+            # Assign Child to Parent
+            # parent.childrens.append(child)
+            parent_children_schema = schemas.ParentChildrenRequestSchema(childid=child.id, parentid=parent.id)
+            dal.create(models.ParentsChildrens, parent_children_schema)
+
+            # Assign Needs to Child
+            for need in child.needs:
+
+                childrens_needs_schema = schemas.ChildReqirmentsRequestSchema(
+                    childid=child.id, needid=need.id, needrank=1
+                )
+                dal.create(models.ChildrensNeeds, childrens_needs_schema)
+
+    # Create Babysitter
+    if "babysitter" in formData.userType:
+        babysitter_schema = schemas.BabysitterRequestSchema(
+            id=user.id, description=formData.babysitterDescription, pictureid=1
+        )
+        babysitter = dal.create(models.Babysitter, babysitter_schema)
+
+        # Assign Skills to Babysitter
+        for skill_rank, skill in enumerate(formData.babysitterSkills):
+            babysitter_skill_schema = schemas.BabysitterCerticationRequestSchema(
+                id=skill.id, babysitterid=babysitter.id, skillrank=skill_rank
+            )
+            dal.create(models.BabysitterSkill, babysitter_skill_schema)
+
+    return user

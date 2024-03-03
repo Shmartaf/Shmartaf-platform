@@ -1,14 +1,13 @@
 // src/components/SignupPage.jsx
 import React from "react";
 import Header from "../components/LogIn/Header";
-import SignupForm from "../components/SignUp/SignUpForm";
-
+import UserForm from "../components/SignUp/userForm";
+import { createSupabaseClient } from "../lib/supabaseClient";
+import { addUser, addBabysitter, addParent, addChildren } from "../api";
+import { useNavigate } from "react-router-dom";
+import Moment from "moment";
 const SignupPage = () => {
-  const handleSignupSubmit = (userDetails) => {
-    // Implement your signup logic here using axios or any other method
-    console.log("Signing up with details:", userDetails);
-  };
-
+  const navigate = useNavigate();
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -18,7 +17,7 @@ const SignupPage = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign up for your account
             </h1>
-            <SignupForm onSubmit={handleSignupSubmit} />
+            <UserForm />
           </div>
         </div>
       </div>

@@ -23,6 +23,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.dependency_overrides = {
+    Database: Database().get_db(),
+}
+
 
 @app.on_event("startup")
 async def startup():

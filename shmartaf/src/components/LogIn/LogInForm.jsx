@@ -1,10 +1,10 @@
 // src/components/LoginForm.jsx
 import React, { useState } from "react";
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, onSignUp }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [isSignUp, setIsSignUp] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({ email, password });
@@ -81,12 +81,13 @@ const LoginForm = ({ onSubmit }) => {
         Sign in
       </button>
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-        Don’t have an account yet?{" "}
+        {isSignUp ? "Already have an account?" : "Don’t have an account yet?"}{" "}
         <a
           href="#"
+          onClick={onSignUp}
           className="font-medium text-primary-600 hover:underline dark:text-primary-500"
         >
-          Sign up
+          {isSignUp ? "Sign in" : "Sign up"}
         </a>
       </p>
     </form>
