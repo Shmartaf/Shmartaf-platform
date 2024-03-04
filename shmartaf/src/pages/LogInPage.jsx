@@ -17,12 +17,35 @@ const LoginPage = () => {
   }, [showSignUp, navigate]); // הוסף את navigate כתלות אם אתה משתמש בגרסאות חדשות של react-router-dom שדורשות זאת
 
   const handleLoginSubmit = async ({ email, password }) => {
-    // ...הקוד שלך כאן
+    console.log(`Logging in with email: ${email} and password: ${password}`);
+    try {
+      const result = await login({ email, password });
+      console.log(
+        "Login successful should navigate to home page, result:",
+        result,
+      );
+      if (result.user) {
+        console.log(result);
+        // user = result.data.user;
+        // session = result.data.session;
+        navigate("/");
+      } else {
+        console.error("Login failed", {
+          message: result.error.message,
+          name: result.error.name,
+          status: result.error.status,
+          stack: result.error.stack,
+        });
+      }
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
-
   const handleSignup = () => {
-    // כעת, הפונקציה רק משנה את המצב וה-useEffect יטפל בניווט
     setShowSignUp(!showSignUp);
+    if (showSignUp) {
+      navigate("/signup");
+    }
   };
 
   return (
