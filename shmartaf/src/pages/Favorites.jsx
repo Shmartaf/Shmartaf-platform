@@ -1,17 +1,40 @@
-import React, { useContext } from "react";
+import { useState, useEffect } from 'react';
 import Box from "@mui/material/Box";
 import BabysitterCard from "../components/BabysitterCard";
-import { BabysitterContext } from "../context/BabysitterContext";
 import { useAuth } from "../AuthContext";
+import { fetchParent } from "../api";
+
 const Favorites = () => {
-  const { state } = useContext(BabysitterContext);
-  const { babysitters } = state;
-  // we need to find the babysitters that are currently favorited by this user(parent)
-  const { user} = useAuth();
-  console.log(user);
-  const favoriteBabysitters = babysitters.filter(
-    (babysitter) => babysitter.isFavorite,
-  );
+  const { user } = useAuth();
+  const [favorites, setFavorites] = useState([]); // Use an empty array as the initial state
+  
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (user && favorites.length === 0) { // Check if favorites array is empty
+        console.log(user);
+        console.log(user.userData);
+        try {
+          const parent = await fetchParent(user.id);
+          console.log("parent", parent);
+          if (parent && parent.favorites) {
+            setFavorites(parent.favorites.map(fav => ({...fav, isFavorite: true}))); // Assume all fetched are favorites initially
+          }
+        } catch (error) {
+          console.error("Failed to fetch favorites", error);
+        }
+      }
+    };
+
+    fetchFavorites();
+  }, [user, favorites.length]); // Depend on favorites.length to avoid refetching
+
+  const toggleFavorite = (babysitterId) => {
+    setFavorites(favorites.map(fav =>
+      fav.babysitter.id === babysitterId
+        ? { ...fav, isFavorite: !fav.isFavorite }
+        : fav
+    ));
+  };
 
   return (
     <Box
@@ -27,9 +50,9 @@ const Favorites = () => {
         minHeight: "100vh",
       }}
     >
-      {favoriteBabysitters.length > 0 ? (
-        favoriteBabysitters.map((babysitter) => (
-          <BabysitterCard key={babysitter.name} {...babysitter} />
+      {favorites.length > 0 ? (
+        favorites.map((fav) => (
+          <BabysitterCard key={fav.babysitter.id} favorite={fav} toggleFavorite={toggleFavorite} />
         ))
       ) : (
         <div

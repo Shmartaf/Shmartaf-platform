@@ -1,56 +1,34 @@
+import { useState, useEffect } from 'react';
 import Box from "@mui/material/Box";
-import BabysitterCard from "../components/BabysitterCard/";
-import { useContext, useEffect, useState } from "react";
-import { BabysitterContext } from "../context/BabysitterContext";
-import { getAll } from "../api/apiService";
+import BabysitterCard from "../components/BabysitterCard";
 import { Button } from "@mui/material";
-// impport api
-
-// babysitters = api.get("/babysitters)
+import { fetchBabysitterById } from "../api"; // Assume this is your API call
 
 const Find = () => {
-  const { state, dispatch } = useContext(BabysitterContext);
-  const { babysitters } = state;
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [babysitter, setBabysitter] = useState(null);
 
-  const fetchBabysitters = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await getAll("/babysitters");
-      console.log("response");
-      console.log(response);
-      dispatch({ type: "SET_BABYSITTERS", payload: response });
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setError(error);
-      setLoading(false);
-    }
-  };
+  // Simulate getting the babysitter's ID
+  const babysitterId = "c194e1fc-2361-4e35-b47a-e81c025b7e0d";
 
   useEffect(() => {
-    if (babysitters.length === 0) {
-      fetchBabysitters();
-    }
-  }, []);
+    const fetchBabysitter = async () => {
+      setLoading(true);
+      try {
+        // Simulated API call to fetch babysitter by ID
+        const data = await fetchBabysitterById(babysitterId);
+        setBabysitter(data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setError(error);
+        setLoading(false);
+      }
+    };
 
-  const Content = () => {
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-    if (babysitters.length === 0) {
-      return <p>No Babysitters found</p>;
-    }
-
-    return (
-      <>
-        {babysitters.map((babysitter) => (
-          <BabysitterCard key={babysitter.id} {...babysitter} />
-        ))}
-      </>
-    );
-  };
+    fetchBabysitter();
+  }, [babysitterId]);
 
   return (
     <>
@@ -66,9 +44,9 @@ const Find = () => {
           variant="text"
           sx={{ textTransform: "none" }}
           size="large"
-          onClick={fetchBabysitters}
+          onClick={() => fetchBabysitterById(babysitterId)}
         >
-          Refresh Babysitters list
+          Refresh Babysitter Details
         </Button>
       </Box>
       <Box
@@ -84,9 +62,16 @@ const Find = () => {
           minHeight: "100vh",
         }}
       >
-        <Content />
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
+        {babysitter && (
+  <BabysitterCard 
+    babysitter={babysitter} 
+  />
+)}
       </Box>
     </>
   );
 };
+
 export default Find;

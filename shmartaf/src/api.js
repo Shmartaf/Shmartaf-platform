@@ -127,6 +127,40 @@ const SignUp = (formData) => {
     });
 };
 
+const fetchParent = (id) => {
+  return fetch(`${BASE_URL}/parents/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => res.json())
+  .then((data) => {
+      console.log(data);
+      return data;
+    })
+  .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
+const fetchBabysitterById = (id) => {
+  return fetch(`${BASE_URL}/babysitters/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    return data;
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+};
+
 export {
   BASE_URL,
   fetchNeeds,
@@ -136,4 +170,6 @@ export {
   addBabysitter,
   addChildren,
   SignUp,
+  fetchParent,
+  fetchBabysitterById,
 };
