@@ -4,28 +4,38 @@ import { BASE_URL } from "./api";
 
 const findUserRole = (user) => {
   const roles = [];
-  fetch(`${BASE_URL}/parents/${user.id}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      if (data.length > 0) {
-        roles.push("parent");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-  fetch(`${BASE_URL}/babysitters/${user.id}`)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-      if (data.length > 0) {
-        roles.push("babysitter");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  try {
+    fetch(`${BASE_URL}/parents/${user.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.length > 0) {
+          roles.push("parent");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+  catch (e) {
+    console.log(e);
+  }
+  try {
+    fetch(`${BASE_URL}/babysitters/${user.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.length > 0) {
+          roles.push("babysitter");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+  catch (e) {
+    console.log(e);
+  }
   return roles;
 };
 
