@@ -39,8 +39,8 @@ function App() {
         element={
           isAuthenticated ? (
             <Layout>
-              <Route index element={<ParentDashboard />} />
-              <Route path="/dashboard" element={<ParentDashboard />} />
+              <Route index element={<BabysitterDashboard />} />
+              <Route path="/dashboard" element={<BabysitterDashboard />} />
               <Route path="/find" element={<Find />} />
               <Route path="/contacted" element={<Contacted />} />
               <Route path="/notifications" element={<Notifications />} />
