@@ -3,7 +3,7 @@ from database.database import Database
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from router import babysitter, certifications, parent, requirements, users
+from router import babysitter, certifications, parent, requirements, users, algo
 
 from backend.database.models import Base
 
@@ -42,13 +42,6 @@ app.dependency_overrides = {
 }
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Set this to your frontend URL in production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.on_event("startup")
@@ -67,6 +60,7 @@ if __name__ == "__main__":
     app.include_router(parent.router)
     app.include_router(requirements.router)
     app.include_router(certifications.router)
+    app.include_router(algo.router)
 
     uvicorn.run(
         app,
