@@ -1,5 +1,33 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { createSupabaseClient } from "./lib/supabaseClient";
+import { BASE_URL } from "./api";
+
+const findUserRole = (user) => {
+  const roles = [];
+  fetch(`${BASE_URL}/parents/${user.id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.length > 0) {
+        roles.push("parent");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  fetch(`${BASE_URL}/babysitters/${user.id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.length > 0) {
+        roles.push("babysitter");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  return roles;
+};
 
 // Create an AuthContext
 export const AuthContext = createContext();
@@ -33,11 +61,15 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async ({ email, password }) => {
     try {
-      const response = await supabase.auth.signUp({ email, password });
-      if (response.error) throw response.error; // Corrected the error handling
+      const { user, error } = await supabase.auth.signUp({ email, password });
+
+      if (error) {
+        throw error;
+      }
+
       setAuthState((prevState) => ({
         ...prevState,
-        user: response.data.user,
+        user,
       }));
     } catch (error) {
       console.error("Sign up failed", error);
@@ -47,16 +79,24 @@ export const AuthProvider = ({ children }) => {
 
   const login = async ({ email, password }) => {
     try {
-      const response = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      if (response.error) throw response.error; // Corrected the error handling
-      setAuthState((prevState) => ({
-        ...prevState,
-        user: response.data.user,
-        session: response.data.session,
-      }));
+      const roles = findUserRole(data.user);
+      console.log("Roles:", roles);
+      data.user.roles = roles;
+      setAuthState({
+        user: data.user,
+        session: data.session,
+        loading: false,
+        isAuthenticated: true,
+      });
+
+      if (error) {
+        throw error;
+      }
+      return data;
     } catch (error) {
       console.error("Login failed", error);
       throw error;
@@ -64,13 +104,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
-    setAuthState({
-      user: null,
-      session: null,
-      loading: false,
-      isAuthenticated: false,
-    });
+    try {
+      const response = await supabase.auth.signOut();
+      setAuthState({
+        user: null,
+        session: null,
+        loading: false,
+        isAuthenticated: false,
+      });
+    } catch (error) {
+      console.error("Logout failed", error);
+      throw error;
+    }
   };
 
   return (

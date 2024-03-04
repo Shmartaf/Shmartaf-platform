@@ -68,24 +68,29 @@ def signup(formData: schemas.SignUpSchema):
         # Create Parent
         parent_schema = schemas.ParentSchema(id=user.id, description=formData.parentDescription)
         parent = dal.create(models.Parent, parent_schema)
-
-        for child in formData.children:
-            # Create Child
-            child_schema = schemas.ChildrenRequestSchema(id=uuid4().hex, name=child.fullName, birthdate=child.birthdate)
-            child = dal.create(models.Children, child_schema)
-
-            # Assign Child to Parent
-            # parent.childrens.append(child)
-            parent_children_schema = schemas.ParentChildrenRequestSchema(childid=child.id, parentid=parent.id)
-            dal.create(models.ParentsChildrens, parent_children_schema)
-
-            # Assign Needs to Child
-            for need in child.needs:
-
-                childrens_needs_schema = schemas.ChildReqirmentsRequestSchema(
-                    childid=child.id, needid=need.id, needrank=1
+        if formData.children is None:
+            # raise HTTPException(status_code=400, detail="Children are required")
+            pass
+        else:
+            for child in formData.children:
+                # Create Child
+                child_schema = schemas.ChildrenRequestSchema(
+                    id=uuid4().hex, name=child.fullName, birthdate=child.birthdate
                 )
-                dal.create(models.ChildrensNeeds, childrens_needs_schema)
+                child = dal.create(models.Children, child_schema)
+
+                # Assign Child to Parent
+                # parent.childrens.append(child)
+                parent_children_schema = schemas.ParentChildrenRequestSchema(childid=child.id, parentid=parent.id)
+                dal.create(models.ParentsChildrens, parent_children_schema)
+
+                # Assign Needs to Child
+                for need in child.needs:
+
+                    childrens_needs_schema = schemas.ChildReqirmentsRequestSchema(
+                        childid=child.id, needid=need.id, needrank=1
+                    )
+                    dal.create(models.ChildrensNeeds, childrens_needs_schema)
 
     # Create Babysitter
     if "babysitter" in formData.userType:
@@ -95,9 +100,11 @@ def signup(formData: schemas.SignUpSchema):
         babysitter = dal.create(models.Babysitter, babysitter_schema)
 
         # Assign Skills to Babysitter
-        for skill_rank, skill in enumerate(formData.babysitterSkills):
+        for skill in enumerate(formData.babysitterSkills):
+            index, (skillid, skill_name) = skill
+            skill_rank = 3
             babysitter_skill_schema = schemas.BabysitterCerticationRequestSchema(
-                id=skill.id, babysitterid=babysitter.id, skillrank=skill_rank
+                id=skillid, babysitterid=babysitter.id, skillrank=skill_rank
             )
             dal.create(models.BabysitterSkill, babysitter_skill_schema)
 
