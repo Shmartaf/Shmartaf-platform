@@ -2,39 +2,46 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { createSupabaseClient } from "./lib/supabaseClient";
 import { BASE_URL } from "./api";
 
-const findUserRole = (user) => {
-  const roles = [];
+const findUserRole = async (user) => {
   try {
-    fetch(`${BASE_URL}/parents/${user.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.length > 0) {
-          roles.push("parent");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  } catch (e) {
-    console.log(e);
+    // Ensure BASE_URL is correctly formatted without leading or trailing slashes if needed
+    const url = `${BASE_URL}/users/${user.id}`;
+    const response = await fetch(url);
+    console.log(`Response:`, response);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json(); // Correctly parse the JSON body
+    console.log(`Data:`, data);
+    
+    return data.userType; // Adjust this according to the actual structure of your data
+  } catch (error) {
+    console.error("Failed to find user roles:", error);
+    return null;
   }
+};
+
+const findUser = async (user) => {
   try {
-    fetch(`${BASE_URL}/babysitters/${user.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.length > 0) {
-          roles.push("babysitter");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  } catch (e) {
-    console.log(e);
+    // Ensure BASE_URL is correctly formatted without leading or trailing slashes if needed
+    const url = `${BASE_URL}/users/${user.id}`;
+    const response = await fetch(url);
+    console.log(`Response:`, response);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json(); // Correctly parse the JSON body
+    console.log(`Data:`, data);
+    
+    return data; // Adjust this according to the actual structure of your data
+  } catch (error) {
+    console.error("Failed to find user:", error);
+    return null;
   }
-  return roles;
 };
 
 // Create an AuthContext
@@ -91,9 +98,9 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      const roles = findUserRole(data.user);
-      console.log("Roles:", roles);
-      data.user.roles = roles;
+      const userData = await findUser(data.user);
+      console.log("userData:", userData);
+      data.user.userData = userData;
       setAuthState({
         user: data.user,
         session: data.session,

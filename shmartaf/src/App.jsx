@@ -43,7 +43,7 @@ function App() {
           index
           element={
             isAuthenticated ? (
-              user?.roles?.includes("babysitter") ? (
+              user?.userData.userType === 'babysitter' ? (
                 <BabysitterDashboard />
               ) : (
                 <ParentDashboard />
@@ -54,7 +54,7 @@ function App() {
           }
         />
         <Route path="/dashboard" element={
-          user?.roles?.includes("babysitter") ? (
+          user?.userData.userType === "babysitter" ? (
             <BabysitterDashboard />
           ) : (
             <ParentDashboard />
