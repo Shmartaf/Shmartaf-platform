@@ -33,14 +33,42 @@ function App() {
 
   return (
     // <SignUp />
+    // <ParentDashboard />
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route
+          index
+          element={
+            isAuthenticated ? (
+              user?.roles?.includes("babysitter") ? (
+                <BabysitterDashboard />
+              ) : (
+                <ParentDashboard />
+              )
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route path="/find" element={<Find />} />
+        <Route path="/contacted" element={<Contacted />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignUp />} />
+    </Routes>
+
+    /*
     <Routes>
       <Route
         path="/"
         element={
           isAuthenticated ? (
             <Layout>
-              <Route index element={<BabysitterDashboard />} />
-              <Route path="/dashboard" element={<BabysitterDashboard />} />
+              <Route path="/dashboard" element={<ParentDashboard />} />
               <Route path="/find" element={<Find />} />
               <Route path="/contacted" element={<Contacted />} />
               <Route path="/notifications" element={<Notifications />} />
@@ -56,6 +84,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUp />} />
     </Routes>
+    */
   );
 }
 
