@@ -16,8 +16,7 @@ const findUserRole = (user) => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
   }
   try {
@@ -32,8 +31,7 @@ const findUserRole = (user) => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
   }
   return roles;
