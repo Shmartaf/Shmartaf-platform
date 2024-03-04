@@ -14,7 +14,6 @@ import Reviews from "./pages/Reviews";
 import Schedule from "./pages/Schedule";
 import { BabysitterContext } from "./context/BabysitterContext";
 import { useContext } from "react";
-import Login from "./pages/Login";
 import BabysitterDashboard from "./pages/BabysitterDashboard";
 import { useAuth } from "./AuthContext";
 import LoginPage from "./pages/LogInPage";
@@ -54,6 +53,13 @@ function App() {
             )
           }
         />
+        <Route path="/dashboard" element={
+          user?.roles?.includes("babysitter") ? (
+            <BabysitterDashboard />
+          ) : (
+            <ParentDashboard />
+          )
+        } />
         <Route path="/find" element={<Find />} />
         <Route path="/contacted" element={<Contacted />} />
         <Route path="/notifications" element={<Notifications />} />

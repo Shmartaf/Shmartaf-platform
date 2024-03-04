@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Checkbox, Button, DatePicker, Select } from "antd";
+import { Form, Input, Radio, Button, DatePicker, Select , Checkbox } from "antd";
 const { TextArea } = Input;
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { fetchNeeds, fetchSkills } from "../../api";
@@ -52,9 +52,9 @@ const UserForm = () => {
     getSkillsData();
   }, []);
 
-  const handleUserTypeChange = (checkedValues) => {
-    setIsParent(checkedValues.includes("parent"));
-    setIsBabysitter(checkedValues.includes("babysitter"));
+  const handleUserTypeChange = (value) => {
+    setIsParent(value === "parent");
+    setIsBabysitter(value === "babysitter");
   };
 
   const handleAddChild = () => {
@@ -138,11 +138,11 @@ const UserForm = () => {
         <Input />
       </Form.Item>
       <Form.Item label="User Type" name="userType" required>
-        <Checkbox.Group onChange={handleUserTypeChange}>
-          <Checkbox value="parent">Parent</Checkbox>
-          <Checkbox value="babysitter">Babysitter</Checkbox>
-        </Checkbox.Group>
-      </Form.Item>
+    <Radio.Group onChange={(e) => handleUserTypeChange(e.target.value)}>
+    <Radio value="parent">Parent</Radio>
+    <Radio value="babysitter">Babysitter</Radio>
+     </Radio.Group>
+    </Form.Item>
 
       {/* Parent Section */}
       {isParent && (
