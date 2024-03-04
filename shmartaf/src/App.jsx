@@ -31,6 +31,10 @@ function App() {
   }, [isAuthenticated]);
 
   return (
+    //<Favorites/>
+    //<Find/>
+    //<LoginPage/>
+    //isAuthenticated: Favorites
     // <SignUp />
     // <ParentDashboard />
     <Routes>
