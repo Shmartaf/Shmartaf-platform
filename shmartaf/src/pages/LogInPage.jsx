@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "../components/LogIn/Header";
 import LoginForm from "../components/LogIn/LogInForm";
 import { useNavigate } from "react-router-dom";
@@ -8,37 +8,21 @@ const LoginPage = () => {
   const [showSignUp, setShowSignUp] = useState(false);
   const navigate = useNavigate();
   const login = useAuth().login;
-  const { user, session, isAuthenticated } = useAuth();
-  const handleLoginSubmit = async ({ email, password }) => {
-    console.log(`Logging in with email: ${email} and password: ${password}`);
-    try {
-      const result = await login({ email, password });
-      console.log(
-        "Login successful should navigate to home page, result:",
-        result,
-      );
-      if (result.user) {
-        console.log(result);
-        // user = result.data.user;
-        // session = result.data.session;
-        navigate("/");
-      } else {
-        console.error("Login failed", {
-          message: result.error.message,
-          name: result.error.name,
-          status: result.error.status,
-          stack: result.error.stack,
-        });
-      }
-    } catch (error) {
-      console.error("Login failed", error);
-    }
-  };
-  const handleSignup = () => {
-    setShowSignUp(!showSignUp);
+
+  useEffect(() => {
+    // כאשר showSignUp משתנה, בדוק אם הוא true ואז נווט
     if (showSignUp) {
       navigate("/signup");
     }
+  }, [showSignUp, navigate]); // הוסף את navigate כתלות אם אתה משתמש בגרסאות חדשות של react-router-dom שדורשות זאת
+
+  const handleLoginSubmit = async ({ email, password }) => {
+    // ...הקוד שלך כאן
+  };
+
+  const handleSignup = () => {
+    // כעת, הפונקציה רק משנה את המצב וה-useEffect יטפל בניווט
+    setShowSignUp(!showSignUp);
   };
 
   return (
@@ -66,4 +50,5 @@ const LoginPage = () => {
     </AuthProvider>
   );
 };
+
 export default LoginPage;
