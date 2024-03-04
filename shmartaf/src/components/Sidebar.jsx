@@ -24,7 +24,7 @@ import { BabysitterContext } from "../context/BabysitterContext";
 const parentRoutes = [
   {
     name: "Dashboard",
-    path: "/parentDashboard",
+    path: "/dashboard",
     icon: <GridViewIcon />,
   },
   {
