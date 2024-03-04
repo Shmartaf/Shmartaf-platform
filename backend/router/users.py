@@ -67,7 +67,9 @@ def signup(formData: schemas.SignUpSchema):
     if "parent" in formData.userType:
 
         # Create Parent
-        parent_schema = schemas.ParentSchema(id=user.id, description=formData.parentDescription)
+        parent_schema = schemas.ParentSchema(
+            id=user.id, description=formData.parentDescription
+        )
         parent = dal.create(models.Parent, parent_schema)
         if formData.children is None:
             # raise HTTPException(status_code=400, detail="Children are required")
@@ -76,13 +78,18 @@ def signup(formData: schemas.SignUpSchema):
             for child in formData.children:
                 # Create Child
                 child_schema = schemas.ChildrenRequestSchema(
-                    id=uuid4().hex, name=child.fullName, birthdate=child.birthdate
+                    id=uuid4().hex,
+                    name=child["fullName"],
+                    birthdate=child["birthdate"],
+                    gender=child["gender"],
                 )
                 child = dal.create(models.Children, child_schema)
 
                 # Assign Child to Parent
                 # parent.childrens.append(child)
-                parent_children_schema = schemas.ParentChildrenRequestSchema(childid=child.id, parentid=parent.id)
+                parent_children_schema = schemas.ParentChildrenRequestSchema(
+                    childid=child.id, parentid=parent.id
+                )
                 dal.create(models.ParentsChildrens, parent_children_schema)
 
                 # Assign Needs to Child
