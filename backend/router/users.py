@@ -60,6 +60,7 @@ def signup(formData: schemas.SignUpSchema):
         city=formData.city,
         street=formData.street,
         phone=formData.phone,
+        userType=formData.userType,
     )
     user = dal.create(models.User, user_schema)
 

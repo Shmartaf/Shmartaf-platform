@@ -37,6 +37,7 @@ class User(Base):
     city = Column(String(255))
     street = Column(String(255))
     phone = Column(String(30))
+    userType = Column(String(255))
     parent = relationship("Parent", uselist=False, back_populates="user")
     babysitter = relationship("Babysitter", uselist=False, back_populates="user")
 

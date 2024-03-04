@@ -55,6 +55,8 @@ class UserSchema(UserIdSchema):
     registrationdate: date
     city: str
     street: str
+    gender: str
+    userType: str
 
 
 class ContactedRequestSchema(BaseModel):
@@ -167,7 +169,7 @@ class SignUpSchema(BaseModel):
     city: str
     street: str
     phone: str
-    userType: Optional[list[str]] = []
+    userType: str
     parentDescription: Optional[str] = None
     children: Optional[list] = None
     babysitterSkills: Optional[list[Tuple[UUID4, str]]] = None

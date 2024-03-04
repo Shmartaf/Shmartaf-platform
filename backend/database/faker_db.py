@@ -70,6 +70,7 @@ def create_user():
         registrationdate=fake.date_of_birth(),
         city=fake.city(),
         street=fake.street_name(),
+        gender=fake.gender(),
     )
     return dal.create(model=User, schema=user_schema)
 

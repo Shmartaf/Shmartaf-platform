@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import Box from "@mui/material/Box";
-import BabysitterCard from "../components/BabysitterCard/";
+import BabysitterCard from "../components/BabysitterCard";
 import { BabysitterContext } from "../context/BabysitterContext";
-
+import { useAuth } from "../AuthContext";
 const Favorites = () => {
   const { state } = useContext(BabysitterContext);
   const { babysitters } = state;
-
+  // we need to find the babysitters that are currently favorited by this user(parent)
+  const { user} = useAuth();
+  console.log(user);
   const favoriteBabysitters = babysitters.filter(
     (babysitter) => babysitter.isFavorite,
   );
