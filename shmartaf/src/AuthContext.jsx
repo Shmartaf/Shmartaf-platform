@@ -63,9 +63,6 @@ export const AuthProvider = ({ children }) => {
 
       const isAuthenticated = !!user && !!session;
 
-
-
-
       setAuthState((prevState) => ({
         ...prevState,
         isAuthenticated,

@@ -43,7 +43,7 @@ function App() {
           index
           element={
             isAuthenticated ? (
-              user?.userData.userType === 'babysitter' ? (
+              user?.userData.userType === "babysitter" ? (
                 <BabysitterDashboard />
               ) : (
                 <ParentDashboard />
@@ -53,13 +53,16 @@ function App() {
             )
           }
         />
-        <Route path="/dashboard" element={
-          user?.userData.userType === "babysitter" ? (
-            <BabysitterDashboard />
-          ) : (
-            <ParentDashboard />
-          )
-        } />
+        <Route
+          path="/dashboard"
+          element={
+            user?.userData.userType === "babysitter" ? (
+              <BabysitterDashboard />
+            ) : (
+              <ParentDashboard />
+            )
+          }
+        />
         <Route path="/find" element={<Find />} />
         <Route path="/contacted" element={<Contacted />} />
         <Route path="/notifications" element={<Notifications />} />

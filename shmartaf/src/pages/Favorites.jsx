@@ -7,7 +7,7 @@ const Favorites = () => {
   const { state } = useContext(BabysitterContext);
   const { babysitters } = state;
   // we need to find the babysitters that are currently favorited by this user(parent)
-  const { user} = useAuth();
+  const { user } = useAuth();
   console.log(user);
   const favoriteBabysitters = babysitters.filter(
     (babysitter) => babysitter.isFavorite,

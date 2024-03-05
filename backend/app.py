@@ -3,7 +3,7 @@ from database.database import Database
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from router import babysitter, certifications, parent, requirements, users, algo
+from router import algo, babysitter, certifications, parent, requirements, users
 
 from backend.database.models import Base
 

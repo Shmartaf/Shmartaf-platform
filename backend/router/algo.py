@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException
-from pydantic import UUID4
-from backend.send_parent_id import get_recommendations_for_parent
-from backend.database import models, schemas
+from fastapi import APIRouter
+
+from backend.database import schemas
 from backend.database.dal import DataAccessLayer
+from backend.send_parent_id import get_recommendations_for_parent
 
 router = APIRouter(
     prefix="/algo",
@@ -14,7 +14,5 @@ dal = DataAccessLayer()
 
 
 @router.get("/{user_id}")
-def getBabysitterFromAlgo(
-    user_id, skip: int = 0, limit: int = 1000
-) -> list[schemas.BabysitterSchema]:
+def getBabysitterFromAlgo(user_id, skip: int = 0, limit: int = 1000) -> list[schemas.BabysitterSchema]:
     return get_recommendations_for_parent(user_id)

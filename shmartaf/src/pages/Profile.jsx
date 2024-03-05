@@ -1,6 +1,18 @@
 import { useState, useEffect } from "react";
 import humanImage from "../assets/human.png";
-import { Box, Button, Typography, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Snackbar,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useAuth } from "../AuthContext";
 import { BASE_URL } from "../api";
@@ -23,8 +35,6 @@ import ChildForm from "../components/ChildForm";
 //   reviews: 100,
 // };
 
-
-
 const Settings = () => {
   const { user } = useAuth();
   const [profile, setProfile] = useState(null);
@@ -39,7 +49,6 @@ const Settings = () => {
 
   const openAddChildModal = () => setAddChildModalOpen(true);
   const closeAddChildModal = () => setAddChildModalOpen(false);
-
 
   const fetchProfile = async () => {
     try {
@@ -218,19 +227,31 @@ const Settings = () => {
         </Table>
       </TableContainer>
       <Box mt={2} display={"flex"} gap={"10px"}>
-        <Button variant="contained" onClick={openAddChildModal}>Add Child</Button>
-        <Button variant="contained" startIcon={<EditIcon />} onClick={openEditProfileModal}>
+        <Button variant="contained" onClick={openAddChildModal}>
+          Add Child
+        </Button>
+        <Button
+          variant="contained"
+          startIcon={<EditIcon />}
+          onClick={openEditProfileModal}
+        >
           Edit Profile
         </Button>
       </Box>
 
       {/* Modals */}
-      <CustomModal isOpen={editProfileModalOpen} onClose={closeEditProfileModal}>
-        <EditProfileForm profileData={profile} onSaveChanges={(editedProfile) => {
-          console.log("edited profile", editedProfile);
-          SubmitEditProfle(editedProfile);
-          closeEditProfileModal();
-        }} />
+      <CustomModal
+        isOpen={editProfileModalOpen}
+        onClose={closeEditProfileModal}
+      >
+        <EditProfileForm
+          profileData={profile}
+          onSaveChanges={(editedProfile) => {
+            console.log("edited profile", editedProfile);
+            SubmitEditProfle(editedProfile);
+            closeEditProfileModal();
+          }}
+        />
         {/* Content for the Edit Profile Modal goes here */}
       </CustomModal>
 

@@ -31,9 +31,7 @@ def create_parent(parent: schemas.ParentSchema) -> schemas.ParentResponseSchema:
 
 
 @router.put("/{parent_id}")
-def update_parent(
-    parent_id: UUID4, parent: schemas.ParentSchema
-) -> schemas.ParentResponseSchema:
+def update_parent(parent_id: UUID4, parent: schemas.ParentSchema) -> schemas.ParentResponseSchema:
     db_parent = dal.get(model=models.Parent, id=parent_id)
     if db_parent is None:
         raise HTTPException(status_code=404, detail="Parent not found")
@@ -74,9 +72,7 @@ def create_favorite(parent_id: UUID4, favorite: schemas.FavoriteRequestSchema):
 
 
 @router.post("/{parent_id}/requirements/{child_id}/{requirements.id}")
-def create_requirements(
-    parent_id: UUID4, child_id: UUID4, requirements_id: UUID4, needrank: int
-):
+def create_requirements(parent_id: UUID4, child_id: UUID4, requirements_id: UUID4, needrank: int):
     get_req = dal.get(models.SpecialNeed, requirements_id)
     if get_req is None:
         raise HTTPException(status_code=404, detail="Requirements not found")

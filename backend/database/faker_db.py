@@ -41,9 +41,7 @@ def retry_on_duplicate(func):
                 else:
                     args = list(args)
                     if args:
-                        args[0] = (
-                            uuid4()
-                        )  # Assuming the first argument is the ID for simplicity
+                        args[0] = uuid4()  # Assuming the first argument is the ID for simplicity
         raise Exception("Failed to create a unique entity after several attempts.")
 
     return wrapper
@@ -106,12 +104,8 @@ def create_children(parent_id):
         gender=random.choice(["M", "F"]),
     )
     dal.create(model=Children, schema=children_schema)
-    parent_children_schema = schemas.ParentChildrenRequestSchema(
-        parentid=parent_id, childid=children_schema.id
-    )
-    return dal.create(
-        model=ParentsChildrens, schema=parent_children_schema
-    )  # Adjust DAL method signature as needed
+    parent_children_schema = schemas.ParentChildrenRequestSchema(parentid=parent_id, childid=children_schema.id)
+    return dal.create(model=ParentsChildrens, schema=parent_children_schema)  # Adjust DAL method signature as needed
 
 
 # @retry_on_duplicate
@@ -149,9 +143,7 @@ def mock_db(n):
                         create_children_requirements(child.childid, need.id)
         else:
             babysitter = create_babysitter(user.id)
-            random_skills = random.sample(
-                skills, random.randint(1, min(5, len(skills)))
-            )
+            random_skills = random.sample(skills, random.randint(1, min(5, len(skills))))
             for skill in random_skills:
                 babysitter_skill_schema = schemas.BabysitterCerticationRequestSchema(
                     babysitterid=babysitter.id,
@@ -163,9 +155,7 @@ def mock_db(n):
     for _ in range(n):
         parent = random.choice(dal.get_all(model=Parent))
         babysitter = random.choice(dal.get_all(model=Babysitter))
-        favorite_schema = schemas.FavoriteRequestSchema(
-            parentid=parent.id, babysitterid=babysitter.id
-        )
+        favorite_schema = schemas.FavoriteRequestSchema(parentid=parent.id, babysitterid=babysitter.id)
         try:
             dal.create(model=Favorite, schema=favorite_schema)
         except IntegrityError:
@@ -199,9 +189,7 @@ def mock_needs_skills():
     for _ in range(random.randint(1, len(skills) + len(needs))):
         skill = random.choice(skills)
         need = random.choice(needs)
-        need_skill_schema = schemas.RequirementsCertificationScheme(
-            needid=need.id, skillid=skill.id
-        )
+        need_skill_schema = schemas.RequirementsCertificationScheme(needid=need.id, skillid=skill.id)
         try:
             dal.create(model=NeedSkill, schema=need_skill_schema)
         except IntegrityError:
