@@ -44,27 +44,27 @@ const UserForm = () => {
   };
   const checkIsValid = () => {
     form.validateFields().then((values) => {
-    //   if (values.email === undefined)
-    //   {alert("Please select a valid email");
-    //   return false;}
-    //   if (values.password === undefined)
-    //   {alert("Please select a passsword");
-    //   return false;}
-    //   if (values.fullName === undefined)
-    //   {alert("Please select a full name");
-    //   return false;}
-    //   if (values.city === undefined)
-    //   {alert("Please select a valid city");
-    //   return false;}
-    //   if (values.phone === undefined)
-    //   {alert("Please select a valid phone number");
-    //   return false;}
-    //   if (values.gender === undefined)
-    //   {alert("Please select a valid gender");
-    //   return false;}
-    //   if (values.userType === undefined)
-    //   {alert("Please select a valid u");
-    //   return false;}
+      //   if (values.email === undefined)
+      //   {alert("Please select a valid email");
+      //   return false;}
+      //   if (values.password === undefined)
+      //   {alert("Please select a passsword");
+      //   return false;}
+      //   if (values.fullName === undefined)
+      //   {alert("Please select a full name");
+      //   return false;}
+      //   if (values.city === undefined)
+      //   {alert("Please select a valid city");
+      //   return false;}
+      //   if (values.phone === undefined)
+      //   {alert("Please select a valid phone number");
+      //   return false;}
+      //   if (values.gender === undefined)
+      //   {alert("Please select a valid gender");
+      //   return false;}
+      //   if (values.userType === undefined)
+      //   {alert("Please select a valid u");
+      //   return false;}
       console.log("Received values of form: ", values);
       return true;
     });
@@ -98,7 +98,7 @@ const UserForm = () => {
       alert("Please fill all the fields");
       return;
     }
-    
+
     const supabase = createSupabaseClient();
     console.log("supabase:", supabase);
     const email = values.email;
@@ -320,8 +320,7 @@ const UserForm = () => {
 
       {/* Submit Button */}
       <Form.Item>
-        <Button type="primary" htmlType="submit"
-        className="submitbutton">
+        <Button type="primary" htmlType="submit" className="submitbutton">
           Submit
         </Button>
       </Form.Item>

@@ -53,7 +53,9 @@ export const AuthProvider = ({ children }) => {
 
   const initialAuthState = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       const session = supabase.auth.session();
       const isAuthenticated = !!user && !!session;
 
@@ -102,8 +104,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // init();
-
-  },);
+  });
 
   const signUp = async ({ email, password }) => {
     try {
