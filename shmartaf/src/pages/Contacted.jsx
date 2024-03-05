@@ -8,7 +8,7 @@ const Contacted = () => {
   const { user } = useAuth();
 
   const fetchContacted = async () => {
-    if (user.userData.userType === "parent") {
+    if (user.userData?.userType === "parent") {
       const parent = await get("parents", user.id);
       console.log("parent:", parent);
       const contacted = parent.contacted;

@@ -5,17 +5,16 @@ import Map from "../components/Map";
 import QuickFind from "../components/QuickFind";
 import humanImage from "../assets/human.png";
 import { useContext } from "react";
-// import { BabysitterContext } from "../context/BabysitterContext";
+import { useAuth } from "../AuthContext";
 
 const ParentDashboard = () => {
   console.log("ParentDashboard");
-  // const { user } = useContext(BabysitterContext).state;
-  const user = {
-    name: "John Doe",
-  };
+  //const { user } = useContext(BabysitterContext).state;
+  const { user } = useAuth();
+  //console.log("user", user.userData.name);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
-      <Header name={user.name} image={humanImage} />
+      <Header name={user?.userData?.name} image={humanImage} />
       <EventsTable />
       <QuickFind />
       <Map />

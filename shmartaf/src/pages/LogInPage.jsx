@@ -3,8 +3,10 @@ import Header from "../components/LogIn/Header";
 import LoginForm from "../components/LogIn/LogInForm";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, AuthProvider, useAuth } from "../AuthContext";
+import {BabysitterContext} from "../context/BabysitterContext";
 
 const LoginPage = () => {
+  const {state,dispatch} = useContext(BabysitterContext);
   const [showSignUp, setShowSignUp] = useState(false);
   const navigate = useNavigate();
   const login = useAuth().login;
@@ -25,6 +27,11 @@ const LoginPage = () => {
         result,
       );
       if (result.user) {
+        console.log("-------");
+        dispatch({
+          type: "SET_USER",
+          payload: result.user.userData,
+        });
         console.log(result);
         // user = result.data.user;
         // session = result.data.session;

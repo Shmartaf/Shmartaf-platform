@@ -20,6 +20,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { useContext } from "react";
 import { BabysitterContext } from "../context/BabysitterContext";
+import { useAuth } from "../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const parentRoutes = [
   {
@@ -129,6 +131,9 @@ const SidebarItem = ({ route, pathname }) => (
 const Sidebar = () => {
   const { state, dispatch } = useContext(BabysitterContext);
   const { user } = state;
+  const logout2 = useAuth().logout
+  const navigate = useNavigate();
+
 
   const routes = user?.role === "babysitter" ? babysitterRoutes : parentRoutes;
   const personalRoutes =
@@ -138,7 +143,9 @@ const Sidebar = () => {
 
   const { pathname } = useLocation();
   const logout = () => {
+    logout2();  
     dispatch({ type: "SET_ROLE", payload: "" });
+    navigate("/login");
   };
   return (
     <Box

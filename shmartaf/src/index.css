@@ -35,3 +35,6 @@
   justify-content: center;
   gap: 10px;
 }
+.submitbutton {
+  background-color: red;
+}

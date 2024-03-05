@@ -18,14 +18,14 @@ const Find = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await get("algo", user.id);
+      const response = await get("algo", user?.userData?.id);
       console.log("Babysitters", response);
       const fetchedBabysitters = await Promise.all(
         response.map(async (babysitter) => {
           console.log("babysitter", babysitter);
           const babysittersData = await get(
             "babysitters",
-            babysitter.Babysitterid,
+            babysitter?.Babysitterid,
           );
 
           return babysittersData;
@@ -59,7 +59,7 @@ const Find = () => {
       <>
         {babysitters &&
           babysitters.map((babysitter) => (
-            <BabysitterCard key={babysitter.babysitterid} {...babysitter} />
+            <BabysitterCard key={babysitter.Babysitterid} {...babysitter} />
           ))}
       </>
     );
