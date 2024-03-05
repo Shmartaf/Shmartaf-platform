@@ -132,7 +132,7 @@ const Sidebar = () => {
   // const { state, dispatch } = useContext(BabysitterContext);
   // const { user } = state;
   const { user } = useAuth();
-  const logout = useAuth().logout;
+  const logout2 = useAuth().logout
   const navigate = useNavigate();
 
   const routes =
@@ -142,14 +142,11 @@ const Sidebar = () => {
       ? babysitterPersonalRoutes
       : parentPersonalRoutes;
 
-  const { pathname } = useLocation();
-  const logoutUser = async () => {
-    const result = await logout();
-    console.log("result", result);
-    navigate("/login");
-
-    // dispatch({ type: "SET_ROLE", payload: "" });
-  };
+      const { pathname } = useLocation();
+      const logout = () => {
+        logout2();  
+        navigate("/login");
+      };
   return (
     <Box
       sx={{
