@@ -161,6 +161,42 @@ const fetchBabysitterById = (id) => {
   });
 };
 
+const fetchAllBabysitters = () => {
+  return fetch(`${BASE_URL}/babysitters`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    return data;
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+};
+
+const addToFavorites = (favorite) => {
+  return fetch(`${BASE_URL}/parents/${favorite.parentId}/favorites`, {
+    method: "POST",
+    headers: {  
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(favorite),
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    return data;
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+};
+
+
 export {
   BASE_URL,
   fetchNeeds,
@@ -172,4 +208,6 @@ export {
   SignUp,
   fetchParent,
   fetchBabysitterById,
+  fetchAllBabysitters,
+  addToFavorites,
 };

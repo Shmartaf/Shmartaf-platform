@@ -6,18 +6,18 @@ import { fetchParent } from "../api";
 
 const Favorites = () => {
   const { user } = useAuth();
-  const [favorites, setFavorites] = useState([]); // Use an empty array as the initial state
+  const [favorites, setFavorites] = useState([]); 
   
   useEffect(() => {
     const fetchFavorites = async () => {
-      if (user && favorites.length === 0) { // Check if favorites array is empty
+      if (user && favorites.length === 0) { 
         console.log(user);
         console.log(user.userData);
         try {
           const parent = await fetchParent(user.id);
           console.log("parent", parent);
           if (parent && parent.favorites) {
-            setFavorites(parent.favorites.map(fav => ({...fav, isFavorite: true}))); // Assume all fetched are favorites initially
+            setFavorites(parent.favorites.map(fav => ({...fav, isFavorite: true})));
           }
         } catch (error) {
           console.error("Failed to fetch favorites", error);
@@ -26,7 +26,7 @@ const Favorites = () => {
     };
 
     fetchFavorites();
-  }, [user, favorites.length]); // Depend on favorites.length to avoid refetching
+  }, [user, favorites.length]); 
 
   const toggleFavorite = (babysitterId) => {
     setFavorites(favorites.map(fav =>

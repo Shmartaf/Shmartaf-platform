@@ -2,23 +2,20 @@ import { useState, useEffect } from 'react';
 import Box from "@mui/material/Box";
 import BabysitterCard from "../components/BabysitterCard";
 import { Button } from "@mui/material";
-import { fetchBabysitterById } from "../api"; // Assume this is your API call
+import { fetchAllBabysitters, addToFavorites, fetchParent } from "../api"; // Adjusted to fetch all babysitters
+import { useAuth } from "../AuthContext";
 
 const Find = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [babysitter, setBabysitter] = useState(null);
-
-  // Simulate getting the babysitter's ID
-  const babysitterId = "c194e1fc-2361-4e35-b47a-e81c025b7e0d";
+  const [babysitters, setBabysitters] = useState([]); // Changed to handle multiple babysitters
 
   useEffect(() => {
-    const fetchBabysitter = async () => {
+    const fetchBabysitters = async () => {
       setLoading(true);
       try {
-        // Simulated API call to fetch babysitter by ID
-        const data = await fetchBabysitterById(babysitterId);
-        setBabysitter(data);
+        const data = await fetchAllBabysitters(); // This function should fetch all babysitters
+        setBabysitters(data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -27,8 +24,37 @@ const Find = () => {
       }
     };
 
-    fetchBabysitter();
-  }, [babysitterId]);
+    fetchBabysitters();
+  }, []);
+
+  const { user } = useAuth();
+
+
+
+  const toggleFavorite = async (babysitterId, isCurrentlyFavorite) => {
+    setLoading(true); // Optional: show loading state
+    try {
+      // Correctly fetch parent information asynchronously
+      const parent = await fetchParent(user.id);
+      if (isCurrentlyFavorite) {
+        // Placeholder for removing from favorites logic
+        //const removeFavorite = { parentid: parent.id, babysitterid: babysitterId }
+        //await removeFromFavorites(removeFavorite);
+      } else {
+        // Add to favorites
+        const newFavorite = {parentid: parent.id, babysitterid: babysitterId}
+        await addToFavorites(newFavorite);
+      }
+      // Refresh babysitters to reflect the updated favorites status
+
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    } finally {
+      setLoading(false); // Hide loading state
+    }
+  };
+  
+
 
   return (
     <>
@@ -44,9 +70,9 @@ const Find = () => {
           variant="text"
           sx={{ textTransform: "none" }}
           size="large"
-          onClick={() => fetchBabysitterById(babysitterId)}
+          onClick={fetchAllBabysitters} // Adjusted to correctly refresh the babysitters list
         >
-          Refresh Babysitter Details
+          Refresh Babysitters List
         </Button>
       </Box>
       <Box
@@ -64,14 +90,19 @@ const Find = () => {
       >
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error.message}</p>}
-        {babysitter && (
-  <BabysitterCard 
-    babysitter={babysitter} 
-  />
-)}
+        {babysitters.map(babysitter => (
+        <BabysitterCard 
+          key={babysitter.id}
+          babysitter={babysitter} 
+          toggleFavorite={() => toggleFavorite(babysitter.id, babysitter.isFavorite)}
+          isFavorite={babysitter.isFavorite} // Ensure this status is correctly determined
+        />
+      ))}
+
       </Box>
     </>
   );
 };
+
 
 export default Find;
