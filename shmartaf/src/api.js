@@ -3,6 +3,19 @@
 //   baseURL: "http://localhost:8080",
 // });
 const BASE_URL = "http://localhost:8080";
+
+const get = async (url, id) => {
+  return fetch(`${BASE_URL}/${url}/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
 const fetchNeeds = () => {
   return fetch(`${BASE_URL}/requirements?skip=0&limit=10`, {
     method: "GET",
@@ -136,4 +149,5 @@ export {
   addBabysitter,
   addChildren,
   SignUp,
+  get,
 };

@@ -1,7 +1,7 @@
 from datetime import date, datetime, time
 from typing import Optional, Tuple
 from uuid import uuid4
-
+from typing import List
 from pydantic import UUID4, BaseModel, EmailStr
 
 
@@ -174,3 +174,8 @@ class SignUpSchema(BaseModel):
     children: Optional[list] = None
     babysitterSkills: Optional[list[Tuple[UUID4, str]]] = None
     babysitterDescription: Optional[str] = None
+
+
+class Recommendation(BaseModel):
+    Babysitterid: UUID4
+    Likelihood: float
