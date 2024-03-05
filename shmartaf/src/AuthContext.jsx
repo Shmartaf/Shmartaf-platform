@@ -49,6 +49,21 @@ export const AuthContext = createContext();
 
 // AuthProvider component
 export const AuthProvider = ({ children }) => {
+  const supabase = createSupabaseClient(); // Make sure to replace with your actual function
+
+  const initialAuthState = async () => {
+    const user = supabase.auth.user();
+    const session = supabase.auth.session();
+    const isAuthenticated = !!user && !!session;
+
+    return {
+      user: isAuthenticated ? user : null,
+      session: isAuthenticated ? session : null,
+      loading: false,
+      isAuthenticated,
+    };
+  };
+
   const [authState, setAuthState] = useState({
     user: null,
     session: null,
@@ -56,22 +71,19 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: false,
   });
 
-  const supabase = createSupabaseClient(); // Make sure to replace with your actual function
   useEffect(() => {
-    const checkAuthentication = async () => {
-      const { user, session } = authState;
+    const init = async () => {
+      const initialState = await initialAuthState();
+      setAuthState(initialState);
 
-      const isAuthenticated = !!user && !!session;
-
-      setAuthState((prevState) => ({
-        ...prevState,
-        isAuthenticated,
-        loading: false,
-      }));
+      // Redirect to login if not authenticated
+      if (!initialState.isAuthenticated) {
+        window.location.href = "/login"; // Adjust the path according to your routes
+      }
     };
 
-    checkAuthentication();
-  }, [authState.user, authState.session]);
+    init();
+  }, []);
 
   const signUp = async ({ email, password }) => {
     try {

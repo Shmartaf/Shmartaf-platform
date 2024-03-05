@@ -18,8 +18,10 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { useContext } from "react";
-import { BabysitterContext } from "../context/BabysitterContext";
+import { useAuth } from "../AuthContext";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// import { BabysitterContext } from "../context/BabysitterContext";
 
 const parentRoutes = [
   {
@@ -127,18 +129,26 @@ const SidebarItem = ({ route, pathname }) => (
 );
 
 const Sidebar = () => {
-  const { state, dispatch } = useContext(BabysitterContext);
-  const { user } = state;
+  // const { state, dispatch } = useContext(BabysitterContext);
+  // const { user } = state;
+  const { user } = useAuth();
+  const logout = useAuth().logout;
+  const navigate = useNavigate();
 
-  const routes = user?.role === "babysitter" ? babysitterRoutes : parentRoutes;
+  const routes =
+    user?.userData.userType === "babysitter" ? babysitterRoutes : parentRoutes;
   const personalRoutes =
-    user?.role === "babysitter"
+    user?.userData.userType === "babysitter"
       ? babysitterPersonalRoutes
       : parentPersonalRoutes;
 
   const { pathname } = useLocation();
-  const logout = () => {
-    dispatch({ type: "SET_ROLE", payload: "" });
+  const logoutUser = async () => {
+    const result = await logout();
+    console.log("result", result);
+    navigate("/login");
+
+    // dispatch({ type: "SET_ROLE", payload: "" });
   };
   return (
     <Box
