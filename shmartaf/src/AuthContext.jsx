@@ -8,14 +8,14 @@ const findUserRole = async (user) => {
     const url = `${BASE_URL}/users/${user.id}`;
     const response = await fetch(url);
     console.log(`Response:`, response);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json(); // Correctly parse the JSON body
     console.log(`Data:`, data);
-    
+
     return data.userType; // Adjust this according to the actual structure of your data
   } catch (error) {
     console.error("Failed to find user roles:", error);
@@ -29,14 +29,14 @@ const findUser = async (user) => {
     const url = `${BASE_URL}/users/${user.id}`;
     const response = await fetch(url);
     console.log(`Response:`, response);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json(); // Correctly parse the JSON body
     console.log(`Data:`, data);
-    
+
     return data; // Adjust this according to the actual structure of your data
   } catch (error) {
     console.error("Failed to find user:", error);
@@ -57,7 +57,6 @@ export const AuthProvider = ({ children }) => {
   });
 
   const supabase = createSupabaseClient(); // Make sure to replace with your actual function
-
   useEffect(() => {
     const checkAuthentication = async () => {
       const { user, session } = authState;

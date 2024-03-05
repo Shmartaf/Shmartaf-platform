@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Radio, Button, DatePicker, Select , Checkbox } from "antd";
+import { Form, Input, Radio, Button, DatePicker, Select, Checkbox } from "antd";
 const { TextArea } = Input;
 import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { fetchNeeds, fetchSkills } from "../../api";
@@ -138,11 +138,11 @@ const UserForm = () => {
         <Input />
       </Form.Item>
       <Form.Item label="User Type" name="userType" required>
-    <Radio.Group onChange={(e) => handleUserTypeChange(e.target.value)}>
-    <Radio value="parent">Parent</Radio>
-    <Radio value="babysitter">Babysitter</Radio>
-     </Radio.Group>
-    </Form.Item>
+        <Radio.Group onChange={(e) => handleUserTypeChange(e.target.value)}>
+          <Radio value="parent">Parent</Radio>
+          <Radio value="babysitter">Babysitter</Radio>
+        </Radio.Group>
+      </Form.Item>
 
       {/* Parent Section */}
       {isParent && (

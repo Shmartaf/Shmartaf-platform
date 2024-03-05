@@ -50,8 +50,8 @@ def delete_parent(parent_id: UUID4):
 def create_child(parent_id: UUID4, child: schemas.ChildrenRequestSchema):
     child = dal.create(models.Children, child)
     scheme = schemas.ParentChildrenRequestSchema(parentid=parent_id, childid=child.id)
-    dal.create(models.ParentsChildrens, schema=scheme)
-    return child
+    parentChildren = dal.create(models.ParentsChildrens, schema=scheme)
+    return parentChildren
 
 
 @router.put("/{parent_id}/children/{child_id}")
