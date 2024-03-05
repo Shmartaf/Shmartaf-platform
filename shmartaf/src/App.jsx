@@ -22,6 +22,8 @@ import SignUp from "./pages/SignUp";
 function App() {
   const { isAuthenticated, session, user, Login, logout } = useAuth();
   const location = useLocation();
+
+
   useEffect(() => {
     // Check if the user is authenticated
     console.log("User:", user);

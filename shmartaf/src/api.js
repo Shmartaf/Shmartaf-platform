@@ -2,7 +2,7 @@
 // const api = axios.create({
 //   baseURL: "http://localhost:8080",
 // });
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://shmartaf-2ca3a4ef2667.herokuapp.com";
 
 const get = async (url, id) => {
   return fetch(`${BASE_URL}/${url}/${id}`, {

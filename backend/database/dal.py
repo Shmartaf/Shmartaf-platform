@@ -8,7 +8,7 @@ from backend.logger import ColorLogger
 
 class DataAccessLayer:
     def __init__(self):
-        self.db = Database().SessionLocal()
+        self.db = next(Database().get_db())
         self.logger = ColorLogger()
 
     def get(self, model, id: UUID4):
