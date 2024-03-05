@@ -1,18 +1,29 @@
+import { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useContext } from "react";
-import { BabysitterContext } from "../context/BabysitterContext";
+import { get } from "../api";
 
 const BabysitterCard = (props) => {
-  const { state, dispatch } = useContext(BabysitterContext);
+  const [babysitterDetails, setBabysitterDetails] = useState(null);
 
-  // const handleProfile = () => {
-  //     console.log(props);
-  //     dispatch({ type: "SET_SELECTED", payload: props });
-  //   };
+  useEffect(() => {
+    console.log("props", props);
+    const fetchDetails = async () => {
+      try {
+        const response = await get("babysitters", props.id);
+        setBabysitterDetails(response);
+      } catch (error) {
+        console.error("Error fetching babysitter details:", error);
+      }
+    };
+
+    if (props.id) {
+      fetchDetails();
+    }
+  }, [props.id]);
 
   const toggleFavorite = () => {
     dispatch({
@@ -22,8 +33,9 @@ const BabysitterCard = (props) => {
   };
   return (
     <Box className="babysitter-card">
-      {/* <img src={props.image} /> */}
-      <img src={`https://i.pravatar.cc/300?img=${props?.pictureid}`} />
+      <img
+        src={`https://i.pravatar.cc/300?img=${babysitterDetails?.pictureid}`}
+      />
       <div
         style={{
           cursor: "pointer",
@@ -40,19 +52,22 @@ const BabysitterCard = (props) => {
       </div>
       <Box className="flex_row_center">
         <StarIcon sx={{ color: "#5B5CFD" }} />
-        <Typography variant="h6">{props?.rating || "4.5"}</Typography>
+        <Typography variant="h6">
+          {babysitterDetails?.user?.rating || "4.5"}
+        </Typography>
       </Box>
       <Typography variant="h5" fontWeight={"bold"}>
-        {props?.user?.name}
+        {babysitterDetails?.user?.name}
       </Typography>
 
       <Typography variant="h6" fontWeight={"bold"}>
-        {props?.user?.street}, {props?.user?.city}
+        {babysitterDetails?.user?.street}, {babysitterDetails?.user?.city}
       </Typography>
       <Box className="flex_row_center" p={1}>
-        <Typography>{props.description}</Typography>
+        <Typography>{babysitterDetails?.description}</Typography>
       </Box>
     </Box>
   );
 };
+
 export default BabysitterCard;

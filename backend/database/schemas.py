@@ -174,3 +174,8 @@ class SignUpSchema(BaseModel):
     children: Optional[list] = None
     babysitterSkills: Optional[list[Tuple[UUID4, str]]] = None
     babysitterDescription: Optional[str] = None
+
+
+class Recommendation(BaseModel):
+    Babysitterid: UUID4
+    Likelihood: float
