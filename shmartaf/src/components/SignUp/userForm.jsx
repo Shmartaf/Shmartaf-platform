@@ -42,6 +42,33 @@ const UserForm = () => {
       console.error("Error fetching skills:", error);
     }
   };
+  const checkIsValid = () => {
+    form.validateFields().then((values) => {
+    //   if (values.email === undefined)
+    //   {alert("Please select a valid email");
+    //   return false;}
+    //   if (values.password === undefined)
+    //   {alert("Please select a passsword");
+    //   return false;}
+    //   if (values.fullName === undefined)
+    //   {alert("Please select a full name");
+    //   return false;}
+    //   if (values.city === undefined)
+    //   {alert("Please select a valid city");
+    //   return false;}
+    //   if (values.phone === undefined)
+    //   {alert("Please select a valid phone number");
+    //   return false;}
+    //   if (values.gender === undefined)
+    //   {alert("Please select a valid gender");
+    //   return false;}
+    //   if (values.userType === undefined)
+    //   {alert("Please select a valid u");
+    //   return false;}
+      console.log("Received values of form: ", values);
+      return true;
+    });
+  };
 
   const handleNeedRatingChange = (id, rating) => {
     setNeedsRating({ ...needsRating, [id]: rating });
@@ -65,6 +92,13 @@ const UserForm = () => {
   };
 
   const onFinish = async (values) => {
+    console.log("Received values of form: ", values);
+    //check if the form have undefined values
+    if (Object.values(values).some((value) => value === undefined)) {
+      alert("Please fill all the fields");
+      return;
+    }
+    
     const supabase = createSupabaseClient();
     console.log("supabase:", supabase);
     const email = values.email;
@@ -79,6 +113,7 @@ const UserForm = () => {
       });
       if (new_user.error) {
         console.error("Error:", new_user.error);
+        alert("error" + new_user.error);
         form.setFields([
           {
             name: new_user.error.name,
@@ -97,6 +132,7 @@ const UserForm = () => {
       console.log(response);
     } catch (error) {
       console.log("error:", error);
+      alert("Error:", error);
     }
     navigate("/login");
 
@@ -284,7 +320,8 @@ const UserForm = () => {
 
       {/* Submit Button */}
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit"
+        className="submitbutton">
           Submit
         </Button>
       </Form.Item>

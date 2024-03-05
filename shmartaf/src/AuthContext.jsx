@@ -16,7 +16,7 @@ const findUserRole = async (user) => {
     const data = await response.json(); // Correctly parse the JSON body
     console.log(`Data:`, data);
 
-    return data.userType; // Adjust this according to the actual structure of your data
+    return data?.userData?.userType; // Adjust this according to the actual structure of your data
   } catch (error) {
     console.error("Failed to find user roles:", error);
     return null;
@@ -145,6 +145,7 @@ export const AuthProvider = ({ children }) => {
       return data;
     } catch (error) {
       console.error("Login failed", error);
+      alert("Login failed" + error);
       throw error;
     }
   };
