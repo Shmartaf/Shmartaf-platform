@@ -28,22 +28,6 @@ app.dependency_overrides = {
 }
 
 
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-app.dependency_overrides = {
-    Database: Database().get_db(),
-}
-
-
-
-
 @app.on_event("startup")
 async def startup():
     Base.metadata.create_all(bind=Database().engine)

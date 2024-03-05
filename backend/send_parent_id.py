@@ -101,8 +101,3 @@ def get_recommendations_for_parent(parentid):
     )
 
     return recommendations_sorted
-
-
-parentid = "697f4c4c-d4d3-40be-8488-13e2788e6b09"
-recommendations = get_recommendations_for_parent(parentid)
-print(recommendations.head())  # This prints the top recommended babysitters

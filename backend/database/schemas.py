@@ -95,7 +95,7 @@ class ChildrenResponseRequirementsSchema(ChildrenRequirementsSchema):
 class ChildrenRequestSchema(BaseModel):
     id: Optional[UUID4] = uuid4().hex
     name: str
-    birthdate: date
+    birthdate: datetime
     gender: Optional[str] = None
 
 

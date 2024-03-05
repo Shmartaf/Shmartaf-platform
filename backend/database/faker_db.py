@@ -140,11 +140,13 @@ def mock_db(n):
         if user.userType == "parent":
             parent = create_parent(user.id)
             for _ in range(random.randint(1, 3)):  # Each parent can have 1-3 children
+
                 child = create_children(parent.id)
-                for need in random.sample(
-                    needs, random.randint(1, min(3, len(needs)))
-                ):  # Assign 1-3 needs to each child
-                    create_children_requirements(child.childid, need.id)
+                if child:
+                    for need in random.sample(
+                        needs, random.randint(1, min(3, len(needs)))
+                    ):  # Assign 1-3 needs to each child
+                        create_children_requirements(child.childid, need.id)
         else:
             babysitter = create_babysitter(user.id)
             random_skills = random.sample(
