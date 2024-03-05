@@ -1,7 +1,7 @@
 from datetime import date, datetime, time
 from typing import Optional, Tuple
 from uuid import uuid4
-from typing import List
+
 from pydantic import UUID4, BaseModel, EmailStr
 
 

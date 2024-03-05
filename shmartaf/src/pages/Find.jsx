@@ -14,7 +14,6 @@ const Find = () => {
   const [error, setError] = useState(null);
   const { user } = useAuth();
 
-
   const fetchBabysitters = async () => {
     setLoading(true);
     setError(null);
@@ -24,11 +23,13 @@ const Find = () => {
       const fetchedBabysitters = await Promise.all(
         response.map(async (babysitter) => {
           console.log("babysitter", babysitter);
-          const babysittersData = await get("babysitters", babysitter.Babysitterid);
+          const babysittersData = await get(
+            "babysitters",
+            babysitter.Babysitterid,
+          );
 
           return babysittersData;
-        })
-
+        }),
       );
       console.log("fetchedBabysitters", fetchedBabysitters);
       setBabysitters(fetchedBabysitters);
@@ -58,8 +59,7 @@ const Find = () => {
       <>
         {babysitters &&
           babysitters.map((babysitter) => (
-            <BabysitterCard key={babysitter.babysitterid} {...babysitter}
-            />
+            <BabysitterCard key={babysitter.babysitterid} {...babysitter} />
           ))}
       </>
     );

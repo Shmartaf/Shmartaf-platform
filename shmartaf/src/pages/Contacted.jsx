@@ -7,7 +7,6 @@ const Contacted = () => {
   const [contacted, setContacted] = useState([]);
   const { user } = useAuth();
 
-
   const fetchContacted = async () => {
     if (user.userData.userType === "parent") {
       const parent = await get("parents", user.id);
@@ -15,8 +14,7 @@ const Contacted = () => {
       const contacted = parent.contacted;
       console.log("contacted:", contacted);
       setContacted(contacted);
-    }
-    else {
+    } else {
       const babysitter = await get("babysitters", user.id);
       console.log("babysitter:", babysitter);
       const contacted = babysitter.contacted;
@@ -46,5 +44,3 @@ const Contacted = () => {
   );
 };
 export default Contacted;
-
-
