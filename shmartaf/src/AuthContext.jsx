@@ -52,16 +52,26 @@ export const AuthProvider = ({ children }) => {
   const supabase = createSupabaseClient(); // Make sure to replace with your actual function
 
   const initialAuthState = async () => {
-    const user = supabase.auth.user();
-    const session = supabase.auth.session();
-    const isAuthenticated = !!user && !!session;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const session = supabase.auth.session();
+      const isAuthenticated = !!user && !!session;
 
-    return {
-      user: isAuthenticated ? user : null,
-      session: isAuthenticated ? session : null,
-      loading: false,
-      isAuthenticated,
-    };
+      return {
+        user: isAuthenticated ? user : null,
+        session: isAuthenticated ? session : null,
+        loading: false,
+        isAuthenticated,
+      };
+    } catch (error) {
+      console.error("Error checking initial authentication:", error);
+      return {
+        user: null,
+        session: null,
+        loading: false,
+        isAuthenticated: false,
+      };
+    }
   };
 
   const [authState, setAuthState] = useState({
@@ -71,8 +81,14 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: false,
   });
 
-  useEffect(() => {
-    const init = async () => {
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
+
+  const init = async () => {
+    if (!isPageLoaded) {
+      // Set a flag to indicate that the page is loaded
+      setIsPageLoaded(true);
+
+      // Perform the initial authentication check only when the page is loaded
       const initialState = await initialAuthState();
       setAuthState(initialState);
 
@@ -80,10 +96,14 @@ export const AuthProvider = ({ children }) => {
       if (!initialState.isAuthenticated) {
         window.location.href = "/login"; // Adjust the path according to your routes
       }
-    };
+    }
+  };
+  // init();
 
-    init();
-  }, []);
+  useEffect(() => {
+    // init();
+
+  },);
 
   const signUp = async ({ email, password }) => {
     try {
