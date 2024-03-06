@@ -2,8 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { createSupabaseClient } from "./lib/supabaseClient";
 import { BASE_URL } from "./api";
 
-
-
 const findUser = async (user) => {
   try {
     // Ensure BASE_URL is correctly formatted without leading or trailing slashes if needed
@@ -94,10 +92,8 @@ export const AuthProvider = ({ children }) => {
   };
   // init();
 
-
   useEffect(() => {
     // init();
-
   });
 
   const signUp = async ({ email, password }) => {

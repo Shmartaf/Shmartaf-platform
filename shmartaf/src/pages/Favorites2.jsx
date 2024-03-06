@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import BabysitterCard from "../components/BabysitterCard";
 import { useAuth } from "../AuthContext";
@@ -6,18 +6,20 @@ import { fetchParent } from "../api";
 
 const Favorites = () => {
   const { user } = useAuth();
-  const [favorites, setFavorites] = useState([]); 
-  
+  const [favorites, setFavorites] = useState([]);
+
   useEffect(() => {
     const fetchFavorites = async () => {
-      if (user && favorites.length === 0) { 
+      if (user && favorites.length === 0) {
         console.log(user);
         console.log(user.userData);
         try {
           const parent = await fetchParent(user.id);
           console.log("parent", parent);
           if (parent && parent.favorites) {
-            setFavorites(parent.favorites.map(fav => ({...fav, isFavorite: true})));
+            setFavorites(
+              parent.favorites.map((fav) => ({ ...fav, isFavorite: true })),
+            );
           }
         } catch (error) {
           console.error("Failed to fetch favorites", error);
@@ -26,14 +28,16 @@ const Favorites = () => {
     };
 
     fetchFavorites();
-  }, [user, favorites.length]); 
+  }, [user, favorites.length]);
 
   const toggleFavorite = (babysitterId) => {
-    setFavorites(favorites.map(fav =>
-      fav.babysitter.id === babysitterId
-        ? { ...fav, isFavorite: !fav.isFavorite }
-        : fav
-    ));
+    setFavorites(
+      favorites.map((fav) =>
+        fav.babysitter.id === babysitterId
+          ? { ...fav, isFavorite: !fav.isFavorite }
+          : fav,
+      ),
+    );
   };
 
   return (
@@ -52,7 +56,11 @@ const Favorites = () => {
     >
       {favorites.length > 0 ? (
         favorites.map((fav) => (
-          <BabysitterCard key={fav.babysitter.id} favorite={fav} toggleFavorite={toggleFavorite} />
+          <BabysitterCard
+            key={fav.babysitter.id}
+            favorite={fav}
+            toggleFavorite={toggleFavorite}
+          />
         ))
       ) : (
         <div

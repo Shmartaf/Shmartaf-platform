@@ -42,7 +42,6 @@ const Settings = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const [addChildModalOpen, setAddChildModalOpen] = useState(false);
 
@@ -52,7 +51,6 @@ const Settings = () => {
   const openAddChildModal = () => setAddChildModalOpen(true);
   const closeAddChildModal = () => setAddChildModalOpen(false);
 
-
   const fetchProfile = async () => {
     try {
       if (user && user.userData.user.userType === "babysitter") {
@@ -60,15 +58,13 @@ const Settings = () => {
         const data = await response.json();
         setProfile(data);
         setLoading(false); // Set loading to false after data is fetched
-      }
-      else {
+      } else {
         const response = await fetch(`${BASE_URL}/parents/${user.id}`);
         const data = await response.json();
         console.log(data);
         setProfile(data);
         setLoading(false); // Set loading to false after data is fetched
       }
-
     } catch (error) {
       console.error("Error:", error);
       setError("Failed to fetch profile, please try again.");
@@ -139,13 +135,11 @@ const Settings = () => {
     }
     setTimeout(() => {
       fetchProfile();
-
     }, 4000);
   });
 
   if (loading) {
     return <CircularProgress />;
-
   }
 
   if (!profile) {
@@ -268,7 +262,7 @@ const Settings = () => {
             console.log("edited profile", editedProfile);
             SubmitEditProfle(editedProfile);
             closeEditProfileModal();
-            loading(loading => !loading);
+            loading((loading) => !loading);
           }}
         />
         {/* Content for the Edit Profile Modal goes here */}

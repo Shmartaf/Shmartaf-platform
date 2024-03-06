@@ -3,7 +3,7 @@ import ContactedListContainer from "../components/ContactedListComponent";
 import { Grid, Typography } from "@mui/material";
 import { useAuth } from "../AuthContext";
 import { get } from "../api";
-import ErrorBoundary from './ErrorBoundary'
+import ErrorBoundary from "./ErrorBoundary";
 const Contacted = () => {
   const [contacted, setContacted] = useState([]);
   const { user } = useAuth();
@@ -44,7 +44,9 @@ const Contacted = () => {
             </Grid>
           ))
         ) : (
-          <Typography variant="h6" className="m-4"  >No contacted babysitters</Typography>
+          <Typography variant="h6" className="m-4">
+            No contacted babysitters
+          </Typography>
         )}
       </Grid>
     </div>

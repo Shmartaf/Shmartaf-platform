@@ -52,7 +52,6 @@ const LoginPage = () => {
           type: "SET_ERROR",
           payload: result.error.message,
         });
-
       }
     } catch (error) {
       console.error("Login failed", error);
@@ -60,8 +59,7 @@ const LoginPage = () => {
         type: "SET_ERROR",
         payload: error.message,
       });
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -84,8 +82,8 @@ const LoginPage = () => {
                   ? "Sign up for an account"
                   : "Sign in to your account"}
               </h1>
-              {loading &&
-                <CircularProgress></CircularProgress>} {/* Display a loading message or spinner */}
+              {loading && <CircularProgress></CircularProgress>}{" "}
+              {/* Display a loading message or spinner */}
               {
                 <LoginForm
                   onSubmit={handleLoginSubmit}

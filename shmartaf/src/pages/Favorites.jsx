@@ -14,7 +14,6 @@ const Favorites = () => {
     console.log("favoriteBabysitters", favoriteBabysitters);
 
     setFavorites(favoriteBabysitters);
-
   }, [user, data]);
 
   return (
@@ -32,11 +31,18 @@ const Favorites = () => {
       }}
     >
       {favorites.length > 0 ? (
-        favorites.map((favorite) => (
-          console.log("favorite", favorite),
-          console.log("favorite.babysitter", favorite.babysitter),
-          <BabysitterCard key={favorite.babysitter.id} {...favorite.babysitter} />
-        ))
+        favorites.map(
+          (favorite) => (
+            console.log("favorite", favorite),
+            console.log("favorite.babysitter", favorite.babysitter),
+            (
+              <BabysitterCard
+                key={favorite.babysitter.id}
+                {...favorite.babysitter}
+              />
+            )
+          ),
+        )
       ) : (
         <div
           style={{

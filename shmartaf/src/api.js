@@ -28,7 +28,7 @@ const getAll = async (url) => {
     .catch((error) => {
       console.error("Error:", error);
     });
-}
+};
 const fetchNeeds = () => {
   return fetch(`${BASE_URL}/requirements?skip=0&limit=10`, {
     method: "GET",
@@ -171,11 +171,13 @@ const addFavoriteBabysitter = async (parentId, babysitterId) => {
 
     if (!response.ok) {
       // If the server response is not ok, throw an error
-      throw new Error('Failed to add favorite babysitter. Status: ' + response.status);
+      throw new Error(
+        "Failed to add favorite babysitter. Status: " + response.status,
+      );
     }
 
     const data = await response.json(); // Assuming the server responds with JSON
-    console.log('Favorite babysitter added successfully', data);
+    console.log("Favorite babysitter added successfully", data);
     return data; // Return the response data for further processing
   } catch (error) {
     console.error("Error adding favorite babysitter:", error);
@@ -190,12 +192,12 @@ const fetchParent = (id) => {
       "Content-Type": "application/json",
     },
   })
-  .then((res) => res.json())
-  .then((data) => {
+    .then((res) => res.json())
+    .then((data) => {
       console.log(data);
       return data;
     })
-  .catch((error) => {
+    .catch((error) => {
       console.error("Error:", error);
     });
 };

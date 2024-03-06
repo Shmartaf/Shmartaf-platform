@@ -135,7 +135,9 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const routes =
-    user?.userData.user.userType === "babysitter" ? babysitterRoutes : parentRoutes;
+    user?.userData.user.userType === "babysitter"
+      ? babysitterRoutes
+      : parentRoutes;
   const personalRoutes =
     user?.userData.user.userType === "babysitter"
       ? babysitterPersonalRoutes
@@ -147,8 +149,7 @@ const Sidebar = () => {
       const result = await logout();
       console.log("result", result);
       navigate("/login");
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Logout failed", error);
     }
 

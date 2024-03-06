@@ -68,7 +68,14 @@ function App() {
         <Route path="/contacted" element={<Contacted />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/profile" element={<ErrorBoundary element="modal"><Profile /></ErrorBoundary>} />
+        <Route
+          path="/profile"
+          element={
+            <ErrorBoundary element="modal">
+              <Profile />
+            </ErrorBoundary>
+          }
+        />
         <Route path="/settings" element={<Settings />} />
         <Route path="/reviews" element={<ReviewsPage />} />
         <Route path="/schedule" element={<Schedule />} />

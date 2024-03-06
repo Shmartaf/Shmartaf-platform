@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { Typography, Button, Dialog, DialogTitle, DialogContent, TextField, Rating } from "@mui/material";
+import {
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  Rating,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -10,7 +18,7 @@ import { useDataContext } from "../context/DataContext";
 
 const BabysitterCard = (props) => {
   const [babysitterDetails, setBabysitterDetails] = useState(null);
-  const {user} = useAuth()
+  const { user } = useAuth();
   const [isReviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [error, setError] = useState(null);
   const [reviewData, setReviewData] = useState({
@@ -38,29 +46,32 @@ const BabysitterCard = (props) => {
       fetchDetails();
     }
   }, [props.id]);
-  
+
   const toggleFavorite = async () => {
-  console.log("user", user);
-  console.log("babysitterDetails", babysitterDetails);
+    console.log("user", user);
+    console.log("babysitterDetails", babysitterDetails);
 
-  // Assuming `user.id` is the parent's ID and `babysitterDetails.id` is the babysitter's ID
-  try {
-    const FavoriteData = {
-      parentid: user.id,
-      babysitterid: babysitterDetails.id,
-    };
+    // Assuming `user.id` is the parent's ID and `babysitterDetails.id` is the babysitter's ID
+    try {
+      const FavoriteData = {
+        parentid: user.id,
+        babysitterid: babysitterDetails.id,
+      };
 
-    // Call the `addFavoriteBabysitter` function directly if adding (assuming it's available in your code)
-    const response = await addFavoriteBabysitter(user.id, babysitterDetails.id);
+      // Call the `addFavoriteBabysitter` function directly if adding (assuming it's available in your code)
+      const response = await addFavoriteBabysitter(
+        user.id,
+        babysitterDetails.id,
+      );
 
-    // Log the response or update state as needed
-    console.log('Favorite status updated', response);
+      // Log the response or update state as needed
+      console.log("Favorite status updated", response);
 
-    // Optionally, refresh or update the UI based on the new favorites list
-    // This might involve fetching the current favorites again or updating a local state
+      // Optionally, refresh or update the UI based on the new favorites list
+      // This might involve fetching the current favorites again or updating a local state
 
-    // Alternatively, use the fetch logic directly
-    /*
+      // Alternatively, use the fetch logic directly
+      /*
     const result = await fetch(`${BASE_URL}/parents/${user.id}/favorites`, {
       method: "POST",
       headers: {
@@ -76,18 +87,16 @@ const BabysitterCard = (props) => {
     }
     */
 
-    // Update local state or UI based on success
-    // props.isFavorite = !props.isFavorite; // Commented out assuming this is handled elsewhere
-    // setIsFavorite(!isFavorite);
+      // Update local state or UI based on success
+      // props.isFavorite = !props.isFavorite; // Commented out assuming this is handled elsewhere
+      // setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
 
-  } catch (error) {
-    console.error("Error toggling favorite:", error);
-
-    // Handle error, update UI or state accordingly
-    setError("Failed to add to favorites, please try again.");
-  }
-};
-
+      // Handle error, update UI or state accordingly
+      setError("Failed to add to favorites, please try again.");
+    }
+  };
 
   const openReviewDialog = () => {
     setReviewDialogOpen(true);
@@ -101,19 +110,18 @@ const BabysitterCard = (props) => {
       const favorites = babysitterDetails?.favorites;
       console.log("favorites", favorites);
       if (favorites && user) {
-        const isFavorite = favorites.find((favorite) => favorite.parentid === user.id);
+        const isFavorite = favorites.find(
+          (favorite) => favorite.parentid === user.id,
+        );
         console.log("isFavorite", isFavorite);
         return isFavorite;
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error checking if favorite:", error);
       setError("Failed to check if favorite, please try again.");
       throw new Error("Failed to check if favorite");
     }
   };
-
-
 
   const handleReviewSubmit = async () => {
     try {
@@ -134,7 +142,6 @@ const BabysitterCard = (props) => {
           },
           body: JSON.stringify(reviewForm),
         });
-
       } else {
         const reviewForm = {
           babysitterid: user.id,
@@ -146,13 +153,16 @@ const BabysitterCard = (props) => {
           interpersonalrating: reviewData.interpersonalrating,
         };
         closeReviewDialog();
-        const result = await fetch(`${BASE_URL}/babysitters/${user.id}/reviews`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const result = await fetch(
+          `${BASE_URL}/babysitters/${user.id}/reviews`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(reviewForm),
           },
-          body: JSON.stringify(reviewForm),
-        });
+        );
         if (!result.ok) {
           throw new Error("Failed to submit review");
         }
@@ -194,7 +204,9 @@ const BabysitterCard = (props) => {
       </div>
       <Box className="flex items-center space-x-2">
         <StarIcon sx={{ color: "#5B5CFD" }} />
-        <Typography variant="h6">{babysitterDetails?.user?.rating || "4.5"}</Typography>
+        <Typography variant="h6">
+          {babysitterDetails?.user?.rating || "4.5"}
+        </Typography>
       </Box>
       <Typography variant="h5" fontWeight="bold" className="mt-2">
         {babysitterDetails?.user?.name}
@@ -214,14 +226,18 @@ const BabysitterCard = (props) => {
           <Rating
             name="rating"
             value={reviewData.rating}
-            onChange={(event, newValue) => setReviewData({ ...reviewData, rating: newValue })}
+            onChange={(event, newValue) =>
+              setReviewData({ ...reviewData, rating: newValue })
+            }
           />
           <TextField
             label="Comment"
             multiline
             rows={4}
             value={reviewData.comment}
-            onChange={(event) => setReviewData({ ...reviewData, comment: event.target.value })}
+            onChange={(event) =>
+              setReviewData({ ...reviewData, comment: event.target.value })
+            }
             className="w-full mt-4"
           />
           <Typography>Flexibility:</Typography>
@@ -251,7 +267,10 @@ const BabysitterCard = (props) => {
             }
             className="mt-2"
           />
-          <Button onClick={handleReviewSubmit} className="mt-4 bg-blue-500 text-white">
+          <Button
+            onClick={handleReviewSubmit}
+            className="mt-4 bg-blue-500 text-white"
+          >
             Submit Review
           </Button>
         </DialogContent>

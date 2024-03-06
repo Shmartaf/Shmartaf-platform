@@ -49,9 +49,12 @@ const Find = () => {
     return (
       <>
         {babysitters &&
-          babysitters.map((babysitter) => (
-            babysitter && <BabysitterCard key={babysitter.id} {...babysitter} />
-          ))}
+          babysitters.map(
+            (babysitter) =>
+              babysitter && (
+                <BabysitterCard key={babysitter.id} {...babysitter} />
+              ),
+          )}
       </>
     );
   };
