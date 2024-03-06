@@ -4,10 +4,12 @@ import LoginForm from "../components/LogIn/LogInForm";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, AuthProvider, useAuth } from "../AuthContext";
 import { BabysitterContext } from "../context/BabysitterContext";
+import { CircularProgress } from "@mui/material";
 
 const LoginPage = () => {
   const { state, dispatch } = useContext(BabysitterContext);
   const [showSignUp, setShowSignUp] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const login = useAuth().login;
 
@@ -43,9 +45,24 @@ const LoginPage = () => {
           status: result.error.status,
           stack: result.error.stack,
         });
+
+        // lets set form field with the error
+        // lets set form field with the error
+        dispatch({
+          type: "SET_ERROR",
+          payload: result.error.message,
+        });
+
       }
     } catch (error) {
       console.error("Login failed", error);
+      dispatch({
+        type: "SET_ERROR",
+        payload: error.message,
+      });
+    }
+    finally {
+      setLoading(false);
     }
   };
   const handleSignup = () => {
@@ -67,10 +84,13 @@ const LoginPage = () => {
                   ? "Sign up for an account"
                   : "Sign in to your account"}
               </h1>
+              {loading &&
+                <CircularProgress></CircularProgress>} {/* Display a loading message or spinner */}
               {
                 <LoginForm
                   onSubmit={handleLoginSubmit}
                   onSignUp={handleSignup}
+                  loading={loading}
                 />
               }
             </div>

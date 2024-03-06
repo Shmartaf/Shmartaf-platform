@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { get } from "../api";
 import { useAuth } from "../AuthContext";
+
 // impport api
 
 // babysitters = api.get("/babysitters)
@@ -18,21 +19,9 @@ const Find = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await get("algo", user?.userData?.id);
+      const response = await get("algo", user?.userData.user?.id);
       console.log("Babysitters", response);
-      const fetchedBabysitters = await Promise.all(
-        response.map(async (babysitter) => {
-          console.log("babysitter", babysitter);
-          const babysittersData = await get(
-            "babysitters",
-            babysitter?.Babysitterid,
-          );
-
-          return babysittersData;
-        }),
-      );
-      console.log("fetchedBabysitters", fetchedBabysitters);
-      setBabysitters(fetchedBabysitters);
+      setBabysitters(response);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -45,7 +34,7 @@ const Find = () => {
     if (babysitters && babysitters.length === 0) {
       fetchBabysitters();
     }
-    console.log("babysitters", babysitters);
+    console.log("babysitters from algo", babysitters);
   }, []);
 
   const Content = () => {
@@ -59,7 +48,7 @@ const Find = () => {
       <>
         {babysitters &&
           babysitters.map((babysitter) => (
-            <BabysitterCard key={babysitter.Babysitterid} {...babysitter} />
+            babysitter && <BabysitterCard key={babysitter.id} {...babysitter} />
           ))}
       </>
     );

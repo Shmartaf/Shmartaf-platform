@@ -49,7 +49,7 @@ const parentRoutes = [
 const babysitterRoutes = [
   {
     name: "Dashboard",
-    path: "/babysitterdashboard",
+    path: "/dashboard",
     icon: <GridViewIcon />,
   },
   {
@@ -134,11 +134,11 @@ const Sidebar = () => {
   const { user } = useAuth();
   const logout = useAuth().logout;
   const navigate = useNavigate();
-
+  console.log("user", user);
   const routes =
-    user?.userData.userType === "babysitter" ? babysitterRoutes : parentRoutes;
+    user?.userData.user.userType === "babysitter" ? babysitterRoutes : parentRoutes;
   const personalRoutes =
-    user?.userData.userType === "babysitter"
+    user?.userData.user.userType === "babysitter"
       ? babysitterPersonalRoutes
       : parentPersonalRoutes;
 
@@ -218,7 +218,7 @@ const Sidebar = () => {
         <List>
           <ListItem>
             <ListItemButton
-              onClick={logout}
+              onClick={logoutUser}
               sx={{ backgroundColor: "grey", color: "white", borderRadius: 2 }}
             >
               <ListItemIcon>

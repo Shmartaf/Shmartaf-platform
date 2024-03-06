@@ -3,14 +3,13 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 
 import Layout from "./components/Layout";
 import ParentDashboard from "./pages/ParentDashboard";
-
+import ErrorBoundary from "./pages/ErrorBoundary";
 import Find from "./pages/Find";
 import Contacted from "./pages/Contacted";
 import Notifications from "./pages/Notifications";
 import Favorites from "./pages/Favorites";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
-import Reviews from "./pages/Reviews";
 import Schedule from "./pages/Schedule";
 import { BabysitterContext } from "./context/BabysitterContext";
 import { useContext } from "react";
@@ -18,6 +17,7 @@ import BabysitterDashboard from "./pages/BabysitterDashboard";
 import { useAuth } from "./AuthContext";
 import LoginPage from "./pages/LogInPage";
 import SignUp from "./pages/SignUp";
+import ReviewsPage from "./pages/Reviews";
 
 function App() {
   const { isAuthenticated, session, user, Login, logout } = useAuth();
@@ -44,7 +44,7 @@ function App() {
           index
           element={
             isAuthenticated ? (
-              user?.userData?.userType === "babysitter" ? (
+              user?.userData.user?.userType === "babysitter" ? (
                 <BabysitterDashboard />
               ) : (
                 <ParentDashboard />
@@ -57,7 +57,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            user?.userData?.userType === "babysitter" ? (
+            user?.userData.user?.userType === "babysitter" ? (
               <BabysitterDashboard />
             ) : (
               <ParentDashboard />
@@ -68,8 +68,9 @@ function App() {
         <Route path="/contacted" element={<Contacted />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<ErrorBoundary element="modal"><Profile /></ErrorBoundary>} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/reviews" element={<ReviewsPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUp />} />
