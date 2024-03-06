@@ -49,7 +49,7 @@ const parentRoutes = [
 const babysitterRoutes = [
   {
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/babysitterdashboard",
     icon: <GridViewIcon />,
   },
   {
@@ -131,10 +131,9 @@ const SidebarItem = ({ route, pathname }) => (
 const Sidebar = () => {
   // const { state, dispatch } = useContext(BabysitterContext);
   // const { user } = state;
-  const { user } = useAuth();
-  const logout2 = useAuth().logout
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  console.log("user", user);
+
   const routes =
     user?.userData.user.userType === "babysitter" ? babysitterRoutes : parentRoutes;
   const personalRoutes =
@@ -142,11 +141,19 @@ const Sidebar = () => {
       ? babysitterPersonalRoutes
       : parentPersonalRoutes;
 
-      const { pathname } = useLocation();
-      const logout = () => {
-        logout2();  
-        navigate("/login");
-      };
+  const { pathname } = useLocation();
+  const logoutUser = async () => {
+    try {
+      const result = await logout();
+      console.log("result", result);
+      navigate("/login");
+    }
+    catch (error) {
+      console.error("Logout failed", error);
+    }
+
+    // dispatch({ type: "SET_ROLE", payload: "" });
+  };
   return (
     <Box
       sx={{

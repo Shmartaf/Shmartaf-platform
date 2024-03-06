@@ -14,7 +14,7 @@ const ParentDashboard = () => {
   //console.log("user", user.userData.name);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
-      <Header name={user?.userDat.user?.name} image={humanImage} />
+      <Header name={user?.userData.user?.name} image={humanImage} />
       <EventsTable />
       <QuickFind />
       <Map />

@@ -94,8 +94,10 @@ export const AuthProvider = ({ children }) => {
   };
   // init();
 
+
   useEffect(() => {
     // init();
+
   });
 
   const signUp = async ({ email, password }) => {

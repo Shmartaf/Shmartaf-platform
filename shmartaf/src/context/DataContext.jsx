@@ -37,6 +37,13 @@ export const DataProvider = ({ children }) => {
         fetchData();
     }, []); // Empty dependency array ensures the effect runs only once on mount
 
+    const contextValue = {
+        babysitters,
+        parents,
+        fetchParent,
+        fetchBabysitter
+    };
+
     return (
         <DataContext.Provider value={{ babysitters, parents }}>
             {children}

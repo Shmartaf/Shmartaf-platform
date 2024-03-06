@@ -71,6 +71,7 @@ function App() {
         <Route path="/profile" element={<ErrorBoundary element="modal"><Profile /></ErrorBoundary>} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/reviews" element={<ReviewsPage />} />
+        <Route path="/schedule" element={<Schedule />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUp />} />

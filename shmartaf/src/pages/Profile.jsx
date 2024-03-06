@@ -215,43 +215,47 @@ const Settings = () => {
 
       <Typography>{profile?.description}</Typography>
       {/* Children table section */}
-      <Typography variant="h6" mt={2}>
-        Children
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Birthdate</TableCell>
-              <TableCell>Gender</TableCell>
-              {/* Add other columns as needed */}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {profile.childrens.map((child) => (
-              <TableRow key={child.id}>
-                <TableCell>{child.name}</TableCell>
-                <TableCell>{child.birthdate}</TableCell>
-                <TableCell>{child.gender}</TableCell>
-                {/* Add other cells as needed */}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box mt={2} display={"flex"} gap={"10px"}>
-        <Button variant="contained" onClick={openAddChildModal}>
-          Add Child
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={openEditProfileModal}
-        >
-          Edit Profile
-        </Button>
-      </Box>
+      {profile.userType === "parent" && profile.childrens && (
+        <>
+          <Typography variant="h6" mt={2}>
+            Children
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Birthdate</TableCell>
+                  <TableCell>Gender</TableCell>
+                  {/* Add other columns as needed */}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {profile.childrens.map((child) => (
+                  <TableRow key={child.id}>
+                    <TableCell>{child.name}</TableCell>
+                    <TableCell>{child.birthdate}</TableCell>
+                    <TableCell>{child.gender}</TableCell>
+                    {/* Add other cells as needed */}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Box mt={2} display={"flex"} gap={"10px"}>
+            <Button variant="contained" onClick={openAddChildModal}>
+              Add Child
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<EditIcon />}
+              onClick={openEditProfileModal}
+            >
+              Edit Profile
+            </Button>
+          </Box>
+        </>
+      )}
 
       {/* Modals */}
       <CustomModal
