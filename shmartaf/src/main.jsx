@@ -10,13 +10,22 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { AuthProvider } from "./AuthContext";
+import ErrorBoundary from "./pages/ErrorBoundary.jsx";
+import { DataProvider } from "./context/DataContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <BabysitterProvider>
-      <BrowserRouter>
-        <CssBaseline />
-        <App />
-      </BrowserRouter>
-    </BabysitterProvider>
-  </AuthProvider>,
+  <React.StrictMode>
+    <ErrorBoundary>
+      <AuthProvider>
+        <DataProvider>
+          <BabysitterProvider>
+            <BrowserRouter>
+              <CssBaseline />
+              <App />
+            </BrowserRouter>
+          </BabysitterProvider>
+        </DataProvider>
+      </AuthProvider>
+    </ErrorBoundary>
+  </React.StrictMode >
+  ,
 );

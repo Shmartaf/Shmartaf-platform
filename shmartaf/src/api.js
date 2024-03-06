@@ -16,6 +16,19 @@ const get = async (url, id) => {
       console.error("Error:", error);
     });
 };
+
+const getAll = async (url) => {
+  return fetch(`${BASE_URL}/${url}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 const fetchNeeds = () => {
   return fetch(`${BASE_URL}/requirements?skip=0&limit=10`, {
     method: "GET",
@@ -199,4 +212,5 @@ export {
   get,
   addFavoriteBabysitter,
   fetchParent,
+  getAll,
 };

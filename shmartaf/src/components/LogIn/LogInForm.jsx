@@ -1,7 +1,7 @@
 // src/components/LoginForm.jsx
 import React, { useState } from "react";
 
-const LoginForm = ({ onSubmit, onSignUp }) => {
+const LoginForm = ({ onSubmit, onSignUp, loading }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
@@ -77,9 +77,10 @@ const LoginForm = ({ onSubmit, onSignUp }) => {
       <button
         type="submit"
         onSubmit={handleSubmit}
-        className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+        className={`w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={loading}
       >
-        Sign in
+        {loading ? 'Signing in...' : 'Sign in'}
       </button>
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         {isSignUp ? "Already have an account?" : "Don’t have an account yet?"}{" "}
