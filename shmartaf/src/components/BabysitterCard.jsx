@@ -4,11 +4,12 @@ import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { get } from "../api";
+import { get, addFavoriteBabysitter } from "../api";
+import { useAuth } from "../AuthContext";
 
 const BabysitterCard = (props) => {
   const [babysitterDetails, setBabysitterDetails] = useState(null);
-
+  const {user} = useAuth()
   useEffect(() => {
     console.log("props", props);
     const fetchDetails = async () => {
@@ -24,13 +25,26 @@ const BabysitterCard = (props) => {
       fetchDetails();
     }
   }, [props.id]);
-
-  const toggleFavorite = () => {
-    dispatch({
-      type: "UPDATE_BABYSITTER",
-      payload: { ...props, isFavorite: !props.isFavorite },
-    });
+  
+  const toggleFavorite = async () => {
+    console.log("parent", user.id);
+    console.log("babysitter", props.id);
+  
+    // Assuming `user.id` is the parent's ID and `props.id` is the babysitter's ID
+    try {
+      // Call the `addFavoriteBabysitter` function directly if adding
+      const response = await addFavoriteBabysitter(user.id, props.id);
+      
+      // Log the response or update state as needed
+      console.log('Favorite status updated', response);
+  
+      // Optionally, refresh or update the UI based on the new favorites list
+      // This might involve fetching the current favorites again or updating a local state
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
   };
+  
   return (
     <Box className="babysitter-card">
       <img

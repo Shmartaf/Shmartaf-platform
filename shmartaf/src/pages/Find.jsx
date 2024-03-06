@@ -13,6 +13,8 @@ const Find = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuth();
+  console.log(user);
+  console.log(user.userData);
 
   const fetchBabysitters = async () => {
     setLoading(true);

@@ -140,6 +140,53 @@ const SignUp = (formData) => {
     });
 };
 
+const addFavoriteBabysitter = async (parentId, babysitterId) => {
+  const url = `${BASE_URL}/parents/${parentId}/favorites`;
+  const payload = {
+    parentid: parentId,
+    babysitterid: babysitterId,
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      // If the server response is not ok, throw an error
+      throw new Error('Failed to add favorite babysitter. Status: ' + response.status);
+    }
+
+    const data = await response.json(); // Assuming the server responds with JSON
+    console.log('Favorite babysitter added successfully', data);
+    return data; // Return the response data for further processing
+  } catch (error) {
+    console.error("Error adding favorite babysitter:", error);
+    throw error; // Rethrow the error for caller to handle if needed
+  }
+};
+
+const fetchParent = (id) => {
+  return fetch(`${BASE_URL}/parents/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => res.json())
+  .then((data) => {
+      console.log(data);
+      return data;
+    })
+  .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
 export {
   BASE_URL,
   fetchNeeds,
@@ -150,4 +197,6 @@ export {
   addChildren,
   SignUp,
   get,
+  addFavoriteBabysitter,
+  fetchParent,
 };
