@@ -2,26 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { createSupabaseClient } from "./lib/supabaseClient";
 import { BASE_URL } from "./api";
 
-const findUserRole = async (user) => {
-  try {
-    // Ensure BASE_URL is correctly formatted without leading or trailing slashes if needed
-    const url = `${BASE_URL}/users/${user.id}`;
-    const response = await fetch(url);
-    console.log(`Response:`, response);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json(); // Correctly parse the JSON body
-    console.log(`Data:`, data);
-
-    return data?.userData?.userType; // Adjust this according to the actual structure of your data
-  } catch (error) {
-    console.error("Failed to find user roles:", error);
-    return null;
-  }
-};
 
 const findUser = async (user) => {
   try {
@@ -36,6 +17,18 @@ const findUser = async (user) => {
 
     const data = await response.json(); // Correctly parse the JSON body
     console.log(`Data:`, data);
+    if (data.userType === "babysitter") {
+      const response = await fetch(`${BASE_URL}/babysitters/${user.id}`);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    }
+    if (data.userType === "parent") {
+      const response = await fetch(`${BASE_URL}/parents/${user.id}`);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    }
 
     return data; // Adjust this according to the actual structure of your data
   } catch (error) {
@@ -50,7 +43,6 @@ export const AuthContext = createContext();
 // AuthProvider component
 export const AuthProvider = ({ children }) => {
   const supabase = createSupabaseClient(); // Make sure to replace with your actual function
-
   const initialAuthState = async () => {
     try {
       const {
@@ -133,6 +125,7 @@ export const AuthProvider = ({ children }) => {
       const userData = await findUser(data.user);
       console.log("userData:", userData);
       data.user.userData = userData;
+
       setAuthState({
         user: data.user,
         session: data.session,
