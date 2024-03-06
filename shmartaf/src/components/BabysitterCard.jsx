@@ -4,12 +4,13 @@ import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { get, BASE_URL } from "../api"; // Assuming you have a post function for making API calls
+import { get, addFavoriteBabysitter } from "../api";
 import { useAuth } from "../AuthContext";
 import { useDataContext } from "../context/DataContext";
 
 const BabysitterCard = (props) => {
   const [babysitterDetails, setBabysitterDetails] = useState(null);
+  const {user} = useAuth()
   const [isReviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [error, setError] = useState(null);
   const [reviewData, setReviewData] = useState({
@@ -19,7 +20,6 @@ const BabysitterCard = (props) => {
     reliabilityrating: 0,
     interpersonalrating: 0,
   });
-  const { user } = useAuth();
   const [isFavorite, setIsFavorite] = useState(false);
   const { fetchParent, fetchBabysitter, babysitters } = useDataContext();
 
@@ -37,41 +37,57 @@ const BabysitterCard = (props) => {
     if (props.id) {
       fetchDetails();
     }
-    setIsFavorite(checkIfFavorite());
-  }, [props.id, props.isFavorite]);
-
+  }, [props.id]);
+  
   const toggleFavorite = async () => {
-    // Dispatch logic for updating favorites goes here
-    // You might want to make an API call to update the server
-    console.log("Toggling favorite");
-    console.log("user", user);
-    console.log("babysitterDetails", babysitterDetails);
+  console.log("user", user);
+  console.log("babysitterDetails", babysitterDetails);
+
+  // Assuming `user.id` is the parent's ID and `babysitterDetails.id` is the babysitter's ID
+  try {
     const FavoriteData = {
       parentid: user.id,
       babysitterid: babysitterDetails.id,
     };
-    try {
-      const result = await fetch(`${BASE_URL}/parents/${user.id}/favorites`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(FavoriteData),
-      });
-      console.log(result);
-      if (!result.ok) {
-        throw new Error("Failed to add to favorites");
-      }
-      props.isFavorite = !props.isFavorite;
-      setIsFavorite(!isFavorite);
-    } catch (error) {
-      console.error("Error:", error);
-      setError("Failed to add to favorites, please try again.");
 
+    // Call the `addFavoriteBabysitter` function directly if adding (assuming it's available in your code)
+    const response = await addFavoriteBabysitter(user.id, babysitterDetails.id);
+
+    // Log the response or update state as needed
+    console.log('Favorite status updated', response);
+
+    // Optionally, refresh or update the UI based on the new favorites list
+    // This might involve fetching the current favorites again or updating a local state
+
+    // Alternatively, use the fetch logic directly
+    /*
+    const result = await fetch(`${BASE_URL}/parents/${user.id}/favorites`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(FavoriteData),
+    });
+
+    console.log(result);
+
+    if (!result.ok) {
+      throw new Error("Failed to add to favorites");
     }
+    */
 
+    // Update local state or UI based on success
+    // props.isFavorite = !props.isFavorite; // Commented out assuming this is handled elsewhere
+    // setIsFavorite(!isFavorite);
 
-  };
+  } catch (error) {
+    console.error("Error toggling favorite:", error);
+
+    // Handle error, update UI or state accordingly
+    setError("Failed to add to favorites, please try again.");
+  }
+};
+
 
   const openReviewDialog = () => {
     setReviewDialogOpen(true);
